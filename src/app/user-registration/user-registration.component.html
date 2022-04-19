@@ -1,0 +1,196 @@
+<div class="card-body">
+    <form [formGroup]="requiredForm" novalidate>
+        <div class="row" style="margin-top: 1.3rem">
+            <div class="col-md-12">
+                <h6 class="card-title" style="font-weight: 700"> User Registration
+                </h6>
+            </div>
+       </div>  
+       <!----->
+   
+  
+    <div class="card-header bg-secondary">
+        <h6 class="card-title text-white" style="margin-bottom: 0;">User Details</h6>
+    </div>
+    
+       <!--inputs-->
+
+       <!---->
+       <div class="row">  
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+         <div class="form-group">
+             <label for="supplierName">Nationality</label>
+                 <input type="text" [(ngModel)]="supplierName" class="form-control" formControlName="supplierName" placeholder="Type here..."  >
+             
+             </div>
+            
+     </div>
+     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label for="supplierName">Country of Birth</label>
+                <input type="text" [(ngModel)]="supplierName" class="form-control" formControlName="supplierName" placeholder="Type here..."  >
+            
+            </div>
+           
+    </div>
+  </div>
+      <!---drop down-->
+      <div class="row">  
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+         <div class="form-group">
+             <label for="supplierName">Type of User</label>
+                 <input type="text" [(ngModel)]="supplierName" class="form-control" formControlName="supplierName" placeholder="Type here..."  >
+             
+             </div>
+            
+     </div>
+     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label for="supplierName">Persnal Number</label>
+                <input type="text" [(ngModel)]="supplierName" class="form-control" formControlName="supplierName" placeholder="Type here..."  >
+            
+            </div>
+           
+    </div>
+  </div>
+      <!----->
+      <div class="row">  
+      <div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label for="email">Name</label>
+        
+
+            <input type="text"  class="form-control" [(ngModel)]="email" formControlName="email" placeholder="Type here...">
+ 
+        
+        </div>
+     
+    </div>
+    <!--if statement-->
+ 
+  
+      <!--responsible person-->
+      <div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="form-group">
+              <label for="telephone">Surname</label> 
+
+              <input type="text"  class="form-control" [(ngModel)]="telephone" formControlName="telephone" placeholder="Type here...">
+
+               
+          </div>
+       
+      </div>
+  </div><!--row end-->
+    <!--date-->
+    <div class="row">  
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label for="Address1">Residentail Address </label>
+                <input type="text" class="form-control" [(ngModel)]="Address1" formControlName="Address1" placeholder="Address Line 1">
+             
+              <label for="Address2"> </label>
+                  <input type="text" class="form-control" [(ngModel)]="Address2" formControlName="Address2" placeholder="Address Line 2">
+               
+            </div>
+         
+    </div>
+    </div>
+  
+  <!----->
+  <div class="row">  
+      <div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label for="town"> </label> 
+
+            <input type="text"  class="form-control" [(ngModel)]="town" formControlName="town" placeholder="Town">
+ 
+       </div>
+     
+    </div>
+    
+      <div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="form-group">
+              <label for="City">    </label> 
+
+              <input type="text"  class="form-control" [(ngModel)]="City" formControlName="City" placeholder="City">
+   
+          
+            
+          </div>
+       
+      </div>
+  </div><!--row end-->
+  <div class="row">  
+      <div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="form-group">
+            <label for="Province"> </label> 
+
+            <input type="text"  class="form-control" [(ngModel)]="Province" formControlName="Province" placeholder="Province">
+ 
+       </div>
+     
+    </div>
+    
+      <div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="form-group">
+              <label for="PostalCode">    </label> 
+
+              <input type="text"  class="form-control" [(ngModel)]="PostalCode" formControlName="PostalCode" placeholder="Postal Code">
+   
+          
+            
+          </div>
+       
+      </div>
+  </div><!--row end-->
+  <!-- Default unchecked -->
+ 
+    <!--end date-->
+    <div class="row" style="margin-top: 1.3rem">
+      <div class="col-md-12">
+          <h6 class="card-title" style="font-weight: 700">Contact Datails
+          </h6>
+      </div>
+ </div> 
+ <div class="row">  
+  <div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="form-group">
+        <label for="cellno">Cellphone Number</label> 
+
+        <input type="text"  class="form-control" [(ngModel)]="cellno" formControlName="cellno" placeholder="Type here...">
+
+   </div>
+ 
+</div>
+
+  <div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+      <div class="form-group">
+          <label for="email">Email Address</label> 
+
+          <input type="email"  class="form-control" [(ngModel)]="email" formControlName="email" placeholder="Type here...">
+
+      
+        
+      </div>
+   
+  </div>
+</div><!--row end-->
+<div class="row">  
+<div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+  <div class="form-group">
+      <label for="userRole">User Role</label> 
+<select 
+class="form-control" [(ngModel)]="userRole" formControlName="userRole"  placeholder="Type here...">
+    <option value="" hidden disabled selected>Please select one</option>
+    <option value="active">Active</option>
+    <option value="Deactived">Deactived</option>
+
+</select>
+</div>
+</div>
+</div>
+     
+       <button type="submit"  (click)="logDispute()" class="btn btn-primary mr-2">Submit</button>
+       <button class="btn btn-light" (click)="modal.close('by: close icon');">Cancel</button>
+    </form>
+  </div><!-- row end -->

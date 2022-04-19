@@ -1,0 +1,279 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Perishable Delivery Schedule</a></li>
+        <!-- <li class="breadcrumb-item active" aria-current="page">Results</li> -->
+    </ol>
+</nav>
+
+<div class="row" style="padding-left: 0.75rem; padding-right: 0.75rem;">
+    <div class="col-md-12 bg-primary text-white" style="padding: 20px 12px 12px 12px; margin: 25px 0">
+        <h3 class="mb-2">Perishable Delivery Schedule</h3>
+        <hr>
+    </div>
+</div>
+<div>
+    <br />
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <button class="btn btn-primary float-right"  (click)="goBack()">Go Back</button>
+    </div>
+</div>
+<br>
+
+<div class="col-md-12 grid-margin stretch-card bg-">
+    <div class="card">
+        <div class="card-body">
+            <!--<form  [formGroup]="validationForm"  (submit)="SubmitDeliveryResults()">-->
+                <div class="row">
+                    <h2 class="">Products Deliveries</h2>
+                </div>
+              
+
+                <!--<div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="docsTitle">School Name</label>
+                            <input type="text" 
+                            [(ngModel)] = "schoolName"
+                            name="schoolName"
+                            class="form-control"
+                            readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="docsTitle">Supplier Name</label>
+                            <input type="text" 
+                            [(ngModel)] = "supplierName"
+                            name="supplierName"
+                            class="form-control" 
+                            readonly>
+                        </div>
+                    </div>
+    
+    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="docsTitle">EMIS Number</label>
+                            <input type="text" 
+                            [(ngModel)] = "emisNo"
+                            name="emisNo"
+                            class="form-control" 
+                            readonly>
+                            <br>
+                            <label for="docsTitle">NSNP Allocation</label>
+                            <input 
+                            [(ngModel)] = "nsnpAllocation"
+                            name="nsnpAllocation"
+                            class="form-control" readonly>
+                        </div>
+                    </div>
+    
+                    <div class="col-md-6">
+                        <div class="form-group">
+    
+                            <label for="docName">District Name</label>
+                            <input type="text" 
+                            [(ngModel)] = "districtName"
+                            name="districtName"
+                            class="form-control" readonly>
+                        </div>
+                    </div>
+    
+    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="docsTitle">Number Of Learners</label>
+                            <input type="number"  
+                            [(ngModel)] = "numberOfLearners"
+                            name="numberOfLearners" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>-->
+                <br>
+                <hr/>
+                <div class="row">
+                    <h4>Products Delivery Cards</h4>
+                </div>
+
+                <ngb-accordion [closeOthers]="false"
+                *ngFor="let product of perishableList; let i = index;trackBy: customQuantity">
+                    <ngb-panel class="text-white" title="{{i+1}}. {{product.foodGroupDescription}}  {{product.typeDescription}}  {{product.itemDelieveryDate | date: 'YYYY-MM-dd'}}">
+                        <ng-template class="bg-light" ngbPanelContent>    
+                            <div  class="row alert alert-warning" role="alert"  [ngClass]="{'alert alert-danger': perishableList[i].isProductWrong == 'No', 'alert alert-success': perishableList[i].isProductWrong == 'True'}">
+
+                                    <div class="col-md-12  mt-5">
+                                        <button type="button" class="btn btn-primary btn-lg btn-block">Product Not Delivered</button>
+                                    </div> 
+
+                                    <div class="col-md-9  mt-2">
+                                        <h4 class="text-danger">Food Group</h4>
+                                        <input type="text"   value="{{product.foodGroupDescription}}" class="form-control"  readonly />
+                                    </div> 
+
+                                    <div class="col-md-3  mt-2">
+                                    
+                                        <h4 class="text-danger">Delivery Date</h4>
+                                        
+                                        <input type="text"   value="{{product.itemDelieveryDate}}" class="form-control"  readonly />
+                                    
+                                
+                                    </div>   
+                                
+
+                                    <div  class="col-md-9 mt-5">
+                                        <h4 class="text-danger">Product Type</h4>
+                                        <br>
+                                        <input type="text"  value="{{product.typeDescription}}" class="form-control"  readonly />
+                            
+                                    </div>
+                                    
+                                    <div  class="col-md-3 mt-5">  
+                                        <h4 class="text-danger">Recieved Expected Product Type?</h4> 
+                                        
+                                        <select [(ngModel)]='perishableList[i].isProductWrong' 
+                                            (change)="selectProductTypeInput($event)" class="form-control"
+                                        style="max-width: fit-content;">
+                                            <option value="" hidden disabled selected>Please select one</option>
+                                            <option value="false">Yes</option>
+                                            <option value="true">No</option>
+                                        </select>
+                                    
+                                    </div >
+
+                                    <div class="col-md-12  mt-5" >
+                                    
+                                        <h4 class="text-danger" *ngIf="perishableList[i].isProductWrong == 'true'">Capture Porduct Type Dispute Reason</h4>
+                                        
+                                        <input type="text"   [(ngModel)]="perishableList[i].wrongProductName"  class="form-control"  *ngIf="perishableList[i].isProductWrong == 'true'"/>
+                                    
+                                
+                                    </div>   
+
+                                    <div class="col-md-12  mt-4 mb-4"  *ngIf="perishableList[i].isProductWrong == 'true'">
+                                        <h4 class="text-danger">Please Upload Incorrect Product Evidence</h4> 
+                                        
+                                        <dropzone   class=" row alert alert-warning dropzone-container" [config]="config" class="dropzone"
+                                        [message]="'Click or drag to upload evidence'" (error)="onUploadError($event)"
+                                        (success)="onUploadSuccess1($event,i)">
+                                        </dropzone> 
+                                        <hr>   
+                                    </div> 
+                                
+                                    <div  class="col-md-3 mt-4">
+                                        <h4 class="text-danger">Expected Product Quantity</h4> 
+                                            <br>
+                                            <input type="number" name='perishableItem{{i}}' [(ngModel)]='perishableList[i].quantity'
+                                                [ngModelOptions]="{standalone: true}"
+                                                placeholder="Type quantity"
+                                                class="form-control" style="width: 120px;"  readonly />
+                                            
+                                    
+                                    </div>
+                                
+                                    <div  class="col-md-3  mt-4">
+                                        <h4 class="text-danger">Recieved Expected Product Quantity?</h4> 
+                                        
+                                        <select (change)="selectQuantityInput($event)" [(ngModel)]='perishableList[i].isQuantityWrong'
+                                            class="form-control"
+                                        style="max-width: fit-content;">
+                                            <option value="" hidden disabled selected>Please select one</option>
+                                            <option value= "false" >Yes</option>
+                                            <option value= "true">No</option>
+                                        </select>
+                                        
+                                    </div >
+
+                                    
+
+                                    <div  class="col-md-3 mt-4" >
+                                        <h4 class="text-danger">Recieved Quantity</h4> 
+                                        <br>
+                                        <div><input type="number" name='perishableItem{{i}}' [(ngModel)]='perishableList[i].quantityRecieved'
+                                                [ngModelOptions]="{standalone: true}"
+                                                placeholder="Type quantity"
+                                                class="form-control" style="width: 120px;" /></div>
+                                    </div >
+                                    <br>
+                                    <div class="col-md-12  mt-5" >
+                                    
+                                        <h4 class="text-danger" *ngIf="perishableList[i].isQuantityWrong == 'true'">Capture Porduct Quantity Dispute Reason</h4>
+                                        
+                                        <input type="text"   [(ngModel)]="perishableList[i].wrongQuantity"  class="form-control"  *ngIf="perishableList[i].isQuantityWrong == 'true'"/>
+                                    
+                                
+                                    </div> 
+
+                                    <div class="col-md-12  mt-4 mb-4"  *ngIf="perishableList[i].isQuantityWrong == 'true'">
+                                        <h4 class="text-danger">Please Upload Quantity Evidence</h4> 
+                                        
+                                        <dropzone   class=" row alert alert-warning dropzone-container" [config]="config" class="dropzone"
+                                        [message]="'Click or drag to upload evidence'" (error)="onUploadError($event)"
+                                        (success)="onUploadSuccess2($event,i)">
+                                        </dropzone> 
+                                        <hr>   
+                                    </div>
+                                    
+                                    <div  class="col-md-3 mt-4">  
+                                        <h4 class="text-danger">Rate Product Recieved Quality?</h4> 
+                                    
+                                        <select [(ngModel)]='perishableList[i].isQualityWrong' (change)="selectIn($event)"
+                                            class="form-control" style="max-width: fit-content;">
+                                            <option value="" hidden disabled selected>Please select one</option>
+                                            <option value="false">Good</option>
+                                            <option value="true">Poor</option>
+                                            
+                                        </select>
+                                        
+                                    </div >
+                                    <br>
+                                    <div class="col-md-12  mt-5" >
+                                    
+                                        <h4 class="text-danger" *ngIf="perishableList[i].isQualityWrong == 'true'">Capture Porduct Quality Dispute Reason</h4>
+                                        
+                                        <input type="text"   [(ngModel)]="perishableList[i].wrongQuality"  class="form-control"   *ngIf="perishableList[i].isQualityWrong == 'true'"/>
+                                    
+                                
+                                    </div> 
+
+                                    <div class="col-md-12  mt-4 mb-4"  *ngIf="perishableList[i].isQualityWrong == 'true'">
+                                        <h4 class="text-danger">Please Upload Quanlity Evidence</h4> 
+                                        
+                                        <dropzone   class=" row alert alert-warning dropzone-container" [config]="config" class="dropzone"
+                                        [message]="'Click or drag to upload evidence'" (error)="onUploadError($event)"
+                                        (success)="onUploadSuccess($event,i)">
+                                        </dropzone> 
+                                        <hr>   
+                                    </div> 
+                                    <br>    
+                                    <br>
+                                    <!--<div class="col-md-12  mt-5">
+                                        <button type="button" class="btn btn-primary btn-lg btn-block">Product Delievered</button>
+                                    </div>-->
+                                <hr>
+                            </div>
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+                        
+                <br>
+                <br>
+                <div class="col-md-12  mt-4 mb-4" >
+                    <hr>
+                </div>
+                <div>
+                    <button class="btn btn-primary mt-2 " (click)="SubmitDeliveryResults()">Submit</button>
+                    &nbsp;&nbsp;
+                   
+                </div>
+               
+            <!--</form>-->
+    
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+

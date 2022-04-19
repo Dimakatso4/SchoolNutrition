@@ -1,0 +1,310 @@
+<div class="my-overlay" *ngIf="showOverlay">
+    <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+</div>
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Product Management</a></li>
+    </ol>
+</nav>
+
+<div class="row headingStyle1">
+    <div class="col-md-12 bg-primary text-white headingStyle2">
+        <h3>Product Management</h3>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <button class="btn btn-primary float-right" [disabled]="isPageLoading" (click)="openXlModal(xlModal)">Create Products</button>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive table-hover">
+            <table role="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover">
+                <thead>
+                    <tr class="bg-secondary">
+                        <th class="text-white">ID</th>
+                        <th class="text-white">Food Group</th>
+                        <th class="text-white">Product Type</th>
+                        <th class="text-white">Gm/Ml/Each(Primary School)</th>
+                        <th class="text-white">Gm/Ml/Each(Secondary School)</th>
+                        <th class="text-white">Unit</th>
+                        <th class="text-white">Edit</th>
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    <tr class="text-dark" *ngFor="let product of products">
+                        <td >{{product.productID}}</td>
+                        <td>{{product.foodGroupDescription}}</td>
+                        <td>
+                            {{product.typeDescription}}
+                        </td>
+                        <td>
+                            {{product.grammage}}
+                        </td>
+                        <td>
+                            {{product.grammageSecondary}}
+                        </td>
+                        <td>
+                            {{product.unitDescription}}
+                        </td> 
+                        <td>
+                            <a><i data-toggle="tooltip" data-placement="right" title="Update Product"
+                                class="mdi mdi-pencil" (click)="updateData(product)"
+                                (click)="openXlModal(editxlModal)"></i>
+                            </a>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="isPageLoading" class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Create Handover  -->
+<ng-template #xlModal let-modal>
+    <div class="modal-header bg-primary text-white headingStyle2 clear-top-space">
+        
+        <h4 class="modal-title text-white" id="exampleModalLabel">Create Product</h4>
+        <button type="button" class="close text-white" (click)="clearCreateMeetingData()" (click)="clearModalData()"
+            (click)="modal.close('by: close icon')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <form (submit)="saveProduct()" [formGroup]="validationForm">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="names" >Food Group </label>
+                        <ng-select  [items]="foodGroups" [multiple]=false [closeOnSelect]="true"
+                            [searchable]="true" bindLabel="foodGroupDescription" placeholder="Select Venue" 
+                            [(ngModel)]="foodGroupDescription"
+                            placeholder="Please Select Food Group"
+                            (change)="productType(foodGroupDescription)"
+                            formControlName="foodGroupDescription"
+                            [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.foodGroupDescription.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="isCreateFormSubmitted && createForm.foodGroupDescription.errors?.required" class="invalid-feedback">
+                            Food Group Required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="foodGroupDescription.length != 0">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="names" >Product Type </label>
+                        <ng-select  
+                            [items]="productTypes" 
+                            [multiple]=false 
+                            [closeOnSelect]="true"
+                            [clearable]="true"
+                            [searchable]="true" bindLabel="typeDescription" placeholder="Select Venue" 
+                            [(ngModel)]="typeDescription"
+                            (change)="productUnit(typeDescription)"
+                            placeholder="Please Select Product Type"
+                            formControlName="typeDescription"
+                            [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.typeDescription.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="isCreateFormSubmitted && createForm.typeDescription.errors?.required" class="invalid-feedback">
+                            Product Type Required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="typeDescription.length != 0">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="names" >Unit Type </label>
+                        <ng-select  [items]="unitTypes" [multiple]=false [closeOnSelect]="true"
+                            [searchable]="true" bindLabel="unitDescription" placeholder="Select Venue" 
+                            [(ngModel)]="unitDescription"
+                            formControlName="unitDescription"
+                            placeholder="Please Select Unit Type"
+                            [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.unitDescription.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="isCreateFormSubmitted && createForm.unitDescription.errors?.unitDescription" class="invalid-feedback">
+                            Unit Type Required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="unitDescription.length != 0">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="name">Grammage Primary School</label>
+                        <input type="number" class="form-control" 
+                        step="0.01"
+                        placeholder="Enter Grammage"
+                        [(ngModel)]="grammage"
+                        formControlName="grammage"
+                         name="grammage" 
+                        autocomplete="off" placeholder="Type here" 
+                        [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.grammage.errors}" required>
+                        <p *ngIf="isCreateFormSubmitted && createForm.grammage.errors?.required" class="invalid-feedback">
+                            Grammage For Primary School  Required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="unitDescription.length != 0">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="name">Grammage Secondary School</label>
+                        <input type="number" class="form-control" 
+                        step="0.01"
+                        placeholder="Enter Grammage"
+                        [(ngModel)]="grammageSecondary"
+                        formControlName="grammageSecondary"
+                         name="grammageSecondary" 
+                        autocomplete="off" placeholder="Type here" 
+                        [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.grammageSecondary.errors}" required>
+                        <p *ngIf="isCreateFormSubmitted && createForm.grammageSecondary.errors?.required" class="invalid-feedback">
+                            Grammage For Secondary School  Requiredd</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button class="btn btn-primary mr-2">Submit</button>
+                <button type="button" (click)="modal.close('by: close icon')" class="btn btn-warning">Cancel</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<!-- Modal Create Handover  -->
+<ng-template #editxlModal let-modal>
+    <div class="modal-header bg-primary text-white headingStyle2 clear-top-space">
+        
+        <h4 class="modal-title text-white" id="exampleModalLabel">Update Product</h4>
+        <button type="button" class="close text-white" (click)="clearCreateMeetingData()" (click)="clearModalData()"
+            (click)="modal.close('by: close icon')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <form (submit)="editsaveProduct()" [formGroup]="editvalidationForm">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="names" >Food Group </label>
+                        <ng-select  [items]="foodGroups" [multiple]=false [closeOnSelect]="true"
+                            [searchable]="true" bindLabel="foodGroupDescription" placeholder="Select Venue" 
+                            [(ngModel)]="editfoodGroupDescription"
+                            (change)="productType(editfoodGroupDescription)"
+                            placeholder="Please Select Food Group"
+                            formControlName="editfoodGroupDescription"
+                            [ngClass]="{'is-invalid': editisCreateFormSubmitted && editcreateForm.editfoodGroupDescription.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="editisCreateFormSubmitted && editcreateForm.editfoodGroupDescription.errors?.required" class="invalid-feedback">
+                            Food Group Required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="editfoodGroupDescription.length != 0">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="names" >Product Type </label>
+                        <ng-select  [items]="productTypes" [multiple]=false [closeOnSelect]="true"
+                            [searchable]="true"  placeholder="Select Venue" 
+                            [(ngModel)]="edittypeDescription"
+                            (change)="productUnit(edittypeDescription)"
+                            bindLabel="typeDescription" 
+                            placeholder="Please Select Product Type"
+                            formControlName="edittypeDescription"
+                            [ngClass]="{'is-invalid': editisCreateFormSubmitted && editcreateForm.edittypeDescription.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="editisCreateFormSubmitted && editcreateForm.edittypeDescription.errors?.required" class="invalid-feedback">
+                            Product Type Required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"  *ngIf="edittypeDescription">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="names" >Unit Type </label>
+                        <ng-select  [items]="unitTypes" [multiple]=false [closeOnSelect]="true"
+                            [searchable]="true"  placeholder="Select Venue"
+                            bindLabel="unitDescription" 
+                            [(ngModel)]="editunitDescription"
+                            formControlName="editunitDescription"
+                            placeholder="Please Select Unit Type"
+                            [ngClass]="{'is-invalid': editisCreateFormSubmitted && editcreateForm.editunitDescription.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="editisCreateFormSubmitted && editcreateForm.editunitDescription.errors?.required" class="invalid-feedback">
+                            Unit Type Required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"  *ngIf="editunitDescription">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="name">Grammage Primary School</label>
+                        <input type="number" class="form-control" 
+                        step="0.01"
+                        placeholder="Enter Grammage"
+                        [(ngModel)]="editgrammage"
+                        formControlName="editgrammage"
+                         name="editgrammage" 
+                        autocomplete="off" placeholder="Type here" 
+                        [ngClass]="{'is-invalid': editisCreateFormSubmitted && editcreateForm.editgrammage.errors}" required>
+                        <p *ngIf="editisCreateFormSubmitted && editcreateForm.editgrammage.errors?.required" class="invalid-feedback">
+                            Grammage Primary For School Required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"  *ngIf="editunitDescription.length != 0">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="name">Grammage Secondary School</label>
+                        <input type="number" class="form-control" 
+                        step="0.01"
+                        placeholder="Enter Grammage"
+                        [(ngModel)]="editgrammageSecondary"
+                        formControlName="editgrammageSecondary"
+                         name="editgrammageSecondary" 
+                        autocomplete="off" placeholder="Type here" 
+                        [ngClass]="{'is-invalid': editisCreateFormSubmitted && editcreateForm.editgrammageSecondary.errors}" required>
+                        <p *ngIf="editisCreateFormSubmitted && editcreateForm.editgrammageSecondary.errors?.required" class="invalid-feedback">
+                            Grammage Secondary For School Required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button class="btn btn-primary mr-2">Submit</button>
+                <button type="button" (click)="modal.close('by: close icon')" class="btn btn-warning">Cancel</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+

@@ -1,0 +1,199 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Menu Calculator</a></li>
+    </ol>
+</nav>
+
+<div class="row" style="padding-left: 0.75rem; padding-right: 0.75rem;">
+    <div class="col-md-12 bg-primary text-white" style="padding: 20px; margin: 20px 0">
+        <h2 class="mb-2">Menu Calculator</h2>
+        <hr>
+    </div>
+</div>
+
+<div class="card-body">
+    <form [formGroup]="validationForm">
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Number of learners eating today<span class="required-asterisk">*</span></label>
+                    <input type="number" class="form-control" 
+                        [(ngModel)]="noOfLearners"  formControlName="noOfLearners" 
+                        [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.noOfLearners.errors}" required placeholder="Type here..." >
+                    <p *ngIf="isCreateFormSubmitted && createForm.noOfLearners.errors?.required" 
+                        class="invalid-feedback">Number of learners eating today required</p>
+                        
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>School type<span class="required-asterisk">*</span></label>
+                    <input type="text" class="form-control" readonly
+                    [(ngModel)]="schoolLevel" formControlName="nsnpAllocation" 
+                    [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.nsnpAllocation.errors}" required placeholder="Type here..." >
+                    <p *ngIf="isCreateFormSubmitted && createForm.nsnpAllocation.errors?.required" 
+                        class="invalid-feedback">School type required</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+            <div class="col-md-12"> 
+                <button class="btn btn-primary float-right" (click)="calculateQuantity();">Calculate</button>
+            </div>
+        </div><br/> -->
+        <!-- <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label for="quarter">Quarter<span class="required-asterisk">*</span></label>
+                    <select [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.quarter.errors}">
+                        <option value="" hidden selected>Please select one</option>
+                        <option>
+                            Testing
+                        </option>
+                        <p *ngIf="isCreateFormSubmitted && createForm.quarter.errors?.required" class="invalid"
+                            style="color:red">Field Required
+                        </p>
+                    </select>
+                </div>
+            </div>        
+        </div> -->
+
+        <table  class="table table-hover mb-0">
+            <thead class="bg-secondary text-white">
+                <tr style="border-bottom: 1px solid black;">
+                    <td class="tableheadStyle text-white">Food Group</td>
+                    <td class="tableheadStyle text-white">Product Type</td>
+                    <td class="tableheadStyle text-white">Quantity To Prepare</td>
+                    <td class="tableheadStyle text-white">Unit</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let food of foodGroupList">
+                    <td>{{food.foodGroupDescription}}</td>            
+                    <td>
+                        <tr *ngIf="food.foodGroupID === 1">
+                            <select *ngFor="let x of breakfastList">                               
+                                <option>{{x.breakfast}}</option>
+                            </select>                    
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 2">
+                            <select *ngFor="let x of starchList">                               
+                                <option>{{x.starch}}</option>
+                            </select>  
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 3">
+                            <select *ngFor="let x of proteinList">                               
+                                <option>{{x.protein}}</option>
+                            </select> 
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 4">
+                            <select *ngFor="let x of seasoningList">                               
+                                <option>{{x.seasoning}}</option>
+                            </select> 
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 5">
+                            <select *ngFor="let x of fruitOrVegitableList">                               
+                                <option>{{x.fruit_Vegitable}}</option>
+                            </select> 
+                        </tr>
+                    </td>                   
+                    <td>
+                        <!--Primary school-->
+                        <tr *ngIf="food.foodGroupID === 1 && schoolLevel === 'PRIMARY SCHOOL' ">
+                            <select *ngFor="let x of breakfastList">                               
+                                <option>{{x.primary * noOfLearners / 1000}}</option>
+                            </select>                    
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 2 && schoolLevel === 'PRIMARY SCHOOL'">
+                            <select *ngFor="let x of starchList">                               
+                                <option>{{x.primary * noOfLearners / 1000}}</option>
+                            </select>  
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 3 && schoolLevel === 'PRIMARY SCHOOL'">
+                            <select *ngFor="let x of proteinList">                               
+                                <option>{{x.primary * noOfLearners / 1000}}</option>
+                            </select> 
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 4 && schoolLevel === 'PRIMARY SCHOOL'">
+                            <select *ngFor="let x of seasoningList">                               
+                                <option>{{x.primary * noOfLearners / 1000}}</option>
+                            </select> 
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 5 && schoolLevel === 'PRIMARY SCHOOL'">
+                            <select *ngFor="let x of fruitOrVegitableList">                               
+                                <option>{{x.primary * noOfLearners / 1000}}</option>
+                            </select> 
+                        </tr>
+                        <!--end-->
+                        <!--Secondary-->
+                        <tr *ngIf="food.foodGroupID === 1 && schoolLevel === 'SECONDARY SCHOOL' ">
+                            <select *ngFor="let x of breakfastList">                               
+                                <option>{{x.secondary * noOfLearners / 1000}}</option>
+                            </select>                    
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 2 && schoolLevel === 'SECONDARY SCHOOL'">
+                            <select *ngFor="let x of starchList">                               
+                                <option>{{x.secondary * noOfLearners / 1000}}</option>
+                            </select>  
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 3 && schoolLevel === 'SECONDARY SCHOOL'">
+                            <select *ngFor="let x of proteinList">                               
+                                <option>{{x.secondary * noOfLearners / 1000}}</option>
+                            </select> 
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 4 && schoolLevel === 'SECONDARY SCHOOL'">
+                            <select *ngFor="let x of seasoningList">                               
+                                <option>{{x.secondary * noOfLearners / 1000}}</option>
+                            </select> 
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 5 && schoolLevel === 'SECONDARY SCHOOL'">
+                            <select *ngFor="let x of fruitOrVegitableList">                               
+                                <option>{{x.secondary * noOfLearners / 1000}}</option>
+                            </select> 
+                        </tr>
+                        <!--end Secondary-->
+                    </td>
+                    <td>
+                        <tr *ngIf="food.foodGroupID === 1">
+                            <select *ngFor="let x of breakfastList">                               
+                                <option>{{x.unit}}</option>
+                            </select>                    
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 2">
+                            <select *ngFor="let x of starchList">                               
+                                <option>{{x.unit}}</option>
+                            </select>  
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 3">
+                            <select *ngFor="let x of proteinList">                               
+                                <option>{{x.unit}}</option>
+                            </select> 
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 4">
+                            <select *ngFor="let x of seasoningList">                               
+                                <option>{{x.unit}}</option>
+                            </select> 
+                        </tr>
+                        <tr *ngIf="food.foodGroupID === 5">
+                            <select *ngFor="let x of fruitOrVegitableList">                               
+                                <option>{{x.unit}}</option>
+                            </select> 
+                        </tr>
+                    </td>
+                </tr>                
+            </tbody>
+        </table>
+
+
+        <!--button-->
+        <br>
+
+        <!-- <button type="submit" class="btn btn-primary mr-2">Submit</button>
+        <button class="btn btn-light" (click)="modal.close('by: close icon');">Cancel</button> -->
+
+    </form>
+
+</div><!-- row end -->

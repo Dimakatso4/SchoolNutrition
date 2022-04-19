@@ -1,0 +1,682 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Feeding Menu</a></li>
+    </ol>
+</nav>
+
+<div class="row" style="padding-left: 0.75rem; padding-right: 0.75rem;">
+    <div class="col-md-12 bg-primary text-white" style="padding: 20px; margin: 20px 0">
+        <h2 class="mb-2">Feeding Menu</h2>
+        <hr>
+    </div>
+</div>
+
+<div class="card-body">
+    <form [formGroup]="validationForm">
+
+        <div class="row" hidden>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Number of learners eating today<span class="required-asterisk">*</span></label>
+                    <input type="number" class="form-control" 
+                        [(ngModel)]="noOfLearners"  formControlName="noOfLearners" 
+                        [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.noOfLearners.errors}" required placeholder="Type here..." >
+                    <p *ngIf="isCreateFormSubmitted && createForm.noOfLearners.errors?.required" 
+                        class="invalid-feedback">Number of learners eating today required</p>
+                        
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>School type<span class="required-asterisk">*</span></label>
+                    <input type="text" class="form-control" readonly
+                    [(ngModel)]="schoolLevel" formControlName="nsnpAllocation" 
+                    [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.nsnpAllocation.errors}" required placeholder="Type here..." >
+                    <p *ngIf="isCreateFormSubmitted && createForm.nsnpAllocation.errors?.required" 
+                        class="invalid-feedback">School type required</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroller">
+        <table  class="table table-hover mb-0">
+            <thead class="bg-secondary text-white">
+                <tr style="border-bottom: 1px solid black;">
+                    <td class="tableheadStyle text-white">Day</td>
+                    <td class="tableheadStyle text-white">Menu</td>
+                    <td class="tableheadStyle text-white">Food Group</td>
+                    <td class="tableheadStyle text-white">Product Type</td>                   
+                    <td class="tableheadStyle text-white">Unit</td>
+                </tr>
+            </thead>            
+            <tbody *ngIf="schoolLevel === 'PRIMARY SCHOOL'">
+                <tr>
+                    <td>Monday</td>    
+                    <td>Pilchard stew with maize pap and yellow vegetable in season</td>                      
+                    <td>
+                        <tr>
+                            <td>Breakfast</td>
+                        </tr>
+                        <tr>
+                            <td>Protein</td>
+                        </tr>
+                        <tr>
+                            <td>Starch</td>
+                        </tr>
+                        <tr>
+                            <td>Fruit or Vegitable</td>
+                        </tr>
+                        <tr>
+                            <td>Seasoning</td>
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>Creamy Instant Maize Meal (Vanilla)</td>
+                        </tr>
+                        <tr>
+                            <td>Pilchards in Tomato</td>
+                        </tr>
+                        <tr>
+                            <td>Maize Meal (Fortified)</td>
+                        </tr>
+                        <tr>
+                            <td>Yellow Vegetables in Season</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>Onions</option>
+                                <option>Cooking Oil</option>
+                                <option>Iodised Salt</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>10g</td>
+                        </tr>
+                        <tr>
+                            <td>40g</td>
+                        </tr>
+                        <tr>
+                            <td>40g</td>
+                        </tr>
+                        <tr>
+                            <td>60g</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>5g</option>
+                                <option>2ml</option>
+                                <option>1g</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tuesday</td>    
+                    <td>Soya mince stew in rice and green vegetables in season</td>                      
+                    <td>
+                        <tr>
+                            <td>Breakfast</td>
+                        </tr>
+                        <tr>
+                            <td>Protein</td>
+                        </tr>
+                        <tr>
+                            <td>Starch</td>
+                        </tr>
+                        <tr>
+                            <td>Fruit or Vegitable</td>
+                        </tr>
+                        <tr>
+                            <td>Seasoning</td>
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>Instant Sorghum (Vanilla)</td>
+                        </tr>
+                        <tr>
+                            <td>Approved Soya Mince</td>
+                        </tr>
+                        <tr>
+                            <td>Rice</td>
+                        </tr>
+                        <tr>
+                            <td>Green Vegetables in Season</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>Tomatoes</option>
+                                <option>Cooking Oil</option>
+                                <option>Iodised Salt</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>10g</td>
+                        </tr>
+                        <tr>
+                            <td>30g</td>
+                        </tr>
+                        <tr>
+                            <td>35g</td>
+                        </tr>
+                        <tr>
+                            <td>60g</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>5g</option>
+                                <option>2ml</option>
+                                <option>1g</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Wednesday</td>    
+                    <td>Sugar beans stew with samp and yellow vegetable in season</td>                      
+                    <td>
+                        <tr>
+                            <td>Breakfast</td>
+                        </tr>
+                        <tr>
+                            <td>Protein</td>
+                        </tr>
+                        <tr>
+                            <td>Starch</td>
+                        </tr>
+                        <tr>
+                            <td>Fruit or Vegitable</td>
+                        </tr>
+                        <tr>
+                            <td>Seasoning</td>
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>Creamy Instant Maize Meal (Strawberry)</td>
+                        </tr>
+                        <tr>
+                            <td>Sugar Beans</td>
+                        </tr>
+                        <tr>
+                            <td>Samp</td>
+                        </tr>
+                        <tr>
+                            <td>Yellow Vegetables in Season</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>Onions</option>
+                                <option>Carrots</option>
+                                <option>Iodised Salt</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>10g</td>
+                        </tr>
+                        <tr>
+                            <td>30g</td>
+                        </tr>
+                        <tr>
+                            <td>40g</td>
+                        </tr>
+                        <tr>
+                            <td>60g</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>5g</option>
+                                <option>5g</option>
+                                <option>1g</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Thursday</td>    
+                    <td>UHT Milk with pap and fruit in season</td>                      
+                    <td>
+                        <tr>
+                            <td>Breakfast</td>
+                        </tr>
+                        <tr>
+                            <td>Protein</td>
+                        </tr>
+                        <tr>
+                            <td>Starch</td>
+                        </tr>
+                        <tr>
+                            <td>Fruit or Vegitable</td>
+                        </tr>
+                        <tr>
+                            <td>Seasoning</td>
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>Creamy Instant Maize Meal (Vanilla)</td>
+                        </tr>
+                        <tr>
+                            <td>Milk (UHT)</td>
+                        </tr>
+                        <tr>
+                            <td>Maize Meal (Fortified)</td>
+                        </tr>
+                        <tr>
+                            <td>Fruit In Season</td>
+                        </tr>
+                        <tr>                         
+                            <td>Iodised Salt</td>
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>10g</td>
+                        </tr>
+                        <tr>
+                            <td>200ml</td>
+                        </tr>
+                        <tr>
+                            <td>40g</td>
+                        </tr>
+                        <tr>
+                            <td>1each</td>
+                        </tr>
+                        <tr>
+                            <td>1g</td>                                                  
+                        </tr>
+                    </td>
+                </tr> 
+                <tr>
+                    <td>Friday</td>    
+                    <td>Pilchard stew with maize pap and yellow vegetable in season</td>                      
+                    <td>
+                        <tr>
+                            <td>Breakfast</td>
+                        </tr>
+                        <tr>
+                            <td>Protein</td>
+                        </tr>
+                        <tr>
+                            <td>Starch</td>
+                        </tr>
+                        <tr>
+                            <td>Fruit or Vegitable</td>
+                        </tr>
+                        <tr>
+                            <td>Seasoning</td>
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>Instant Sorghum Porridge</td>
+                        </tr>
+                        <tr>
+                            <td>Pilchards in Tomato</td>
+                        </tr>
+                        <tr>
+                            <td>Rice</td>
+                        </tr>
+                        <tr>
+                            <td>Green Vegetables in Season</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>Cooking Oil</option>
+                                <option>Onions</option>                                
+                                <option>Iodised Salt</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>10g</td>
+                        </tr>
+                        <tr>
+                            <td>40g</td>
+                        </tr>
+                        <tr>
+                            <td>35g</td>
+                        </tr>
+                        <tr>
+                            <td>60g</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>2ml</option>
+                                <option>5g</option>                                
+                                <option>1g</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                </tr>       
+            </tbody>
+            <tbody *ngIf="schoolLevel === 'SECONDARY SCHOOL'">
+                <tr>
+                    <td>Monday</td>    
+                    <td>Pilchard stew with maize pap and yellow vegetable in season</td>                      
+                    <td>
+                        <tr>
+                            <td>Breakfast</td>
+                        </tr>
+                        <tr>
+                            <td>Protein</td>
+                        </tr>
+                        <tr>
+                            <td>Starch</td>
+                        </tr>
+                        <tr>
+                            <td>Fruit or Vegitable</td>
+                        </tr>
+                        <tr>
+                            <td>Seasoning</td>
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>Creamy Instant Maize Meal (Vanilla)</td>
+                        </tr>
+                        <tr>
+                            <td>Pilchards in Tomato</td>
+                        </tr>
+                        <tr>
+                            <td>Maize Meal (Fortified)</td>
+                        </tr>
+                        <tr>
+                            <td>Yellow Vegetables in Season</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>Onions</option>
+                                <option>Cooking Oil</option>
+                                <option>Iodised Salt</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>10g</td>
+                        </tr>
+                        <tr>
+                            <td>60g</td>
+                        </tr>
+                        <tr>
+                            <td>60g</td>
+                        </tr>
+                        <tr>
+                            <td>80g</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>5g</option>
+                                <option>2ml</option>
+                                <option>1g</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tuesday</td>    
+                    <td>Soya mince stew in rice and green vegetables in season</td>                      
+                    <td>
+                        <tr>
+                            <td>Breakfast</td>
+                        </tr>
+                        <tr>
+                            <td>Protein</td>
+                        </tr>
+                        <tr>
+                            <td>Starch</td>
+                        </tr>
+                        <tr>
+                            <td>Fruit or Vegitable</td>
+                        </tr>
+                        <tr>
+                            <td>Seasoning</td>
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>Instant Sorghum (Vanilla)</td>
+                        </tr>
+                        <tr>
+                            <td>Approved Soya Mince</td>
+                        </tr>
+                        <tr>
+                            <td>Rice</td>
+                        </tr>
+                        <tr>
+                            <td>Green Vegetables in Season</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>Tomatoes</option>
+                                <option>Cooking Oil</option>
+                                <option>Iodised Salt</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>10g</td>
+                        </tr>
+                        <tr>
+                            <td>40g</td>
+                        </tr>
+                        <tr>
+                            <td>50g</td>
+                        </tr>
+                        <tr>
+                            <td>80g</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>5g</option>
+                                <option>2ml</option>
+                                <option>1g</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Wednesday</td>    
+                    <td>Sugar beans stew with samp and yellow vegetable in season</td>                      
+                    <td>
+                        <tr>
+                            <td>Breakfast</td>
+                        </tr>
+                        <tr>
+                            <td>Protein</td>
+                        </tr>
+                        <tr>
+                            <td>Starch</td>
+                        </tr>
+                        <tr>
+                            <td>Fruit or Vegitable</td>
+                        </tr>
+                        <tr>
+                            <td>Seasoning</td>
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>Creamy Instant Maize Meal (Strawberry)</td>
+                        </tr>
+                        <tr>
+                            <td>Sugar Beans</td>
+                        </tr>
+                        <tr>
+                            <td>Samp</td>
+                        </tr>
+                        <tr>
+                            <td>Yellow Vegetables in Season</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>Onions</option>
+                                <option>Carrots</option>
+                                <option>Iodised Salt</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>10g</td>
+                        </tr>
+                        <tr>
+                            <td>40g</td>
+                        </tr>
+                        <tr>
+                            <td>60g</td>
+                        </tr>
+                        <tr>
+                            <td>80g</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>5g</option>
+                                <option>5g</option>
+                                <option>1g</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Thursday</td>    
+                    <td>UHT Milk with pap and fruit in season</td>                      
+                    <td>
+                        <tr>
+                            <td>Breakfast</td>
+                        </tr>
+                        <tr>
+                            <td>Protein</td>
+                        </tr>
+                        <tr>
+                            <td>Starch</td>
+                        </tr>
+                        <tr>
+                            <td>Fruit or Vegitable</td>
+                        </tr>
+                        <tr>
+                            <td>Seasoning</td>
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>Creamy Instant Maize Meal (Vanilla)</td>
+                        </tr>
+                        <tr>
+                            <td>Milk (UHT)</td>
+                        </tr>
+                        <tr>
+                            <td>Maize Meal (Fortified)</td>
+                        </tr>
+                        <tr>
+                            <td>Fruit In Season</td>
+                        </tr>
+                        <tr>                         
+                            <td>Iodised Salt</td>
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>10g</td>
+                        </tr>
+                        <tr>
+                            <td>250ml</td>
+                        </tr>
+                        <tr>
+                            <td>60g</td>
+                        </tr>
+                        <tr>
+                            <td>1each</td>
+                        </tr>
+                        <tr>
+                            <td>1g</td>                                                  
+                        </tr>
+                    </td>
+                </tr> 
+                <tr>
+                    <td>Friday</td>    
+                    <td>Pilchard stew with maize pap and yellow vegetable in season</td>                      
+                    <td>
+                        <tr>
+                            <td>Breakfast</td>
+                        </tr>
+                        <tr>
+                            <td>Protein</td>
+                        </tr>
+                        <tr>
+                            <td>Starch</td>
+                        </tr>
+                        <tr>
+                            <td>Fruit or Vegitable</td>
+                        </tr>
+                        <tr>
+                            <td>Seasoning</td>
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>Instant Sorghum Porridge</td>
+                        </tr>
+                        <tr>
+                            <td>Pilchards in Tomato</td>
+                        </tr>
+                        <tr>
+                            <td>Rice</td>
+                        </tr>
+                        <tr>
+                            <td>Green Vegetables in Season</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>Cooking Oil</option>
+                                <option>Onions</option>                                
+                                <option>Iodised Salt</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                    <td>
+                        <tr>
+                            <td>10g</td>
+                        </tr>
+                        <tr>
+                            <td>60g</td>
+                        </tr>
+                        <tr>
+                            <td>50g</td>
+                        </tr>
+                        <tr>
+                            <td>80g</td>
+                        </tr>
+                        <tr>
+                            <select>
+                                <option>2ml</option>
+                                <option>5g</option>                                
+                                <option>1g</option>
+                            </select>                          
+                        </tr>
+                    </td>
+                </tr>       
+            </tbody>
+        </table>
+   
+        </div>
+
+        <!--button-->
+        <br>
+
+        <!-- <button type="submit" class="btn btn-primary mr-2">Submit</button>
+        <button class="btn btn-light" (click)="modal.close('by: close icon');">Cancel</button> -->
+
+    </form>
+
+</div><!-- row end -->

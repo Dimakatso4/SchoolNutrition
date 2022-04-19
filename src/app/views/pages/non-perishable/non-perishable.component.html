@@ -1,0 +1,449 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="."> Supplier Summary Report(Non-Perishable Products)</a></li>
+        <!-- <li class="breadcrumb-item active" aria-current="page">Results</li> -->
+    </ol>
+</nav>
+
+<div class="row" style="padding-left: 0.75rem; padding-right: 0.75rem;">
+    <div class="col-md-12 bg-primary text-white" style="padding: 20px; margin: 20px 0">
+        <h3 class="mb-2"> Supplier Summary Report (Non-Perishable Products)</h3>
+        <hr>
+    </div>
+</div>
+<div>
+
+
+    <br />
+    
+</div>
+
+
+                <br>
+                <div class="row" >
+                    <div class="col-md-12">
+                       
+                        <button class="btn btn-primary float-right" (click)="openEditModel1(editModel1)">Add Non-Perishable Product</button>
+                    </div>
+                </div>
+                
+                <br>
+              
+                <div class="card-body">
+                    <form  novalidate>
+                  <!--get data from database-->
+                  <div class="row mt-4">
+                    <div class="col-md-12">
+                      <div  class="table-responsive table-wrap">
+                    
+                          <table  datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" id="datatable" class="table table-hover mb-0">
+                           
+                            <thead class="bg-secondary">
+                                
+                              
+                    <tr>
+                        <th class="text-white">No</th>
+                        <th class="text-white">School Name</th>
+                        <th class="text-white">Quarter</th>
+                         <th class="text-white">Start Date </th>
+                         <th class="text-white">End Date</th>
+                         <th class="text-white">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr > 
+                        <td>012345678</td>
+                        <td>Motaung Primary School</td>
+                        <td>Quarter 1</td>
+                        <td>16/11/21</td>
+                        <td>24/11/21</td>
+                       
+                        
+                        <td>
+                            &nbsp;&nbsp;
+                            <a (click)="openEditModel2(editModel2)"><i class="mdi mdi-pencil text-dark"></i></a>
+                            
+        
+                            &nbsp;&nbsp;
+                            <a (click)="openEditModel2(editModel2)"><i class="mdi mdi-lock text-dark"></i></a>
+                        </td>
+                    </tr>
+                    <tr > 
+                    
+                      </tr>
+                      <tr > 
+                          
+                          </tr>
+                          <tr > 
+                              
+                              </tr>
+                              <tr > 
+                                  
+                                  </tr>
+                    </tbody>
+                  </table>
+                        </div>
+                        </div>
+                  </div>
+                  <!--clo-->
+                  
+                            
+                  
+                  </form>
+                  </div>
+
+
+<!--for the edit button-->
+ 
+
+<!--Supplier Summary--->
+        <ng-template #editModel1 let-modal>
+            <div class="card-body">
+            
+            <form novalidate>
+                <div class="modal-header bg-primary text-white headingStyle2">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Supplier Summary Report (Non-Perishable Products)</h5>
+                    <!-- <button type="button" class="close text-white" (click)="Cancel()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
+                </div>
+                        
+                <div class="container shadow p-3 mb-5 bg-white rounded">    
+              
+         <div class="row">  
+             <div  class=" col-lg-6">
+            
+             <label for="Quintile"Quarter>Quarter</label>
+          <select>
+                <option>Select Quarter</option>
+                <option value="Quarter1">Quarter 1</option>
+                <option value="Quarter2">Quarter 2</option>
+                <option value="Quarter3">Quarter 3</option>
+             <option value="Quarter4">Quarter 4</option>
+        
+            </select>
+        </div>                                      
+             
+             </div>
+             <br>
+        <div class ="row">
+             <div  class=" col-lg-6 ">
+               
+                <label for="Quintile">Month</label>
+                 <select>
+                   <option>Select a Month</option>
+                   <option value="Motaung Primary School">April</option>
+                   <option value="Lerato Secondary School">May</option>
+                   <option value="Vusimuzi Primary School">June</option>
+                <option value="Sekolo Secondary School">July</option>
+           </select>
+                </div>
+        <br>
+                <!-- <div class ="row"> -->
+                <div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                 
+                    <label for="Quintile">Weeks</label>
+                      <select>
+                       <option>Select a Week</option>
+                       <option value="Motaung Primary School"> 1</option>
+                       <option value="Lerato Secondary School"> 2</option>
+                       <option value="Vusimuzi Primary School"> 3</option>
+                    <option value="Sekolo Secondary School">4</option>
+               
+                           </select>                            
+                    
+                        </div>
+                  <br>        
+            <div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+               
+                <label for="Quintile">Start Date</label>
+                        
+                                    <!--<label for="nameOf">Date</label>-->
+                 <div class="input-group date time-picker" id="handoverDateTime">
+                    <input type="date"  class="form-control datetimepicker-input"
+                         maxlength="10">
+                   
+                    </div>
+                                 
+                 </div>
+                    
+        <br>
+                 <div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+               
+                    <label for="Quintile">End Date</label>
+                       
+                            
+                                <!--<label for="nameOf">Date</label>-->
+                                <div class="input-group date time-picker" id="handoverDateTime">
+                                    <input type="date"  class="form-control datetimepicker-input"
+                                        maxlength="10">
+                                    
+                         
+                          
+                        </div> 
+                        
+                      
+                    </div>
+                    </div>
+                    
+                    <br>
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    
+                            <div class="form-group">
+                                <label for="docsTitle">School Name</label>
+                                <select >
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value="Motaung Primary School">Motaung Primary School</option>
+                                    <option value="Lerato Secondary School">Lerato Secondary School</option>
+                                    <option value="Vusimuzi Primary School">Vusimuzi Primary School</option>
+                                    <option value="Sekolo Secondary School">Sekolo Secondary School</option>
+                                    <option value="Tosa Primary School">Tosa Primary School</option>
+                                    <option value="Serame Secondary School">Serame Secondary School</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="docsTitle">Supplier Name</label>
+                                <input type="text" name="docNo" class="form-control" disabled >
+                            </div>
+    
+    
+                        </div>
+                        <!--if statement-->
+    
+    
+                        <!--responsible person-->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="docsTitle">EMIS Number</label>
+                                <input type="text" name="docNo" class="form-control" disabled >
+                            </div>
+                            <div class="form-group">
+                                <label for="docsTitle">NSNP Allocation</label>
+                                <input name="docDesc" class="form-control" disabled >
+                            </div>
+    
+    
+    
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="docName">District Name</label>
+                                <input type="text" name="docName" class="form-control" disabled >
+    
+                            </div>
+    
+                        </div>
+    
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="docsTitle">Number Of Learners</label>
+                                <input type="number" name="documentSavedBy" class="form-control"disabled >
+    
+    
+                            </div>
+    
+                        </div>
+                    </div>
+                    </div>
+
+                    
+             <!---->       
+                            
+        <!-- <div class="row">  
+         <div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+         <div class="form-group">
+            <label for="Quintile">School Name</label>
+            <select [(ngModel)]="Qintile" formControlName="SchoolName"
+             [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.SchoolName.errors}">
+            <option>Select School</option>
+             <option value="Motaung Primary School">Motaung Primary School</option>
+            <option value="Lerato Secondary School">Lerato Secondary School</option>
+            <option value="Vusimuzi Primary School">Vusimuzi Primary School</option>
+             <option value="Sekolo Secondary School">Sekolo Secondary School</option>
+             <option value="Tosa Primary School">Tosa Primary School</option>
+             <option value="Serame Secondary School">Serame Secondary School</option>
+             </select>
+             <p *ngIf="isEditFormSubmitted && editForm.Quintile.errors?.required"
+            class="invalid-feedback">School is required</p>
+                                       
+              </div>
+             </div>
+                                               
+        <div  class="col-xl-5 col-md-5 col-sm-12 col-xs-12">
+            <div class="form-group">
+             <label for="Place">Supplier Name</label>
+                                        
+            <input type="text" name="Supplier" value="Katlego Ntelele" class="form-control" disabled> 
+                                               
+             </div>
+            </div>
+              </div> -->
+             <!---->
+                             
+        <!-- <div class="row">  
+            <div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="form-group">
+               <label for="Quintile">EMIS Number</label>
+              
+               <input type="number" EMISNumber="EMISNumber" value="18718292" class="form-control" disabled>                       
+                 </div>
+                </div>
+                                                  
+           <div  class="col-xl-5 col-md-5 col-sm-12 col-xs-12">
+               <div class="form-group">
+                <label for="Place">NSNP Allocation</label>
+                                           
+               <input type="text" EMISNumber="NSNPAllocation" value="Secondary" class="form-control" disabled> 
+                                                  
+                </div>
+               </div>
+                 </div> -->
+                <!-- <div class="row">  
+                    <div  class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                       <label for="DistrictName">District Name</label>
+                      
+                       <input type="text" District Name="EMISNumber" value="Bohlabela" class="form-control" disabled>                       
+                         </div>
+                        </div>
+                                                          
+                   <div  class="col-xl-5 col-md-5 col-sm-12 col-xs-12">
+                       <div class="form-group">
+                        <label for="Place">Number Of Learners</label>
+                                                   
+                       <input type="number" NumLearners="NumLearners" value="748" class="form-control" disabled> 
+                                                          
+                        </div>
+                       </div>
+                         </div> -->
+                        <br>
+                        <h6 class="card-title" style="font-weight: 700">Non-Perishable Products
+                        </h6>
+        
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <!-- <th class="header-label"  style="color:black; font-size:12px;">Food Group</th> -->
+                                    <th class="header-label" style="color:black; font-size:12px;">Product Type</th>
+                                    <th class="header-label" style="color:black; font-size:12px;">Quantity</th>
+                                    <th class="header-label" style="color:black; font-size:12px;">Unit</th>
+                                    
+                                    
+                                </tr>
+                
+                            </thead>
+                            <tbody>
+                                <!--first-->
+                                <tr>
+                                    <td>   
+                                      <div><input type="checkbox"
+                                        (change)="toggleGreen()" >&nbsp;<label>Green Vegetables in Season</label> </div>
+                                    </td>
+                                    <td>
+                                        <div  *ngIf="Green">
+                                        
+                                        <input type="number"  style="max-width: fit-content;" placeholder="Type quality" class="form-control">
+                                     
+
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div  *ngIf="Green">
+
+                                        <input type="text" value ="KG"  style="max-width: fit-content;" disabled class="form-control">
+                                        </div>
+                                        </td>
+                                </tr>
+                 
+                <!---Second-->
+                                <tr>
+                                    <td>   
+                                      <div><input type="checkbox"
+                                        (change)="toggleYellow()" >&nbsp;<label>Yellow Vegetables in Season</label> </div>
+                                    </td>
+                                    <td>
+                                        <div  *ngIf="Yellow">
+                                           
+                                        <input type="number"   style="max-width: fit-content;" placeholder="Type quality" class="form-control"> 
+                                      
+
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div  *ngIf="Yellow">
+                                        <input type="text"   value="KG"  style="max-width: fit-content;"disabled class="form-control">
+                                    </div> 
+                                        </td>
+                                </tr>
+<!--third-->
+                                <tr>
+                                    <td>   
+                                      <div><input type="checkbox"
+                                        (change)="toggleCarrots()" >&nbsp;<label>Carrots</label> </div>
+                                    </td>
+                                    <td>
+                                        <div  *ngIf="Carrots">
+                                           
+                                        <input type="number"   style="max-width: fit-content;" placeholder="Type quality" class="form-control"> 
+                                      
+
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div  *ngIf="Carrots">
+                                        <input type="text"   value="KG"  style="max-width: fit-content;" disabled class="form-control"> 
+                                        </div>
+                                        </td>
+                                </tr>
+<!--forth-->
+                                <tr>
+                                    <td>   
+                                      <div><input type="checkbox"
+                                        (change)="toggleOnions()" >&nbsp;<label>Onions</label> </div>
+                                    </td>
+                                    <td>
+                                        <div  *ngIf="Onions">
+                                           
+                                        <input type="number"  style="max-width: fit-content;"  placeholder="Type quality" class="form-control"> 
+                                
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <div  *ngIf="Onions">
+                                        <input type="text"   value="KG" style="max-width: fit-content;"disabled class="form-control"> 
+                                    </div>
+                                        </td>
+                                </tr>
+                                <tr>
+                                    <td>   
+                                      <div><input type="checkbox"
+                                        (change)="toggleTomatoes()" >&nbsp;<label>Tomatoes </label> </div>
+                                    </td>
+                                    <td>
+                                        <div  *ngIf="Tomatoes">
+                                           
+                                        <input type="number"  style="max-width: fit-content;"  placeholder="Type quality" class="form-control"> 
+                                      
+
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div  *ngIf="Tomatoes">
+                                        <input type="text"  value="KG"  style="max-width: fit-content;" disabled class="form-control"> 
+                                    </div>
+                                        </td>
+                                </tr>
+                            </tbody>
+                        </table>
+        
+                               <br>
+                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                        <button class="btn btn-light" (click)="modal.close('by: close icon');">Cancel</button>
+                     
+                     </form>
+                    </div>
+                </ng-template>

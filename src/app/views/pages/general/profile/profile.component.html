@@ -1,0 +1,239 @@
+<div class="profile-page tx-13">
+  <div class="row">
+    <div class="col-12 grid-margin">
+      <div class="profile-header">
+        <div class="cover">
+          <div class="gray-shade"></div>
+          <figure>
+            <img src="../assets/images/img-profile-1.jpg" class="img-fluid" alt="profile cover">
+          </figure>
+          <div class="cover-body d-flex justify-content-between align-items-center">
+            <div>
+              <img class="profile-pic" src="https://via.placeholder.com/100x100" alt="profile">
+              <span class="profile-name">{{fullname}} {{surname}}</span>
+            </div>
+            <div class="d-none d-md-block">
+              <button class="btn btn-primary btn-icon-text btn-edit-profile" (click)="editprofile()">
+                <i data-feather="edit" appFeatherIcon class="btn-icon-prepend"></i> Edit profile
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="header-links">
+          <ul class="links d-flex align-items-center mt-3 mt-md-0">
+            <li class="header-link-item d-flex align-items-center active">
+              <i class="mr-1 icon-md" data-feather="columns" appFeatherIcon></i>
+              <a class="pt-1px d-none d-md-block" routerLink=".">Profile</a>
+            </li>
+            <!-- <li class="header-link-item ml-3 pl-3 border-left d-flex align-items-center">
+              <i class="mr-1 icon-md" data-feather="user" appFeatherIcon></i>
+              <a class="pt-1px d-none d-md-block" routerLink=".">Sheduled Training</a>
+            </li> -->
+            <!-- <li class="header-link-item ml-3 pl-3 border-left d-flex align-items-center">
+              <i class="mr-1 icon-md" data-feather="users" appFeatherIcon></i>
+              <a class="pt-1px d-none d-md-block" routerLink=".">Friends <span class="text-muted tx-12">3,765</span></a>
+            </li>
+            <li class="header-link-item ml-3 pl-3 border-left d-flex align-items-center">
+              <i class="mr-1 icon-md" data-feather="image" appFeatherIcon></i>
+              <a class="pt-1px d-none d-md-block" routerLink=".">Photos</a>
+            </li>
+            <li class="header-link-item ml-3 pl-3 border-left d-flex align-items-center">
+              <i class="mr-1 icon-md" data-feather="video" appFeatherIcon></i>
+              <a class="pt-1px d-none d-md-block" routerLink=".">Videos</a>
+            </li> -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row profile-body">
+    <div class="col-md-12 stretch-card">
+      <div class="card">
+        <div class="card-header">
+          <h3>User Details</h3>
+        </div>
+        <div class="card-body">
+          <div class="row" style="margin-bottom: 1rem;">
+            <div class="col-md-12">
+              <h4><strong>Personal Information</strong></h4>
+            </div>
+          </div><!--  row  -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="firstname">Name<span class="required-asterisk">*</span></label>
+                <input type="text" class="form-control" name="firstname" disabled
+                [value]="userinfo.firstname && userinfo.firstname != 'undefined' && userinfo.firstname != 'null'? userinfo.firstname : ''">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="surname">Surname<span class="required-asterisk">*</span></label>
+                <input type="text" class="form-control" id="surname" name="surname" disabled
+                [value]="userinfo.surname && userinfo.surname != 'undefined' && userinfo.surname != 'null'? userinfo.surname : ''">
+              </div>
+            </div>
+          </div><!--  Name & Surname  -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="gender">Gender<span class="required-asterisk">*</span></label>
+                <input type="text" name="gender" class="form-control" id="gender" disabled
+                [value]="userinfo.gender && userinfo.gender != 'undefined' && userinfo.gender != 'null'? userinfo.gender : ''">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="idNumber">ID Number<span class="required-asterisk">*</span></label>
+                <input type="text" name="idNumber"
+                  [value]="userinfo.idNumber && userinfo.idNumber != 'undefined' && userinfo.idNumber != 'null'? userinfo.idNumber : ''"
+                  class="form-control" id="idNumber" disabled>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="nationality">Nationality<span class="required-asterisk">*</span></label>
+                <input type="text" name="nationality" class="form-control" id="nationality" disabled
+                [value]="userinfo.citizenship && userinfo.citizenship != 'undefined' && userinfo.citizenship != 'null'? userinfo.citizenship : ''">
+
+              </div>
+            </div>
+          </div><!--  Gender & ID & Nationality  -->
+          <div class="row" style="margin-bottom: 1rem;">
+            <div class="col-md-12" style="margin: 1rem 0">
+              <h4><strong>Address Information</strong></h4>
+            </div>
+          </div><!--  Row  -->
+          <div class="row">
+            <div class="col-md-6" hidden>
+              <div class="form-check form-check-flat form-check-primary">
+                <label class="form-check-label">
+                  <input type="checkbox" name="informalsettlement" class="form-check-input" disabled
+                  [value]="userinfo.informalsettlement">
+                  <i class="input-frame"></i>
+                  Informal Settlement
+                </label>
+              </div>
+            </div>
+          </div><!--  row  -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="house">House Number</label>
+                <input type="text" name="house" class="form-control" id="house" disabled
+                [value]="userinfo.houseNumber && userinfo.houseNumber != 'undefined' && userinfo.houseNumber != 'null'? userinfo.houseNumber : ''">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="street">Street Name</label>
+                <input type="text" name="street" class="form-control" id="street" disabled
+                [value]="userinfo.streetName && userinfo.streetName != 'undefined' && userinfo.streetName != 'null'? userinfo.streetName : ''">
+              </div>
+            </div>
+          </div><!--  row  -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="suburb">Suburb<span class="required-asterisk">*</span></label>
+                <input type="text" name="suburb" class="form-control" id="suburb" disabled
+                [value]="userinfo.suburb && userinfo.suburb != 'undefined' && userinfo.suburb != 'null'? userinfo.suburb : ''">
+              </div>
+            </div>           
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="city">City<span class="required-asterisk">*</span></label>
+                <input type="text" name="city" class="form-control" id="city" disabled
+                [value]="userinfo.city && userinfo.city != 'undefined' && userinfo.city != 'null'? userinfo.city : ''">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="section">Postal Code<span class="required-asterisk">*</span></label>
+                <input type="text" name="postalCode" class="form-control" id="postalCode" disabled
+                [value]="userinfo.postalCode && userinfo.postalCode != 'undefined' && userinfo.postalCode != 'null'? userinfo.postalCode : ''">
+              </div>
+            </div>
+          </div><!--  row  -->
+          <div class="row" style="margin-bottom: 1rem;">
+            <div class="col-md-12" style="margin: 1rem 0">
+              <h4><strong>Contact Information</strong></h4>
+            </div>
+          </div><!--  Row  -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="cellNumber">Contact Number<span class="required-asterisk">*</span></label>
+                <input type="text" name="cellNumber" class="form-control" id="cellNumber" disabled
+                [value]="userinfo.cellNumber && userinfo.cellNumber != 'undefined' && userinfo.cellNumber != 'null'? userinfo.cellNumber : ''">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="emailAddress">Email Address<span class="required-asterisk">*</span></label>
+                <input type="text" name="emailAddress" class="form-control" id="emailAddress" disabled
+                [value]="userinfo.emailAddress && userinfo.emailAddress != 'undefined' && userinfo.emailAddress != 'null'? userinfo.emailAddress : ''">
+              </div>
+            </div>
+          </div><!--  row  -->
+          <div class="row" style="margin-bottom: 1rem;">
+            <div class="col-md-12" style="margin: 1rem 0">
+              <h4><strong>Account Information</strong></h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6" *ngIf="userinfo.level == 'Head Office' || userinfo.level == 'District' || userinfo.level == 'School'">
+              <div class="form-group">
+                <label for="level">Office Level<span class="required-asterisk">*</span></label>
+                <input type="text" name="level" class="form-control" id="level" disabled
+                [value]="userinfo.level && userinfo.level != 'undefined' && userinfo.level != 'null'? userinfo.level : ''">
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="userinfo.level == 'District' || userinfo.level == 'School'">
+              <div class="form-group">
+                <label for="region">Region<span class="required-asterisk">*</span></label>
+                <input type="text" name="region" class="form-control" id="region" disabled
+                [value]="userinfo.region && userinfo.region != 'undefined' && userinfo.region != 'null'? userinfo.region : ''">
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-bottom: 1rem;" *ngIf="userinfo.level == 'District' || userinfo.level == 'School'">
+            <div class="col-md-12" style="margin: 1rem 0">
+              <h4><strong>School Information</strong></h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6" *ngIf="userinfo.level == 'District' || userinfo.level == 'School'">
+              <div class="form-group">
+                <label for="distName">District<span class="required-asterisk">*</span></label>
+                <input type="text" name="distName" class="form-control" id="distName" disabled
+                [value]="distName">
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="userinfo.level == 'School'">
+              <div class="form-group">
+                <label for="school">School Name<span class="required-asterisk">*</span></label>
+                <input type="text" name="school" class="form-control" id="school" disabled
+                [value]="school">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="position">Position<span class="required-asterisk">*</span></label>
+                <input type="text" name="position" class="form-control" id="position" disabled
+                [value]="userinfo.position && userinfo.position != 'undefined' && userinfo.position != 'null'? userinfo.position : ''">
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+ 
+    </div>
+    </div>
+ 
+
+
+<!--supplier profile-->
+ 

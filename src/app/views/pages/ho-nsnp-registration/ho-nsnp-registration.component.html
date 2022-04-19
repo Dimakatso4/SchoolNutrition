@@ -1,0 +1,174 @@
+
+
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="../#">NSNP Registration Form</a></li>
+    </ol>
+</nav>
+
+<div class="row" style="padding-left: 0.75rem; padding-right: 0.75rem;">
+    <div class="col-md-12 bg-primary text-white" style="padding: 20px 12px 12px 12px; margin: 25px 0">
+        <h2 class="mb-2">NSNP Registration Form</h2>
+        <hr>
+    </div>
+</div>
+
+<!--add btn-->
+<!-- <div class="row">
+    <div class="col-md-12">
+      <button class="btn btn-primary float-right" (click)="openLgModal(lgModel)">Add New Record</button>
+    </div>
+  </div> -->
+<!--end add btn-->
+
+
+ <!--table-->
+ <div class="row mt-4">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table  datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" id="datatable" class="table table-hover mb-0">
+          <thead class="bg-secondary">
+            <tr>
+              <td class="text-white" hidden>No</td>
+              <td class="text-white">Emis Number</td>
+              <td class="text-white">School Name</td>
+              <td class="text-white">District Name</td>
+              <td class="text-white">Date Received</td>
+              <td class="text-white">Status</td>
+              <td class="text-white">Action </td>
+            </tr>
+
+          </thead>
+          <tbody>
+            <tr *ngFor="let pd of nsnpList, let i = index">
+                <td hidden>{{pd.nsnpId}}</td> 
+                <td>{{pd.emisNumber}}</td>
+                <td>{{pd.schoolName}}</td>
+                <td>{{pd.districtName}}</td>
+                <td>{{pd.dateReceived|date:'YYYY-MM-dd'}}</td>
+                <td>{{pd.status}}</td>
+                <td>
+                    <a style="margin-left: 30px;"><i class="mdi mdi-eye text-dark" (click)="openEditModal(lgViewModel,pd.NSNPId,i)"></i></a>
+                </td>
+            </tr>         
+
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+  <!--table-->
+
+
+
+<ng-template #lgViewModel let-modal>      
+    <div class="modal-header bg-primary text-white">    
+        <h3 class="modal-title" id="exampleModalLabel">View NSNP Registration Form</h3>
+        <button type="button" class="close text-white" (click)="modal.close('by: close icon')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>    
+    </div> 
+<div class="card-body">
+    <form [formGroup]="validationForm">
+        <!-- <div class="modal-body">     -->
+            <div class="container">
+                <div  class="table-responsive table-wrap">
+                    <table  datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" id="datatable" class="table table-hover mb-0">
+                        <thead  class="bg-secondary text-white">
+                            <tr>
+                                <td class="tableheadStyle text-white">Grade</td>                        
+                                <td class="tableheadStyle text-white">Number of learners</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let x of parseList">
+                                <td>{{x.Grade}}</td>                        
+                                <td>{{x.NoOfLearners}}</td>                                                               
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>                
+            </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>What quintile is your school?<span class="required-asterisk">*</span></label>   
+            <input type="text"  class="form-control" [(ngModel)]="quintileEdit" formControlName="quintileEdit" readonly id="modalQuintile">
+        </div>
+       </div>
+
+       <div class="col-lg-6">
+        <div class="form-group">
+            <label>Where do the majority of children live?<span class="required-asterisk">*</span></label>  
+            <input type="text"  class="form-control" [(ngModel)]="childrenLiveEdit" formControlName="childrenLiveEdit"readonly id="modalChildrenLive">
+    </div>
+</div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="form-group"><br>
+            <label>School roll<span class="required-asterisk">*</span></label>  
+            <input type="text"  class="form-control" [(ngModel)]="schoolRollEdit" formControlName="schoolRollEdit"readonly id="modalSchoolRoll">
+        </div>
+    </div>
+
+
+    <div class="col-lg-6">
+        <div class="form-group"><br>
+            <label>What are facilities are in your school?<span class="required-asterisk">*</span></label> 
+            <input type="text"  class="form-control" [(ngModel)]="facilitiesEdit" formControlName="facilitiesEdit"readonly id="modalFacilities">
+       
+        </div>
+        </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="form-group">
+            <label>Status<span class="required-asterisk">*</span></label>
+            <select (change)="selectRejection($event)" [(ngModel)]="status" formControlName="status"
+              [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.status.errors}" required>
+                <option value="" hidden>Select status</option>
+                <option *ngFor="let list of statusList" value={{list.description}} >
+                    {{list.description}}
+                </option>
+            </select>
+            <div id="Reject" *ngIf="status == 'Reject'">
+                <label >Reason for rejection<span class="required-asterisk">*</span></label>
+                <input type="text" class="form-control" 
+                [(ngModel)]="reason"  formControlName="reason">
+            </div>
+
+            <div id="Referforammendments" *ngIf="status == 'Refer for ammendments'">
+                <label>Refer for amendments<span class="required-asterisk">*</span></label>  
+                <input type="text" class="form-control" 
+                [(ngModel)]="reason"  formControlName="reason">
+            </div>
+           
+        </div>
+    </div>
+    <!-- <div class="col-lg-6">
+        <div class="form-group" *ngif status ="isActivityNameSelected"> 
+            <label>Reason for rejection<span class="required-asterisk">*</span></label>  
+            <input type="text" class="form-control" 
+            [(ngModel)]="reason"  formControlName="reason">
+        </div>
+    </div> -->
+    <!-- <div class="col-lg-6">
+        <div class="form-group">    
+            <label>Refer for amendments<span class="required-asterisk">*</span></label>  
+            <input type="text" class="form-control" 
+            [(ngModel)]="reason"  formControlName="reason">
+        </div>
+    </div>-->
+</div> 
+        <button type="button" class="btn btn-primary mr-2" (click)="submitNSNP()">Submit</button>
+        <button class="btn btn-light" (click)="Cancel()">Cancel</button>
+</form>
+</div>
+  </ng-template>
+    
+   
+
+    

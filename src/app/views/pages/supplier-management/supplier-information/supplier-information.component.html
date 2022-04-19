@@ -1,0 +1,217 @@
+<div class="profile-page tx-13">
+    <div class="row">
+      <div class="col-12 grid-margin">
+        <div class="profile-header">
+          <div class="cover">
+            <div class="gray-shade"></div>
+            <figure>
+              <img src="../assets/images/img-profile-1.jpg" class="img-fluid" alt="profile cover">
+            </figure>
+            <div class="cover-body d-flex justify-content-between align-items-center">
+              <div>
+                <img class="profile-pic" src="https://via.placeholder.com/100x100" alt="profile">
+                <span class="profile-name">{{fullname}} {{surname}}</span>
+              </div>
+              <div class="d-none d-md-block">
+                <button class="btn btn-primary btn-icon-text btn-edit-profile" (click)="editprofile()">
+                  <i data-feather="edit" appFeatherIcon class="btn-icon-prepend"></i> Edit profile
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="header-links">
+            <ul class="links d-flex align-items-center mt-3 mt-md-0">
+              <li class="header-link-item d-flex align-items-center active">
+                <i class="mr-1 icon-md" data-feather="columns" appFeatherIcon></i>
+                <a class="pt-1px d-none d-md-block" routerLink=".">Profile</a>
+              </li>
+            
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--chhr-->
+<div class="row" >
+    <div class="col-md-8 stretch-card">
+      <div class="card">
+        <div class="card">
+            <div class="card-header">
+                My Profile
+            </div>
+            <div class="card-body">
+                    <div class="row" style="margin-bottom: 1rem;">
+                        <div class="col-md-12">
+                            <h6>Personal Information</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="supplierName">Name</label>
+                                <input type="text"  class="form-control"  [(ngModel)]="supplierName" name="supplierName" id="supplierName" autocomplete="off" placeholder="Type here" #requried="ngModel" required disabled>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Surname">Surname</label>
+                                <input type="text" class="form-control" [(ngModel)]="surname" name="surname" id="surname" autocomplete="off" placeholder="Type here"  #requried="ngModel" required disabled>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;">
+                        <div class="col-md-12">
+                            <h6>Address Information</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Address1">Address Line1</label>
+                                <input type="type" class="form-control"  [(ngModel)]="Address1" id="Address1" autocomplete="off" placeholder="Type here" #requried="ngModel" required disabled>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Address2">Address Line2</label>
+                                <input type="text" class="form-control"  [(ngModel)]="Address2" id="Address2" autocomplete="off" placeholder="Type here"  #requried="ngModel" required disabled>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="town">Town</label>
+                                <input type="text" class="form-control"  [(ngModel)]="town" id="town" autocomplete="off" placeholder="Type here" #requried="ngModel" required disabled>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="City">City</label>
+                                <input type="text" class="form-control"  [(ngModel)]="City" id="City" autocomplete="off" placeholder="Type here" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Province">Province</label>
+                                <input type="text" class="form-control"  [(ngModel)]="Province" id="Province" autocomplete="off" placeholder="Type here" #requried="ngModel" required disabled>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="PostalCode">Postal Code</label>
+                                <input type="text" class="form-control"  [(ngModel)]="PostalCode" id="PostalCode" autocomplete="off" placeholder="Type here"disabled>
+                            </div>
+                        </div>
+                    </div>
+   
+                    <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;">
+                        <div class="col-md-12">
+                            <h6>Contact Information</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="contactNo">Contact Number</label>
+                                <input type="text" class="form-control" [(ngModel)]="contactNo" id="contactNo" autocomplete="off" placeholder="Type here" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" class="form-control"  [(ngModel)]="email"  id="email" autocomplete="off" placeholder="Type here"disabled >
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="row" style="margin-bottom: 1rem; margin-top: 1rem;">
+                        <div class="col-md-12">
+                            <h6>School Information</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="districtCode">District</label>
+                                    <select [(ngModel)]="districtCode" (change)="getSchools(districtCode)">
+                                        <option selected hidden disabled>Select District</option>
+                                        <option *ngFor="let dist of districts" value={{dist.code}}>{{dist.districtName}}</option>
+                                     </select>
+                              </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="emisNumber">School Name</label>
+                                <select [(ngModel)]="emisNumber" >
+                                    <option selected hidden disabled>Select District</option>
+                                    <option *ngFor="let school of schools" value={{school.emisCode}}>{{school.institutionName}}</option>
+                                 </select>
+                            </div>
+                        </div>
+                    </div>-->
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="Status">Status</label>
+                                <input type="text" class="form-control" [(ngModel)]="Status" id="Status"
+                                    placeholder="Status"disabled>
+        
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="districtName">District</label>
+        
+                                <input type="text" class="form-control" [(ngModel)]="districtName"
+                                    id="districtName" placeholder="districtName" disabled>
+        
+        
+        
+                            </div>
+        
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="assignedSchool">List of Schools</label>
+                                <textarea class="form-control" [(ngModel)]="assignedSchool" id="assignedSchool"
+                                    cols="30" rows="10"disabled></textarea>
+        
+                            </div>
+                        </div>
+                    </div>
+
+        
+             
+                    <button class="btn btn-light"  (click)="cancel()" >Cancel</button>
+              
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+

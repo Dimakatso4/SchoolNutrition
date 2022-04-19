@@ -1,0 +1,61 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Perishable Delivery Schedule</a></li>
+        <!-- <li class="breadcrumb-item active" aria-current="page">Results</li> -->
+    </ol>
+</nav>
+
+<div class="row" style="padding-left: 0.75rem; padding-right: 0.75rem;">
+    <div class="col-md-12 bg-primary text-white" style="padding: 20px 12px 12px 12px; margin: 25px 0">
+        <h3 class="mb-2">School Delivery Schedule</h3>
+        <hr>
+    </div>
+</div>
+<div>
+    <br />
+</div>
+
+<div class="card-body">
+    <form [formGroup]="requiredForm">
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="table-responsive table-wrap">
+                    <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" id="datatable"
+                        class="table table-hover mb-0">
+
+                        <thead class="bg-secondary">
+
+
+                            <tr>
+                                <th>School Name</th>
+                                <th>District</th>
+                                <th>Quarter</th>
+                                <th>Month</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let view of list; let i = index">
+                                <td> {{view.schoolName}} </td>
+                                <td> {{view.schoolName}} </td>
+                                <td> {{view.quarter}} </td>
+                                <td> {{view.month}} </td>
+                                <td>
+                                    <a (click)="openDeliveryNote(view.supplierSummaryId)"><i
+                                            class="mdi mdi-eye text-dark"></i></a>
+                                    &nbsp;&nbsp;
+                                    
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--clo-->
+
+
+
+    </form>
+
+</div>

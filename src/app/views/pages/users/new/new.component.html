@@ -1,0 +1,967 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Users</a></li>
+
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-12 bg-primary text-white" style="padding: 20px 12px 12px 12px; margin: 25px 0">
+        <h2>User Management </h2>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <!-- Button trigger lg modal -->
+                <div class="col-md-14">
+                    <button *ngIf="loggedInRole != 'SGB' && loggedInRole != 'PARENT'"
+                        class="btn btn-primary float-right" (click)="openLgModal(lgModal)">
+                        Create New User</button>
+                </div>
+
+                <br>
+                <br>
+                <div class="table-responsive">
+                    <table role="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover">
+                        <thead class="bg-secondary text-white">
+                            <tr>
+                                <!-- <td class="tableheadStyle text-white">No</td> -->
+                                <td class="tableheadStyle text-white">Name</td>
+                                <td class="tableheadStyle text-white">Surname</td>
+                                <td class="tableheadStyle text-white">Persal Number</td>                                
+                                <td class="tableheadStyle text-white">Gender</td>
+                                <td class="tableheadStyle text-white">Office Level</td>
+                                <td class="tableheadStyle text-white">Region</td>                               
+                                <td class="tableheadStyle text-white">Position</td>
+                                <td class="tableheadStyle text-white" *ngIf="loggedInRole != 'SGB' && loggedInRole != 'PARENT'">Action</td>
+                               
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr *ngFor="let training of data;let i = index">
+                                <!-- <td>{{training.id}}</td> -->
+                                <td>
+                                    <span *ngIf="training.firstname == 'undefined' || training.firstname == 'null'">
+                                    </span>
+                                    <span *ngIf="training.firstname != 'undefined'">{{training.firstname}}</span>
+                                </td>
+                                <td>
+                                    <span *ngIf="training.surname == 'undefined' || training.surname == 'null'">
+                                    </span>
+                                    <span *ngIf="training.surname != 'undefined'">{{training.surname}}</span>
+                                </td>
+                                <td>
+                                    <span *ngIf="training.persal == 'undefined' || training.persal == 'null'">
+                                    </span>
+                                    <span *ngIf="training.persal != 'undefined'">{{training.persal}}</span>
+                                </td>
+
+                                <td>
+                                    <span *ngIf="training.gender == 'undefined' || training.gender == 'null'">
+                                    </span>
+                                    <span *ngIf="training.gender != 'undefined'">{{training.gender}}</span>
+                                </td>
+
+                                <td>
+                                    <span *ngIf="training.level == 'undefined' || training.level == 'null'">
+                                    </span>
+                                    <span *ngIf="training.level != 'undefined'">{{training.level}}</span>
+                                </td>
+
+                                <td>
+                                    <span *ngIf="training.region == 'undefined' || training.region == 'null'">
+                                    </span>
+                                    <span *ngIf="training.region != 'undefined'">{{training.region}}</span>
+                                </td>
+
+                                <td>
+                                    <span
+                                        *ngIf="training.position== 'undefined' || training.position == 'null'">
+                                    </span>
+                                    <span *ngIf="training.position != 'undefined'">{{training.position}}</span>
+                                </td>
+                                
+                                <td *ngIf="loggedInRole != 'SGB' && loggedInRole != 'PARENT'">                                  
+
+                                    <!--Icons-->
+                                    <a><i class="mdi mdi-pencil text-dark" (click)="editUser(i)"
+                                            (click)="openLgModaledit(lgModalEdit)"></i></a>
+                                    &nbsp;&nbsp;
+                                    <!-- <a><i class="mdi mdi-lock text-dark"></i></a> -->
+                                    <a *ngIf="training.status == 'Active'" title="Activate">
+                                        <i class="mdi mdi-lock-open text-success"
+                                        (click)="DeactivateStatus(training.id,training.firstname,training.surname,training.persal)"></i></a>
+
+                                <a *ngIf="training.status == 'Deactivated'" title="Deactivated">
+                                    <i class="mdi mdi-lock text-danger"
+                                        (click)="ActivateStatus(training.id,training.firstname,training.surname,training.persal)"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <!-- <tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Surname</th>
+                                <th>Persal Number</th>                                
+                                <th>Gender</th>
+                                <th>Office Level</th>
+                                <th>Region</th>                               
+                                <th>Position</th>
+                            </tr>
+                        </tfoot> -->
+
+                    </table>
+                </div>
+                <!--Spinner-->
+                <div *ngIf="isPageLoading" class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #lgModal let-modal>
+    <div class="modal-header bg-primary text-white">
+        <h3 class="modal-title text-white" id="exampleModalLabel">Create New User</h3>
+        <button type="button" class="close text-white" (click)="Cancel()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="container">
+        <form (ngSubmit)="saveNewUser()" [formGroup]="validationForm">
+            <div class="form-group">
+                <div class="">
+                    <div class="">
+                        <div class="">                        
+                            <div class="">
+                                <div class="row" style="margin-bottom: 1rem;">
+                                    <div class="col-md-12">
+                                        <h4><strong>Personal Information</strong></h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="firstname">Name<span class="required-asterisk">*</span></label>
+                                        <input type="text" class="form-control" formControlName="firstname"
+                                            [(ngModel)]="firstname" name="firstname" id="firstname" placeholder="Type here"
+                                            [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.firstname.errors}"
+                                            required>
+                                        <p *ngIf="isCreateFormSubmitted && createForm.firstname.errors?.required"
+                                            class="invalid-feedback">First name required</p>
+    
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="Surname">Surname<span class="required-asterisk">*</span></label>
+                                        <input type="text" class="form-control" formControlName="surname"
+                                            [(ngModel)]="surname" name="surname" id="surname" autocomplete="off"
+                                            placeholder="Type here"
+                                            [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.surname.errors}"
+                                            required>
+                                        <p *ngIf="isCreateFormSubmitted && createForm.firstname.errors?.required"
+                                            class="invalid-feedback">Surname required</p>
+                                    </div>
+                                </div>
+    
+                                <div class="row">
+                                    <div *ngIf="loggedInRole != 'PRINCIPAL' && loggedInRole != 'SEO' && loggedInRole != 'SGB' "
+                                        class="col-md-6">
+                                        <div class="form-check form-check-flat form-check-primary">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" formControlName="isEmployee"
+                                                    (change)="validateIDnumber()" [(ngModel)]="isEmployee"
+                                                    class="form-check-input">
+                                                <i class="input-frame"></i>
+                                                GDE Employee
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="gender">Gender<span class="required-asterisk">*</span></label>
+                                            <select [(ngModel)]="gender"
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.gender.errors}"
+                                                formControlName="gender" required>
+                                                <option value="" hidden disabled selected>Select Gender</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                            <p *ngIf="isCreateFormSubmitted && createForm.firstname.errors?.required"
+                                                class="invalid-feedback">Gender required</p>
+    
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="nationality">Nationality<span class="required-asterisk">*</span></label>
+                                            <select [(ngModel)]="nationality" formControlName="nationality"
+                                                name="nationality" (change)="resetPassportNumber()"
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.nationality.errors}">
+                                                <option value="" hidden disabled selected>Please select one</option>
+                                                <option value="South African">South African </option>
+                                                <option value="Non South African">Non South African</option>
+                                            </select>
+                                            <p *ngIf="isCreateFormSubmitted && createForm.nationality.errors?.required"
+                                                class="invalid-feedback">
+                                                Nationality required</p>                                       
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div *ngIf="nationality == 'South African'" class="form-group">
+                                            <label for="idnumber">ID Number<span class="required-asterisk">*</span></label>
+                                            <input type="text" class="form-control" formControlName="idnumber"
+                                                [(ngModel)]="idNumber" id="idnumber" mask="0000000000000" (focus)="resetFlag()" (blur)="checkIdNumberExist(idnumber)"
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.idnumber.errors || emptyUsernumber || invalidIdNumber || isDuplicate}"
+                                                placeholder="Type here" pattern="[0-9]{13}" ngModel name="idnumber"
+                                                (keyup)="validateIDnumber();" minlength="0" maxlength="13" />
+                                            <p *ngIf="isCreateFormSubmitted && noIDNumber" class="invalid-feedback">ID
+                                                number required</p>
+                                            <p *ngIf="createForm.idnumber.errors?.pattern || invalidIdNumber"
+                                                class="invalid-feedback">Invalid south african ID number</p>
+                                                <small class="text-danger" *ngIf="isDuplicate"> Identity number already registered</small>
+                                        </div>
+                                        <div *ngIf="nationality == 'Non South African'" class="form-group">
+                                            <label for="passport">Passport Number<span class="required-asterisk">*</span></label>
+                                            <input type="text" class="form-control" formControlName="passport"
+                                                [(ngModel)]="passport" id="passport" pattern="[a-zA-Z0-9]*"
+                                                (keyup)="validateIDnumber()"
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.passport.errors || isCreateFormSubmitted && !passport && nationality == 'Non South African' && !persal}"
+                                                placeholder="Type here" name="passport" />
+                                            <p *ngIf="isCreateFormSubmitted && !passport && nationality == 'Non South African' && !persal && !isEmployee"
+                                                class="invalid-feedback">Passport
+                                                number required</p>
+                                            <p *ngIf="isCreateFormSubmitted && createForm.passport.errors?.pattern"
+                                                class="invalid-feedback">Invalid
+                                                passport number</p>
+    
+                                        </div>
+                                    </div>
+    
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" *ngIf="isEmployee">
+                                            <label for="persal">Persal Number<span class="required-asterisk">*</span></label>
+                                            <input type="text" class="form-control" formControlName="persal"
+                                                mask="00000000" maxlength="8" (focus)="resetFlag()" (blur)="checkPersalExist(persal)"
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.persal.errors || isCreateFormSubmitted && emptyUsernumber || isDuplicate}"
+                                                [(ngModel)]="persal" id="persal" placeholder="Type here" name="persal" />                                       
+                                            <p *ngIf="isCreateFormSubmitted && emptyUsernumber && nationality == 'South African'"
+                                                class="invalid-feedback">
+                                                Please provide the user's ID number or persal number
+                                            </p>
+                                            <p *ngIf="isCreateFormSubmitted && emptyUsernumber && nationality == 'Non South African'"
+                                                class="invalid-feedback">
+                                                Please provide the user's passport number or persal number
+                                            </p>
+                                            <p *ngIf="isCreateFormSubmitted && !createForm.persal.errors?.maxlength && !emptyUsernumber"
+                                                class="invalid-feedback">Persal number must have 8 digits
+                                            </p>
+                                            <small class="text-danger" *ngIf="isDuplicate"> Persal number already registered</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;">
+                                    <div class="col-md-12">
+                                        <h4><strong>Address Information</strong></h4>
+                                    </div>
+                                </div>
+                                <!-- <p *ngIf="showHide('parent')" class="text-center">Home Address</p> -->
+                                <div *ngIf="showHide('parent')" class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="house">House Number</label>
+                                            <input type="house" class="form-control" formControlName="house"
+                                                [(ngModel)]="house" id="house" autocomplete="off" placeholder="Type here">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="street">Street Name</label>
+                                            <input type="text" class="form-control" formControlName="street"
+                                                [(ngModel)]="street" id="street" autocomplete="off" placeholder="Type here">
+    
+                                        </div>                                       
+                                    </div>
+                                </div>
+    
+                                <!-- <p *ngIf="showHide('parent')" class="text-center">Postal Address</p> -->
+                                <div *ngIf="showHide('parent')" class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="suburb">Suburb<span class="required-asterisk">*</span></label>
+                                            <input type="text" class="form-control" formControlName="suburb"
+                                                [(ngModel)]="suburb" id="suburb" autocomplete="off"
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.suburb.errors}"
+                                                placeholder="Type here">
+                                            <p *ngIf="isCreateFormSubmitted && createForm.suburb.errors?.required"
+                                            class="invalid-feedback">Suburb required</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="city">City<span class="required-asterisk">*</span></label>
+                                            <input type="text" class="form-control" formControlName="city"
+                                                [(ngModel)]="city" id="city" autocomplete="off" 
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.city.errors}"
+                                                placeholder="Type here">
+                                                <p *ngIf="isCreateFormSubmitted && createForm.city.errors?.required"
+                                                class="invalid-feedback">City required</p>
+                                            </div>                                       
+                                    </div>
+                                    
+                                    <!--spinner-->
+                                    <!-- <div *ngIf="loadingHandler.isLoading$ | async">
+                                        <img src="../../../../../assets/images/loading-gif.gif" alt="loading-gif.gif" style="width: 25%; height:25%;"/>
+                                      </div> -->
+                                     <!--end spinner-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="postalCode">Postal Code<span class="required-asterisk">*</span></label>
+                                            <input type="number" class="form-control" formControlName="postalCode"  mask="0000" maxlength="4"
+                                                [(ngModel)]="postalCode" id="postalCode" autocomplete="off"
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.postalCode.errors}"
+                                                placeholder="Type here">
+                                                <p *ngIf="isCreateFormSubmitted && createForm.postalCode.errors?.required"
+                                                class="invalid-feedback">Postal code required</p>
+                                            </div>
+                                    </div>
+                                </div>
+                                <!-- git -->
+    
+                                <div *ngIf="showHide('notparent')" class="row" hidden>
+                                    <div class="col-md-6">
+                                        <div class="form-check form-check-flat form-check-primary">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input"
+                                                    [(ngModel)]="informalsettlement " formControlName="informalsettlement">
+                                                <i class="input-frame"></i>
+                                                Informal Settlement
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="showHide('notparent')" class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="house">House Number</label>
+                                            <input type="house" class="form-control" formControlName="house"
+                                                [(ngModel)]="house" id="house" autocomplete="off" placeholder="Type here">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="street">Street Name</label>
+                                            <input type="text" class="form-control" formControlName="street"
+                                                [(ngModel)]="street" id="street" autocomplete="off" placeholder="Type here">
+    
+                                        </div>                                       
+                                    </div>
+                                </div>
+                                <div *ngIf="showHide('notparent')" class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="suburb">Suburb<span class="required-asterisk">*</span></label>
+                                            <input type="text" class="form-control" formControlName="suburb"
+                                                [(ngModel)]="suburb" id="suburb" autocomplete="off"
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.suburb.errors}"
+                                                placeholder="Type here">
+                                            <p *ngIf="isCreateFormSubmitted && createForm.suburb.errors?.required"
+                                            class="invalid-feedback">Suburb required</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="city">City<span class="required-asterisk">*</span></label>
+                                            <input type="text" class="form-control" formControlName="city"
+                                                [(ngModel)]="city" id="city" autocomplete="off" 
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.city.errors}"
+                                                placeholder="Type here">
+                                                <p *ngIf="isCreateFormSubmitted && createForm.city.errors?.required"
+                                                class="invalid-feedback">City required</p>
+                                            </div>                                       
+                                    </div>
+                                </div>
+                                <div *ngIf="showHide('notparent')" class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="postalCode">Postal Code<span class="required-asterisk">*</span></label>
+                                            <input type="number" class="form-control" formControlName="postalCode"  mask="0000" maxlength="4"
+                                                [(ngModel)]="postalCode" id="postalCode" autocomplete="off"
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.postalCode.errors}"
+                                                placeholder="Type here">
+                                                <p *ngIf="isCreateFormSubmitted && createForm.postalCode.errors?.required"
+                                                class="invalid-feedback">Postal code required</p>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;">
+                                    <div class="col-md-12">
+                                        <h4><strong>Contact Information</strong></h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="cellNumber">Contact Number<span class="required-asterisk">*</span></label>
+                                            <input class="form-control" formControlName="cellNumber"
+                                                [(ngModel)]="cellNumber" id="cellNumber" mask="000 000 0000"
+                                                placeholder="Type here" minlength="0" maxlength="12" (keyup)="fieldChange()"
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.cellNumber.errors || isNumberInvalid && isCreateFormSubmitted || isCellnumberDuplicate}">
+                                            <p *ngIf="isCreateFormSubmitted && createForm.cellNumber.errors?.required"
+                                                class="invalid-feedback">Contact number required</p>
+                                            <p *ngIf="isCreateFormSubmitted && isNumberInvalid && !isCellnumberDuplicate && !createForm.cellNumber.errors?.required || isCreateFormSubmitted && !isCellnumberDuplicate && !createForm.cellNumber.errors?.maxlength && !createForm.cellNumber.errors?.required"
+                                                class="invalid-feedback">Invalid contact number</p>
+                                            <p *ngIf="isCellnumberDuplicate" class="invalid-feedback">Contact number already
+                                                registered, please try
+                                                another one</p>
+                                            <!-- <p *ngIf="isCreateFormSubmitted && !createForm.cellNumber.errors?.maxlength && !createForm.cellNumber.errors?.required"
+                                                class="invalid-feedback">Contact number must have 10 digits</p> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="emailAddress">Email Address<span class="required-asterisk">*</span></label>
+                                            <input type="email" class="form-control" formControlName="emailAddress"
+                                                [(ngModel)]="emailAddress" id="emailAddress" placeholder="Type here"
+                                                inputmode="email" pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.emailAddress.errors}">
+                                            <p *ngIf="isCreateFormSubmitted && createForm.emailAddress.errors?.required"
+                                                class="invalid-feedback">Email address required</p>
+                                            <p *ngIf="isCreateFormSubmitted && createForm.emailAddress.errors?.pattern"
+                                                class="invalid-feedback">Invalid email address</p>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;">
+                                    <div class="col-md-12">
+                                        <h4><strong>Account Information</strong></h4>
+                                    </div>
+                                </div>
+    
+                                <!--New Jan 27,2022-->
+                             
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                    <div class="form-group" >
+                                        <label for="level">Office Level<span class="required-asterisk">*</span></label>
+                                        <select (change)="showHideDiv($event);officeLevelRoleList(level)" [(ngModel)]="level" 
+                                            [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.level.errors}"
+                                            formControlName="level" required>
+                                            <option value="" hidden disabled selected>Select Access Level</option>
+                                            <option *ngFor="let x of levelLists" value={{x.description}}>{{x.description}}</option>                                        
+                                        </select>
+                                        <p *ngIf="isCreateFormSubmitted && createForm.firstname.errors?.required"
+                                            class="invalid-feedback">Level required</p>
+                                        </div>
+                                    </div>
+    
+                                    <div *ngIf="isRegion" class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="region">Region<span class="required-asterisk">*</span></label>
+                                            <ng-select [(ngModel)]="region"
+                                                (change)="selectCode(region)"
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.region.errors}"
+                                                formControlName="region" required>
+                                                <ng-option value="" hidden disabled selected>Select Region</ng-option>
+                                                <ng-option *ngFor="let x of regionLists">{{x.region}}</ng-option>                                        
+                                            </ng-select>
+                                            <p *ngIf="isCreateFormSubmitted && createForm.firstname.errors?.required"
+                                                class="invalid-feedback">Region required</p>
+                                            </div>
+                                        </div>
+                                </div>                          
+                                <!--End-->
+    
+                                <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;"
+                                    *ngIf="showHide('district')">
+                                    <div class="col-md-12">
+                                        <h4><strong>School Information</strong></h4>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;" *ngIf="showHide('seo')">
+                                    <div class="col-md-12">
+                                        <p class="text-center text-info"><i class="mdi mdi-information-outline"></i> Please
+                                            select the school that {{firstname}} {{surname}} is primarily assigned to</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <!-- <div class="col-md-6" *ngIf="showHide('district')"> -->
+                                        <div class="col-md-6">
+                                        <div *ngIf="isDistrict" class="form-group">
+                                            <label for="districtCode">District</label>
+                                            <ng-select [(ngModel)]="districtCode" formControlName="districtCode"
+                                                (change)="getSchools(districtCode,false)"
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.districtCode.errors}">
+                                                <ng-option value="" hidden disabled selected>Please select one</ng-option>
+                                                <ng-option *ngFor="let dist of districtList" value="{{dist.districtCode}}">
+                                                    {{dist.districtName}}
+                                                </ng-option>
+                                            </ng-select>                                           
+                                            <p *ngIf="isCreateFormSubmitted && createForm.districtCode.errors?.required"
+                                                class="invalid-feedback">District required</p>
+                                        </div>
+    
+                                        <!--New Amendments-->
+    
+                                       
+                                    </div>
+                                    <!-- <div class="col-md-6" *ngIf="showHide('school')"> -->
+                                    <div class="col-md-6">
+                                        <div *ngIf="isSchool" class="form-group">
+                                            <label for="emisNumber">School Name</label>
+                                            <ng-select [clearable]="true" [searchable]="true" 
+                                                placeholder="Please select district first" bindLabel="emisNumber"
+                                                [(ngModel)]="emisNumber" formControlName="emisNumber"
+                                                (change)="getSchoolName(emisNumber,false)"
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.emisNumber.errors}">
+                                                <ng-option value="" hidden disabled selected>Please select one</ng-option>
+                                                <!-- <ng-option [hidden]="districtCode" value="-1" disabled>Please select district first</ng-option> -->
+                                                <ng-option *ngFor="let school of schools" value={{school.emisNumber}}>
+                                                    {{school.institutionName}}</ng-option>
+                                            </ng-select>
+                                            <p *ngIf="isCreateFormSubmitted && createForm.emisNumber.errors?.required"
+                                                class="invalid-feedback">School required</p>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                         <!-- <div class="form-group">
+                                            <label class="control-label">Position</label>                                       
+                                            <ng-select [items]="roles" [multiple]=true [closeOnSelect]="numRules == 2"
+                                                [searchable]="true" bindLabel="roleName" placeholder="Please select"
+                                                [(ngModel)]="roleSelected" formControlName="roleSelected" required
+                                                (change)="validateDistrict()" (change)="viewRolesShowUpload(roleSelected)"
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.roleSelected.errors}">
+                                            </ng-select>
+                                            <p *ngIf="isCreateFormSubmitted && createForm.roleSelected.errors?.required"
+                                                class="invalid-feedback">
+                                                Position required</p>
+                                        </div>                                  -->
+                                         <div class="form-group">
+                                            <label>Position<span class="required-asterisk">*</span></label>                  
+                                        <select                                                  
+                                                [(ngModel)]="position" formControlName="position" required                                                
+                                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.position.errors}" >
+                                                <option value="" hidden>Please select</option>
+                                                <option *ngFor="let list of roleList" value={{list.role}} >
+                                                    {{list.role}}
+                                                </option>
+                                        </select> 
+                                        <p *ngIf="isCreateFormSubmitted && createForm.position.errors?.required" 
+                                            class="invalid-feedback">Position required</p>
+                                        </div> 
+                                    </div>                              
+                                </div>
+                                
+                                <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;" *ngIf="showHide('seo')">
+                                    <div class="col-md-12">
+                                        <p class="text-center text-info"><i class="mdi mdi-information-outline"></i> Please
+                                            select the school that {{firstname}} {{surname}} is assigned to as a School
+                                            Electoral Officer</p>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary mr-2"[disabled]="isLoading">
+                                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm" 
+                                        role="status" aria-hidden="true">
+                                    </span>Submit</button>
+                                <button class="btn btn-light" (click)="Cancel()">Cancel</button>
+    
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+
+</ng-template>
+
+
+<ng-template #lgModalEdit let-modal>
+    <div class="modal-header bg-primary text-white"> 
+        <h3 class="modal-title" id="exampleModalLabel">Edit User</h3>
+        <button type="button" class="close text-white" (click)="modal.close('by: close icon')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<div class="container">
+    <form (ngSubmit)="updateUser()" [formGroup]="validationFormEdit">
+        <div class="card-body">
+            <div class="row" style="margin-bottom: 1rem;">
+                <div class="col-md-12">
+                    <h4><strong>Personal Information</strong></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="editName">Name<span class="required-asterisk">*</span></label>
+                        <input type="text" class="form-control" formControlName="editName"
+                            [(ngModel)]="editName" name="editName" id="editName" autocomplete="off"
+                            placeholder="Type here"
+                            [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.editName.errors}"
+                            required>
+                        <p *ngIf="isEditFormSubmitted && editForm.editName.errors?.required"
+                            class="invalid-feedback">First name required</p>
+
+                    </div>                                        
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="editSurname">Surname<span class="required-asterisk">*</span></label>
+                        <input type="text" class="form-control" formControlName="editSurname"
+                            [(ngModel)]="editSurname" name="editSurname" id="editSurname"
+                            autocomplete="off" placeholder="Type here"
+                            [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.editSurname.errors}"
+                            required>
+                        <p *ngIf="isEditFormSubmitted && editForm.editSurname.errors?.required"
+                            class="invalid-feedback">Surname required</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div *ngIf="loggedInRole != 'SCHOOL_PRINCIPAL' && loggedInRole != 'SCHOOL_COORDINATOR' && loggedInRole != 'SGB_CHAIRPERSON' "
+                    class="col-md-6">
+                    <div class="form-check form-check-flat form-check-primary">
+                        <label class="form-check-label">
+                            <input type="checkbox" formControlName="editIsEmployee"
+                                (change)="validateEditIDnumber()" [(ngModel)]="editIsEmployee"
+                                class="form-check-input">
+                            <i class="input-frame"></i>
+                            GDE Employee
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="editGender">Gender<span class="required-asterisk">*</span></label>
+                        <select [(ngModel)]="editGender" formControlName="editGender"
+                            [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.editGender.errors}">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        <p *ngIf="isEditFormSubmitted && editForm.editGender.errors?.required"
+                            class="invalid-feedback">Gender required</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="editNationality">Nationality<span class="required-asterisk">*</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="editNationality"
+                            id="editNationality" formControlName="editNationality" readonly />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div *ngIf="editNationality == 'South African'" class="form-group">
+                        <label for="editIdNumber">ID Number<span class="required-asterisk">*</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="editIdNumber"
+                            id="editIdNumber" formControlName="editIdNumber" placeholder="Type here"
+                            name="editIdNumber" pattern="[0-9*]{13}" minlength="0" maxlength="13"
+                            (keyup)="validateEditIDnumber()"
+                            [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.editIdNumber.errors || emptyEditUsernumber || invalidEditIdNumber}" />
+                        <p *ngIf="isEditFormSubmitted && noEditIDnumber && editNationality == 'South African'"
+                            class="invalid-feedback">ID number required</p>
+                        <p *ngIf="isEditFormSubmitted && editForm.editIdNumber.errors?.pattern && editNationality == 'South African' || editNationality == 'South African' && invalidEditIdNumber"
+                            class="invalid-feedback">Invalid ID number</p>
+                    </div>
+                    <div *ngIf="editNationality == 'Non South African'" class="form-group">
+                        <label for="editPassport">Passport Number<span class="required-asterisk">*</span></label>
+                        <input type="text" class="form-control" formControlName="editPassport"
+                            [(ngModel)]="editPassport" id="editPassport" pattern="[a-zA-Z0-9]*"
+                            (keyup)="validateIDnumber()"
+                            [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.editPassport.errors || isEditFormSubmitted && !editPassport && editNationality == 'Non South African' && !editPersal}"
+                            placeholder="Type here" name="editPassport" />
+                        <!-- <p *ngIf="isCreateFormSubmitted && createForm.passport.errors?.pattern"
+                            class="invalid-feedback">Invalid
+                            passport number</p> -->
+                        <!-- || editNationality == 'Non South African' && invalidEditIdNumber -->
+                        <p *ngIf="isEditFormSubmitted && !editPassport && editNationality == 'Non South African' && !editPersal && !editIsEmployee"
+                            class="invalid-feedback">Passport number required</p>
+                        <p *ngIf="isEditFormSubmitted && editForm.editIdNumber.errors?.pattern && editNationality == 'Non South African' "
+                            class="invalid-feedback">Invalid passport number</p>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="row" *ngIf="editIsEmployee">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="editPersal">Persal Number<span class="required-asterisk">*</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="editPersal"
+                            (keyup)="validateEditIDnumber()" mask="00000000" maxlength="8"
+                            [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.editPersal.errors || isEditFormSubmitted && emptyEditUsernumber}"
+                            id="editPersal" formControlName="editPersal" placeholder="Type here"
+                            name="editPersal" />
+                        <!-- [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.editPersal.errors}" /> -->
+
+                        <p *ngIf="isEditFormSubmitted && emptyEditUsernumber"
+                            class="invalid-feedback">Please provide the user's ID number or persal
+                            number
+                        </p>
+                        <p *ngIf="isEditFormSubmitted && !editForm.editPersal.errors?.maxlength  && !emptyEditUsernumber"
+                            class="invalid-feedback">Persal number must have 8 digits
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;">
+                <div class="col-md-12">
+                    <h4><strong>Address Information</strong></h4>
+                </div>
+            </div>
+            <div class="row" hidden>
+                <div class="col-md-6">
+                    <div class="form-check form-check-flat form-check-primary">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input"
+                                [(ngModel)]="editinformalsettlement "
+                                formControlName="editinformalsettlement">
+                            <i class="input-frame"></i>
+                            Informal Settlement
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="editHouse">House Number</label>
+                        <input type="text" class="form-control" formControlName="editHouse"
+                            [(ngModel)]="editHouse" id="editHouse" placeholder="Type here">
+                        <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="editStreet">Street Name</label>
+                        <input type="text" class="form-control" formControlName="editStreet"
+                            [(ngModel)]="editStreet" id="editStreet" placeholder="Type here">
+                    </div>                                        
+                </div>
+            </div>
+            <div class="row">                                    
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="editSuburb">Suburb<span class="required-asterisk">*</span></label>
+                        <input type="text" class="form-control" formControlName="editSuburb"
+                            [(ngModel)]="editSuburb" id="editSuburb" placeholder="Type here">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="editCity">City<span class="required-asterisk">*</span></label>
+                        <input type="text" class="form-control" formControlName="editCity"
+                            [(ngModel)]="editCity" id="editCity" placeholder="Type here">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="editPostalCode">Postal Code<span class="required-asterisk">*</span></label>
+                        <input type="number" class="form-control" formControlName="editPostalCode"
+                            [(ngModel)]="editPostalCode" id="editPostalCode" placeholder="Type here">
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;">
+                <div class="col-md-12">
+                    <h4><strong>Contact Information</strong></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="editCellNumber">Contact Number<span class="required-asterisk">*</span></label>
+                        <input type="text" class="form-control" formControlName="editCellNumber"
+                            [(ngModel)]="editCellNumber" id="editCellNumber" minlength="0"
+                            maxlength="12" mask="000 000 0000" (keyup)="editfieldChange()"
+                            [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.editCellNumber.errors || iseditNumberInvalid && isEditFormSubmitted || iseditCellnumberDuplicate}"
+                            placeholder="Type here">
+                        <p *ngIf="isEditFormSubmitted && editForm.editCellNumber.errors?.required"
+                            class="invalid-feedback">Contact number required</p>
+                        <p *ngIf="isEditFormSubmitted && iseditNumberInvalid && !iseditCellnumberDuplicate && !editForm.editCellNumber.errors?.required || isEditFormSubmitted && !iseditCellnumberDuplicate && !editForm.editCellNumber.errors?.maxlength && !editForm.editCellNumber.errors?.required"
+                            class="invalid-feedback">Invalid contact number</p>
+                        <p *ngIf="iseditCellnumberDuplicate" class="invalid-feedback">Contact number
+                            already registered, please try another one</p>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="editEmail">Email Address<span class="required-asterisk">*</span></label>
+                        <input type="email" class="form-control" formControlName="editEmail"
+                            [(ngModel)]="editEmail" id="editEmail" autocomplete="off"
+                            placeholder="Type here" inputmode="email"
+                            pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
+                            [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.editEmail.errors}">
+                        <p *ngIf="isEditFormSubmitted && editForm.editEmail.errors?.required"
+                            class="invalid-feedback">Email address required</p>
+                        <p *ngIf="isEditFormSubmitted && editForm.editEmail.errors?.pattern"
+                            class="invalid-feedback">Invalid email address</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;">
+                <div class="col-md-12">
+                    <h4><strong>Account Information</strong></h4>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-6" *ngIf="editLevel == 'Head Office' || editLevel == 'District' || editLevel == 'School'">
+                    <div class="form-group">
+                        <label for="editLevel">Office Level<span class="required-asterisk">*</span></label>
+                        <input type="text" readonly [(ngModel)]="editLevel"
+                            formControlName="editLevel" class="form-control"
+                            [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.editDistrictCode.errors}">
+                        <p *ngIf="isEditFormSubmitted && editForm.editDistrictCode.errors?.required"
+                            class="invalid-feedback">Level required</p>
+                    </div>
+                </div>
+                <div class="col-md-6" *ngIf="editLevel == 'District' || editLevel == 'School'">
+                    <div class="form-group">
+                        <label for="editRegion">Region<span class="required-asterisk">*</span></label>
+                        <input type="text" readonly [(ngModel)]="editRegion"
+                            id="editRegion" formControlName="editRegion" class="form-control"
+                            [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.editRegion.errors}">
+                        <p *ngIf="isEditFormSubmitted && editForm.editRegion.errors?.required"
+                            class="invalid-feedback">Region required</p>
+                    </div>
+                </div>
+            </div>
+                   
+            <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;"
+            *ngIf="editLevel == 'District' || editLevel == 'School'" >
+                <div class="col-md-12">
+                    <h4><strong>School Information</strong></h4>
+                </div>
+            </div>
+                      
+            <div class="row"*ngIf="editLevel == 'District' || editLevel == 'School'">
+                <div class="col-md-6" >
+                    <div class="form-group">
+                        <label for="districtName">District</label>
+                        <input type="text" readonly [(ngModel)]="districtName"
+                            formControlName="editDistrictCode" class="form-control"
+                            [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.editDistrictCode.errors}">
+                        <p *ngIf="isEditFormSubmitted && editForm.editDistrictCode.errors?.required"
+                            class="invalid-feedback">District required</p>
+                    </div>
+                </div>
+                <div class="col-md-6" *ngIf="editLevel == 'School'">
+                    <div class="form-group">
+                        <label for="editEmisNumber">School Name</label>
+                        <input type="text" readonly [(ngModel)]="schoolName"
+                            formControlName="editEmisNumber" class="form-control"
+                            [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.editEmisNumber.errors}">
+                        <p *ngIf="isEditFormSubmitted && editForm.editEmisNumber.errors?.required"
+                            class="invalid-feedback">School required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">                                   
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="editPosition">Position<span class="required-asterisk">*</span></label>
+                        <input type="text" readonly [(ngModel)]="editPosition"
+                            formControlName="editPosition" class="form-control"
+                            [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.editPosition.errors}">
+                        <p *ngIf="isEditFormSubmitted && editForm.editEmisNumber.errors?.required"
+                            class="invalid-feedback">Position required</p>
+                    </div>
+                </div>                                 
+            </div>
+
+            <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;"
+                *ngIf="showHide('seoupdate')">
+                <div class="col-md-12">
+                    <p class="text-center text-info"><i class="mdi mdi-information-outline"></i>The
+                        school selected below will be assigned to {{editName}} {{editSurname}} as a
+                        School Electoral Officer</p>
+                </div>
+            </div>
+            <div class="row" *ngIf="showHide('seoupdate')">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="editSeoEmisNumber">School Name</label>
+                        <select [(ngModel)]="editSeoEmisNumber" formControlName="editSeoEmisNumber"
+                            (change)="getSchoolName(editSeoEmisNumber, true)"
+                            [ngClass]="{'is-invalid': isEditFormSubmitted && editForm.editSeoEmisNumber.errors}">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option [hidden]="editDistrictCode" value="-1" disabled>Please select
+                                district first</option>
+                            <option *ngFor="let seoSchool of seoSchools"
+                                value={{seoSchool.emisCode}}>
+                                {{seoSchool.institutionName}}</option>
+                        </select>
+                        <p *ngIf="isEditFormSubmitted && editForm.editSeoEmisNumber.errors?.required"
+                            class="invalid-feedback">School required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="showHide('blacklist')">
+                <div class="col-md-6">
+                    <div class="form-check form-check-flat form-check-primary">
+                        <label class="form-check-label">
+                            Is Blacklisted?
+                            <input type="checkbox" class="form-check-input"
+                                formControlName="editisBlacklisted" id="editisBlacklisted">
+                            <i class="input-frame"></i>
+
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+            <button class="btn btn-light" (click)="modal.close('by: close icon');">Cancel</button>
+
+        </div>
+    </form>
+</div>   
+</ng-template>
+
+<!-- Modal -->
+<ng-template #basicModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Select Appointment Letter Type</h5>
+        <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <h4>Upload the(<span class="text-warning">{{this.docuTypeRole}}</span>)appointment letter</h4>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" #closeAddExpenseModal
+            (click)="modal.close('by: close button')">Close</button>
+        <button type="button" class="btn btn-primary" (click)="modal.close('by: close button')"
+            (click)="onUpload()">Save changes</button>
+    </div>
+</ng-template>

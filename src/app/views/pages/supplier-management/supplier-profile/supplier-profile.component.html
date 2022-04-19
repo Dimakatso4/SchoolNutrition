@@ -1,0 +1,967 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="."> Supplier Management </a></li>
+        <!-- <li class="breadcrumb-item active" aria-current="page">Results</li> -->
+    </ol>
+</nav>
+
+<div class="row" style="padding-left: 0.75rem; padding-right: 0.75rem;">
+    <div class="col-md-12 bg-primary text-white" style="padding: 20px 12px 12px 12px; margin: 25px 0">
+        <h2 class="mb-2">Supplier Management</h2>
+        <hr>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+        <button class="btn btn-primary float-right" (click)="openEditModel3(editModel3)">Add New Supplier</button>
+    </div>
+</div>
+
+<br>
+
+
+
+
+
+<!--table-->
+
+<div class="card-body">
+    
+        <!--get data from database-->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="table-responsive table-wrap">
+
+                    <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" id="datatable"
+                        class="table table-hover mb-0">
+
+                        <thead class="bg-secondary">
+
+
+                            <tr>
+                                <th hidden class="text-white">No</th>
+                                <th class="text-white">Company Name</th>
+                                <th class="text-white">Contact Person </th>
+                                <th class="text-white">Contact No</th>
+                                <th class="text-white">Status</th>
+                                <th class="text-white">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let e of lis; let i = index">
+                                <td hidden>{{i+1}}</td>
+                                <!--<td>{{e.planID}}</td>-->
+                                <td>{{ e.supplierName | titlecase }}</td>
+                                <td>{{ e.contactPersonName | titlecase}} {{e.contactPersonSurname | titlecase}}</td>
+                                <td>{{ e.contactNo }}</td>
+                                <td>{{ e.status | titlecase}}</td>
+                                <td> &nbsp;&nbsp;
+                                    <a (click)="openEditModel1(editModel1,e.supplierId,i)"><i
+                                            class="mdi mdi-eye text-success"></i></a>
+
+                                    &nbsp;&nbsp;
+                                    <a (click)="openEditModel2(editModel2,e.supplierId,i)"><i
+                                            class="mdi mdi-pencil text-primary"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--clo-->
+
+
+
+    
+    
+</div><!-- <button class="btn btn-primary float-right" (click)="checkmail()">checkmail</button>row end -->
+<!--create-modal-->
+<ng-template #editModel3 let-modal>
+    <div class="col-md-12 bg-primary">
+        <h6 class="card-title text-white" style="font-weight: 700"> Supplier Registration
+        </h6>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="requiredForm" (ngSubmit)="onSubmit()">
+         
+
+            <!---->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="supplierName">Name of Supplier
+                            <span class="required-asterisk">*</span> </label>
+                        <input type="text" [(ngModel)]="supplierName" class="form-control"
+                            formControlName="supplierName"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Form.supplierName.errors}"
+                            placeholder="Type here...">
+                        <p *ngIf="isFormSubmitted && Form.supplierName.errors?.required" class="text-danger">Field Required
+                        </p>
+                        <p *ngIf="isFormSubmitted && Form.supplierName.errors?.pattern" class="text-danger">Supplier Name Should Contain Capital Letter &No Number</p>
+                    </div>
+
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="venderNo">Vendor Number
+                            <span class="required-asterisk">*</span>
+                        </label>
+                        <input type="text" [(ngModel)]="venderNo" class="form-control" formControlName="venderNo" maxlength="10" minlength="10" (change)="uniqueVende(venderNo)"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Form.venderNo.errors || uniqueVendorNo}"
+                            placeholder="Type here...">
+                         
+                        <p *ngIf="isFormSubmitted && Form.venderNo.errors?.required" class="text-danger">Field Required</p>
+                        <p *ngIf="isFormSubmitted && Form.venderNo.errors?.uniqueVendorNo" class="text-danger">Vender Number Already Exist</p>
+                        <p *ngIf="uniqueVendorNo" class="text-danger">Vender Number Already Exist</p>
+                        <p *ngIf="isFormSubmitted && Form.venderNo.errors?.maxlength" class="text-danger">Ten Charecters For VenderNo</p>
+                        <p *ngIf="isFormSubmitted && Form.venderNo.errors?.minlength" class="text-danger">Ten Charecters For VendorNo</p>
+                    </div>
+
+                </div>
+            </div>
+            <!---drop down-->
+
+            <!----->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="email">Email Address
+                            <span class="required-asterisk">*</span> </label>
+                           
+                          
+
+                       <input type="text" class="form-control" [(ngModel)]="email" formControlName="email"  pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" 
+                            [ngClass]="{'is-invalid': isFormSubmitted && Form.email.errors }" placeholder="Type here...">
+                        <p *ngIf="isFormSubmitted && Form.email.errors?.required" class="text-danger">Field Required</p>
+                        <p *ngIf="isFormSubmitted && Form.email.errors?.uniqueMailAdress" class="text-danger">Email Already Exist</p>
+                        <p *ngIf="isFormSubmitted && Form.email.errors?.pattern" class="text-danger">Invalid email</p>
+
+
+                    </div>
+
+                </div>
+                <!--if statement-->
+
+
+                <!--responsible person-->
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="telephone">Telephone Number
+                            <span class="required-asterisk">*</span>
+                        </label>
+
+                        <input type="cell" class="form-control" [(ngModel)]="telephone" formControlName="telephone" (keyup)="NumberChange()" mask="000 000 0000" (change)="uniqueCell(telephone)"
+                        minlength="0" maxlength="12"  [ngClass]="{'is-invalid': isFormSubmitted && Form.telephone.errors || uniqueCellNumber || isTelephoneInvalid }"
+                            placeholder="Type here...">
+
+                        <p *ngIf="isFormSubmitted && Form.telephone.errors?.required" class="text-danger">Field Required</p>
+                        <p *ngIf="isFormSubmitted && Form.telephone.errors?.uniqueCellNumber" class="text-danger">Telephone Number Already Exist</p>
+                        <p *ngIf="isFormSubmitted && uniqueCellNumber" class="text-danger">Telephone Number Already Exist</p>
+                        <p *ngIf="isTelephoneInvalid"
+                        class="text-danger">Contact Number Must Start With 0 </p>
+                        <p *ngIf="isFormSubmitted && Form.telephone.errors?.maxlength" class="text-danger">Ten Charecters For Cell Number</p>
+                        <p *ngIf="isFormSubmitted && Form.telephone.errors?.minlength" class="text-danger">Ten Charecters For Cell Number</p>
+
+                    </div>
+
+                </div>
+            </div>
+            <!--row end-->
+            <div class="row" style="margin-top: 1.3rem">
+                <div class="col-md-12">
+                    <h6 class="card-title" style="font-weight: 700">Physical Address
+                    </h6>
+                </div>
+            </div>
+            <!--date-->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="Address1">Address line 1
+                            <span class="required-asterisk">*</span>
+                        </label>
+                        <input type="text" class="form-control" [(ngModel)]="Address1" formControlName="Address1"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Form.Address1.errors}"
+                            placeholder="Address Line 1">
+                        <p *ngIf="isFormSubmitted && Form.Address1.errors?.required" class="text-danger">Field Required</p>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="Address2">Address line 2
+                            <span class="required-asterisk"></span>
+                        </label>
+                        <input type="text" class="form-control" [(ngModel)]="Address2" formControlName="Address2"
+                            placeholder="Address Line 2">
+
+                    </div>
+                </div>
+
+            </div>
+            <!----->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="town"> Town<span class="required-asterisk">*</span></label>
+
+                        <input type="text" class="form-control" [(ngModel)]="town" formControlName="town"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Form.town.errors}" placeholder="Town">
+                            <p *ngIf="isFormSubmitted && Form.town.errors?.pattern" class="text-danger">Town Name Should Contain Capital Letter &No Number</p>
+                    </div>
+
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="City"> City<span class="required-asterisk">*</span> </label>
+
+                        <input type="text" class="form-control" [(ngModel)]="City" formControlName="City"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Form.City.errors}" placeholder="City">
+
+                        <p *ngIf="isFormSubmitted && Form.City.errors?.required" class="text-danger">Field Required</p>
+                        <p *ngIf="isFormSubmitted && Form.City.errors?.pattern" class="text-danger">City Name Should Contain Capital Letter &No Number</p>
+                    </div>
+
+                </div>
+            </div>
+            <!--row end-->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="Province">Province <span class="required-asterisk">*</span> </label>
+
+                        <select type="text" class="form-control" [(ngModel)]="Province" formControlName="Province"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Form.Province.errors}" placeholder="Province">
+
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option *ngFor="let list of provinceList" value={{list.province}}>
+                                {{list.province}}
+                            </option>
+                        
+
+                        </select>
+                        <p *ngIf="isFormSubmitted && Form.Province.errors?.required" class="text-danger">Field Required</p>
+                    </div>
+
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="PostalCode">Postal Code <span class="required-asterisk">*</span> </label>
+
+                        <input type="text" class="form-control" [(ngModel)]="PostalCode" formControlName="PostalCode"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Form.PostalCode.errors}"
+                            placeholder="Postal Code">
+
+
+                        <p *ngIf="isFormSubmitted && Form.PostalCode.errors?.required" class="text-danger">Field Required
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+            <!--row end-->
+            <!--end date-->
+            <div class="row" style="margin-top: 1.3rem">
+                <div class="col-md-12">
+                    <h6 class="card-title" style="font-weight: 700">Contact Person
+                    </h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="name"> Name <span class="required-asterisk">*</span> </label>
+
+                        <input type="text" class="form-control" [(ngModel)]="name" formControlName="name"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Form.name.errors}" placeholder="Type here...">
+                        <p *ngIf="isFormSubmitted && Form.name.errors?.required" class="text-danger">Field Required</p>
+                        <p *ngIf="isFormSubmitted && Form.name.errors?.pattern" class="text-danger">Name Should Contain Capital Letter & No Number</p>
+                    </div>
+
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="surname"> Surname <span class="required-asterisk">*</span></label>
+
+                        <input type="text" class="form-control" [(ngModel)]="surname" formControlName="surname"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Form.surname.errors}"
+                            placeholder="Type here...">
+
+                        <p *ngIf="isFormSubmitted && Form.surname.errors?.required" class="text-danger">Field Required</p>
+                        <p *ngIf="isFormSubmitted && Form.surname.errors?.pattern" class="text-danger">Surname Should Contain Capital Letter &No Number</p>
+                    </div>
+
+                </div>
+            </div>
+            <!--row end-->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="contactNo">Contact Number
+                            <span class="required-asterisk">*</span> </label>
+                        <input  class="form-control" [(ngModel)]="contactNo" formControlName="contactNo"  id="contactNo" (keyup)="fieldChange()" mask="000 000 0000"
+                        minlength="0" maxlength="12"   [ngClass]="{'is-invalid': isFormSubmitted && Form.contactNo.errors || isNumberInvalid && isFormSubmitted }"
+                            placeholder="Type here...">
+                        <p *ngIf="isFormSubmitted && Form.contactNo.errors?.required" class="text-danger">Field Required</p>
+                        <p *ngIf="isFormSubmitted && Form.contactNo.errors?.maxlength" class="text-danger">Ten Charecters For Cell Number</p>
+                        <p *ngIf="isFormSubmitted && Form.contactNo.errors?.minlength" class="text-danger">Ten Charecters For Cell Number</p>
+                        <p *ngIf="isNumberInvalid "
+                                    class="text-danger">Contact Number Must Start With 0 </p>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="csdNo">CSD Number
+                            <span class="required-asterisk">*</span>
+                        </label>
+                        <input type="text" class="form-control" [(ngModel)]="csdNo" formControlName="csdNo"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Form.csdNo.errors}" placeholder="Type here...">
+                        <p *ngIf="isFormSubmitted && Form.csdNo.errors?.required" class="text-danger">Field Required</p>
+                    </div>
+                </div>
+
+            </div>
+            <!--button-->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="startDate">Contract Start Date
+                            <span class="required-asterisk">*</span>
+                        </label>
+                        <input type="date" class="form-control" [(ngModel)]="startDate" formControlName="startDate"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Form.startDate.errors}"
+                            placeholder="Type here...">
+                        <p *ngIf="isFormSubmitted && Form.startDate.errors?.required" class="text-danger">Field Required</p>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="endDate">Contract End Date
+                            <span class="required-asterisk">*</span>
+                        </label>
+                        <input type="date" class="form-control" [min]="getday()" [(ngModel)]="endDate" formControlName="endDate"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Form.endDate.errors}"
+                            placeholder="Type here...">
+                        <p *ngIf="isFormSubmitted && Form.endDate.errors?.required" class="text-danger">Field Required</p>
+                    </div>
+                </div>
+            </div>
+            <!--row end-->
+            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+            <button class="btn btn-light" (click)="Cancel()">Cancel</button>
+        </form>
+    </div><!-- row end -->
+</ng-template>
+
+
+<!--edit modal-->
+<ng-template #editModel2 let-modal>
+    <div class="col-md-12 bg-primary">
+        <h6 class="card-title text-white" style="font-weight: 700"> Edit Registration Supplier 
+        </h6>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="FormEdit">
+        
+            <!---->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="supplierNameEdit">Name of Supplier
+                            <span class="required-asterisk">*</span> </label>
+                        <input type="text" [(ngModel)]="supplierNameEdit" class="form-control"
+                            formControlName="supplierNameEdit"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Forms.supplierNameEdit.errors}"
+                            placeholder="Type here...">
+                        <p *ngIf="isFormSubmitted && Forms.supplierNameEdit.errors?.required" class="text-danger">Field Required
+                        </p>
+                        <p *ngIf="isFormSubmitted && Forms.supplierNameEdit.errors?.pattern" class="text-danger">Supplier Name Should Contain Capital Letter &No Number</p>
+                    </div>
+
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="venderNoEdit">Vendor Number
+                            <span class="required-asterisk">*</span>
+                        </label>
+                        <input type="text" [(ngModel)]="venderNoEdit" class="form-control" formControlName="venderNoEdit" maxlength="10" minlength="10" (change)="uniqueVendEdit(venderNoEdit)"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Forms.venderNoEdit.errors || uniqueVendorNo}"
+                            placeholder="Type here...">
+                         
+                        <p *ngIf="isFormSubmitted && Forms.venderNoEdit.errors?.required" class="text-danger">Field Required</p>
+                        <p *ngIf="isFormSubmitted && Forms.venderNoEdit.errors?.uniqueVendorNo" class="text-danger">Vender Number Already Exist</p>
+                        <p *ngIf="uniqueVendorNo" class="text-danger">Vender Number Already Exist</p>
+                        <p *ngIf="isFormSubmitted && Forms.venderNoEdit.errors?.maxlength" class="text-danger">Ten Charecters For  venderNo</p>
+                        <p *ngIf="isFormSubmitted && Forms.venderNoEdit.errors?.minlength" class="text-danger">Ten Charecters For VendorNo</p>
+                    </div>
+
+                </div>
+            </div>
+            <!---drop down-->
+
+            <!----->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="emailEdit"> emailEdit Address
+                            <span class="required-asterisk">*</span> </label>
+                           
+                          
+
+                       <input type="text" class="form-control" [(ngModel)]="emailEdit" formControlName="emailEdit"  pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" 
+                            [ngClass]="{'is-invalid': isFormSubmitted && Forms.emailEdit.errors }" placeholder="Type here...">
+                        <p *ngIf="isFormSubmitted && Forms.emailEdit.errors?.required" class="text-danger">Field Required</p>
+                        <p *ngIf="isFormSubmitted && Forms.emailEdit.errors?.uniqueMailAdress" class="text-danger">Email Already Exist</p>
+                        <p *ngIf="isFormSubmitted && Forms.emailEdit.errors?.pattern" class="text-danger">Invalid  emailEdit</p>
+
+
+                    </div>
+
+                </div>
+                <!--if statement-->
+
+
+                <!--responsible person-->
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="telephoneEdit">Telephone Number
+                            <span class="required-asterisk">*</span>
+                        </label>
+
+                        <input type="cell" class="form-control" [(ngModel)]="telephoneEdit" formControlName="telephoneEdit" (keyup)="NumberChange()" mask="000 000 0000" (change)="uniqueCellEdit(telephoneEdit)"
+                        minlength="0" maxlength="12"  [ngClass]="{'is-invalid': isFormSubmitted && Forms.telephoneEdit.errors || uniqueCellNumber || isTelephoneInvalid }"
+                            placeholder="Type here...">
+
+                        <p *ngIf="isFormSubmitted && Forms.telephoneEdit.errors?.required" class="text-danger">Field Required</p>
+                        <p *ngIf="isFormSubmitted && Forms.telephoneEdit.errors?.uniqueCellNumber" class="text-danger">Telephone Number Already Exist</p>
+                        <p *ngIf="isFormSubmitted && uniqueCellNumber" class="text-danger">Telephone Number Already Exist</p>
+                        <p *ngIf="isTelephoneInvalid"
+                        class="text-danger">Contact Number Must Start With 0 </p>
+                        <p *ngIf="isFormSubmitted && Forms. telephoneEdit.errors?.maxlength" class="text-danger">Ten Charecters For Cell Number</p>
+                        <p *ngIf="isFormSubmitted && Forms. telephoneEdit.errors?.minlength" class="text-danger">Ten Charecters For Cell Number</p>
+
+                    </div>
+
+                </div>
+            </div>
+            <!--row end-->
+            <div class="row" style="margin-top: 1.3rem">
+                <div class="col-md-12">
+                    <h6 class="card-title" style="font-weight: 700">Physical Address
+                    </h6>
+                </div>
+            </div>
+            <!--date-->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="Address1Edit">Address line 1
+                            <span class="required-asterisk">*</span>
+                        </label>
+                        <input type="text" class="form-control" [(ngModel)]="Address1Edit" formControlName="Address1Edit"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Forms.Address1Edit.errors}"
+                            placeholder="Address Line 1">
+                        <p *ngIf="isFormSubmitted && Forms.Address1Edit.errors?.required" class="text-danger">Field Required</p>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="Address2Edit">Address line 2
+                            <span class="required-asterisk"></span>
+                        </label>
+                        <input type="text" class="form-control" [(ngModel)]="Address2" formControlName="Address2Edit"
+                            placeholder="Address Line 2">
+
+                    </div>
+                </div>
+
+            </div>
+            <!----->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="townEdit"> Town<span class="required-asterisk">*</span></label>
+
+                        <input type="text" class="form-control" [(ngModel)]="townEdit" formControlName="townEdit"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Forms.townEdit.errors}" placeholder="Town">
+                            <p *ngIf="isFormSubmitted && Forms.townEdit.errors?.pattern" class="text-danger">Town Name Should Contain Capital Letter &No Number</p>
+                    </div>
+
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="CityEdit"> City<span class="required-asterisk">*</span> </label>
+
+                        <input type="text" class="form-control" [(ngModel)]="CityEdit" formControlName="CityEdit"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Forms.CityEdit.errors}" placeholder="City">
+
+                        <p *ngIf="isFormSubmitted && Forms.CityEdit.errors?.required" class="text-danger">Field Required</p>
+                        <p *ngIf="isFormSubmitted && Forms.CityEdit.errors?.pattern" class="text-danger">City Name Should Contain Capital Letter &No Number</p>
+                    </div>
+
+                </div>
+            </div>
+            <!--row end-->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="ProvinceEdit">Province <span class="required-asterisk">*</span> </label>
+
+                        <select type="text" class="form-control" [(ngModel)]="ProvinceEdit" formControlName="ProvinceEdit"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Forms.ProvinceEdit.errors}" placeholder="Province">
+
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option *ngFor="let list of provinceList" value={{list.province}}>
+                                {{list.province}}
+                            </option>
+                        
+
+                        </select>
+                        <p *ngIf="isFormSubmitted && Forms.ProvinceEdit.errors?.required" class="text-danger">Field Required</p>
+                    </div>
+
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="PostalCodeEdit">Postal Code <span class="required-asterisk">*</span> </label>
+
+                        <input type="text" class="form-control" [(ngModel)]="PostalCodeEdit" formControlName="PostalCodeEdit"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Forms.PostalCodeEdit.errors}"
+                            placeholder="Postal Code">
+
+
+                        <p *ngIf="isFormSubmitted && Forms.PostalCodeEdit.errors?.required" class="text-danger">Field Required
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+            <!--row end-->
+            <!--end date-->
+            <div class="row" style="margin-top: 1.3rem">
+                <div class="col-md-12">
+                    <h6 class="card-title" style="font-weight: 700">Contact Person
+                    </h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="nameEdit"> Name <span class="required-asterisk">*</span> </label>
+
+                        <input type="text" class="form-control" [(ngModel)]="nameEdit" formControlName="nameEdit"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Forms.nameEdit.errors}" placeholder="Type here...">
+                        <p *ngIf="isFormSubmitted && Forms.nameEdit.errors?.required" class="text-danger">Field Required</p>
+                        <p *ngIf="isFormSubmitted && Forms.nameEdit.errors?.pattern" class="text-danger">Name Should Contain Capital Letter & No Number</p>
+                    </div>
+
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="surnameEdit"> Surname <span class="required-asterisk">*</span></label>
+
+                        <input type="text" class="form-control" [(ngModel)]="surnameEdit" formControlName="surnameEdit"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Forms.surnameEdit.errors}"
+                            placeholder="Type here...">
+
+                        <p *ngIf="isFormSubmitted && Forms.surnameEdit.errors?.required" class="text-danger">Field Required</p>
+                        <p *ngIf="isFormSubmitted && Forms.surnameEdit.errors?.pattern" class="text-danger">Surname Should Contain Capital Letter &No Number</p>
+                    </div>
+
+                </div>
+            </div>
+            <!--row end-->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="contactNoEdit">Contact Number
+                            <span class="required-asterisk">*</span> </label>
+                        <input  class="form-control" [(ngModel)]="contactNoEdit" formControlName="contactNoEdit"  id="contactNoEdit" (keyup)="fieldChange()" mask="000 000 0000"
+                        minlength="0" maxlength="12"   [ngClass]="{'is-invalid': isFormSubmitted && Forms.contactNoEdit.errors || isNumberInvalid && isFormSubmitted }"
+                            placeholder="Type here...">
+                        <p *ngIf="isFormSubmitted && Forms.contactNoEdit.errors?.required" class="text-danger">Field Required</p>
+                        <p *ngIf="isFormSubmitted && Forms.contactNoEdit.errors?.maxlength" class="text-danger">Ten Charecters For Cell Number</p>
+                        <p *ngIf="isFormSubmitted && Forms.contactNoEdit.errors?.minlength" class="text-danger">Ten Charecters For Cell Number</p>
+                        <p *ngIf="isNumberInvalid "
+                                    class="text-danger">Contact Number Must Start With 0 </p>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="csdNoEdit">CSD Number
+                            <span class="required-asterisk">*</span>
+                        </label>
+                        <input type="text" class="form-control" [(ngModel)]="csdNoEdit" formControlName="csdNoEdit"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Forms.csdNoEdit.errors}" placeholder="Type here...">
+                        <p *ngIf="isFormSubmitted && Forms.csdNoEdit.errors?.required" class="text-danger">Field Required</p>
+                    </div>
+                </div>
+
+            </div>
+            <!--button-->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="startDateEdit">Contract Start Date
+                            <span class="required-asterisk">*</span>
+                        </label>
+                        <input type="date" class="form-control" [(ngModel)]="startDateEdit" formControlName="startDateEdit"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Forms.startDateEdit.errors}"
+                            placeholder="Type here...">
+                        <p *ngIf="isFormSubmitted && Forms.startDateEdit.errors?.required" class="text-danger">Field Required</p>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="endDateEdit">Contract End Date
+                            <span class="required-asterisk">*</span>
+                        </label>
+                        <input type="date" class="form-control" [min]="getdayEdit()" [(ngModel)]="endDateEdit" formControlName="endDateEdit"
+                            [ngClass]="{'is-invalid': isFormSubmitted && Forms.endDateEdit.errors}"
+                            placeholder="Type here...">
+                        <p *ngIf="isFormSubmitted && Forms.endDateEdit.errors?.required" class="text-danger">Field Required</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="Status">Status</label>
+                        <select  class="form-control" [(ngModel)]="Status"
+                            formControlName="Status" placeholder="Type here...">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option *ngFor="let list of supplierStatus" value={{list.status}}>
+                                {{list.status}}
+                            </option>
+
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="Status== 'Active'"  class="row" style="margin-top: 1.3rem">
+                <div class="col-md-12">
+                    <h6 class="card-title" style="font-weight: 700">Assign School
+                    </h6>
+
+                </div>
+            </div>
+            <!----->
+            <div *ngIf="Status== 'Active'" class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="districtNameEdit">District
+                            <span class="required-asterisk">*</span> </label>
+                        <select class="form-control" [(ngModel)]="districtNameEdit" formControlName="districtNameEdit"
+                           (change)="selectCode($event)">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option *ngFor="let dist of districtNames" value={{dist.district_Name}}>
+                                {{dist.district_Name}}
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="assignedSchool">School Name</label>
+                     
+                        <ng-select [items]="list2" [searchable]="true" [multiple]=true [closeOnSelect]="true" bindValue="institutionName" bindLabel="institutionName"
+                            placeholder="Please select One" formControlName="assignedSchool" [(ngModel)]="assignedSchool"
+                            >
+
+                        </ng-select>
+
+                    </div>
+                </div>
+            </div>
+            <!----->
+
+
+            
+
+
+                <button type="submit" (click)="update()" class="btn btn-primary mr-2">Update</button>
+                <button class="btn btn-light" (click)="CancelEdit()">Cancel</button>
+  
+        </form>
+    </div><!-- row end -->
+</ng-template>
+
+
+
+
+
+
+
+
+<!--- view Supplier modal-->
+
+<ng-template #editModel1 let-modal>
+    <div class="col-md-12 bg-primary">
+        <h6 class="card-title text-white" style="font-weight: 700">View Supplier  Details
+        </h6>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="requiredForm">
+          
+           
+            <!--inputs-->
+            <!---->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="supplierName">Name of Supplier </label>
+                        <input type="text" [(ngModel)]="supplierName" class="form-control"
+                            formControlName="supplierName" placeholder="Type here..." disabled>
+
+                    </div>
+
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="venderNo">Vendor Number </label>
+                        <input type="text" [(ngModel)]="venderNo" class="form-control" formControlName="venderNo"
+                            placeholder="Type here..." disabled>
+
+                    </div>
+
+                </div>
+            </div>
+            <!---drop down-->
+
+            <!----->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="email">Email Address </label>
+
+
+                        <input type="text" class="form-control" [(ngModel)]="email" formControlName="email"
+                            placeholder="Type here..." disabled>
+
+
+                    </div>
+
+                </div>
+                <!--if statement-->
+
+
+                <!--responsible person-->
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="telephone">Telephone Number </label>
+
+                        <input type="text" class="form-control" [(ngModel)]="telephone" formControlName="telephone"
+                            placeholder="Type here..." disabled>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+            <!--row end-->
+            <div class="row" style="margin-top: 1.3rem">
+                <div class="col-md-12">
+                    <h6 class="card-title" style="font-weight: 700">Physical Address
+                    </h6>
+                </div>
+            </div>
+            <!--date-->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="Address1">Address Line 1 </label>
+                        <input type="text" class="form-control" [(ngModel)]="Address1" formControlName="Address1"
+                            placeholder="Address Line 1" disabled>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="Address2"> Address Line 2</label>
+                        <input type="text" class="form-control" [(ngModel)]="Address2" formControlName="Address2"
+                            placeholder="Address Line 2" disabled>
+                    </div>
+                </div>
+
+            </div>
+            <!----->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="town">Town </label>
+
+                        <input type="text" class="form-control" [(ngModel)]="town" formControlName="town"
+                            placeholder="Town" disabled>
+
+                    </div>
+
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="City">City </label>
+
+                        <input type="text" class="form-control" [(ngModel)]="City" formControlName="City"
+                            placeholder="City" disabled>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+            <!--row end-->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="Province">Province</label>
+
+                        <input type="text" class="form-control" [(ngModel)]="Province" formControlName="Province"
+                            placeholder="Province" disabled>
+
+                    </div>
+
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="PostalCode">Postal Code</label>
+                        <input type="text" class="form-control" [(ngModel)]="PostalCode" formControlName="PostalCode"
+                            disabled>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+            <!--row end-->
+            <!--end date-->
+            <div class="row" style="margin-top: 1.3rem">
+                <div class="col-md-12">
+                    <h6 class="card-title" style="font-weight: 700">Contact Person
+                    </h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="name"> Name </label>
+
+                        <input type="text" class="form-control" [(ngModel)]="name" formControlName="name"
+                            placeholder="Type here..." disabled>
+
+                    </div>
+
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="surname"> Surname</label>
+
+                        <input type="text" class="form-control" [(ngModel)]="surname" formControlName="surname"
+                            placeholder="Type here..." disabled>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+            <!--row end-->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="contactNo">Contact Number </label>
+                        <input type="text" class="form-control" [(ngModel)]="contactNo" formControlName="contactNo"
+                            placeholder="Type here..." disabled>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="csdNo">CSD Number </label>
+                        <input type="number" class="form-control" [(ngModel)]="csdNo" formControlName="csdNo"
+                            placeholder="Type here..." disabled>
+                    </div>
+                </div>
+
+            </div>
+            <!--button-->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="startDate">Contract Start Date </label>
+                        <input type="date" class="form-control" [(ngModel)]="startDate" formControlName="startDate"
+                            placeholder="Type here..." disabled>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="endDate">Contract End Date </label>
+                        <input type="date" class="form-control" [(ngModel)]="endDate" formControlName="endDate"
+                            placeholder="Type here..." disabled>
+                    </div>
+                </div>
+            </div>
+            <!--row end-->
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="Status">Status</label>
+                        <input type="text" class="form-control" [(ngModel)]="Status" formControlName="Status"
+                            placeholder="Status" disabled>
+
+                    </div>
+                </div>
+                <div *ngIf="districtName !=null" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="districtName">District</label>
+
+                        <input type="text" class="form-control" [(ngModel)]="districtName"
+                            formControlName="districtName" placeholder="districtName" disabled>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div  *ngIf="assignedSchool !=null" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="assignedSchool">List of Schools</label>
+                       
+                        <textarea  class="form-control" [(ngModel)]="assignedSchool" formControlName="assignedSchool"
+                            cols="50" rows="20"  name="assignedSchool"    disabled></textarea>
+
+                    </div>
+                </div>
+               
+              
+            </div>
+
+
+
+            
+
+
+                <button class="btn btn-light" (click)="Cancel()">Cancel</button>
+            
+        </form>
+    </div><!-- row end -->
+</ng-template>
+
+
+<!--end of view modal-->

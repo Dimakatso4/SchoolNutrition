@@ -1,0 +1,71 @@
+<div class="row w-100 max-0 auth-page">
+  <div class="col-md-5 col-xl-4 col-lg-5 mx-auto">
+    <div class="card">
+      <div class="auth-form-wrapper px-4 py-5">
+        <a href="#" class="noble-ui-logo d-block mb-2" style="margin-bottom: 2.5rem; text-align: center;">
+          <img src="../../../../../assets/images/DepartmentEducationLogo.png" style="width: 225px; height: auto;">
+        </a>
+        <div class="row">
+          <div class="col-md-12" style="text-align: center; margin-bottom: 1.5rem;">
+            <h5 class="text-muted font-weight-normal mb-4 text-center">Official Details</h5>
+            <p *ngIf="accountType == 'sgb' || accountType == 'monitor'" class="text-center">Please enter your ID Number below</p>
+            <p *ngIf="accountType == 'employee'" class="text-center">Please enter your Persal Number below</p>
+            <p class="text-center">to verify your identity</p>
+          </div>
+        </div>
+        <form class="forms-sample">
+
+          <div class="form-group row" *ngIf="accountType == 'employee' || accountType == 'sgb' ">
+            <label for="optionsRadios" class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-form-label">Account
+              Type:</label>
+            <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-xs-12">
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input"  (click)="fieldChange()" [(ngModel)]="accountType" name="optionsRadios"
+                    value="employee">
+                  <i class="input-frame"></i>
+                  Employee
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input"  (click)="fieldChange()" [(ngModel)]="accountType" name="optionsRadios"
+                    value="sgb">
+                  <i class="input-frame"></i>
+                  SGB
+                </label>
+              </div>
+              <div class="form-check form-check-inline" hidden>
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input"  (click)="fieldChange()" [(ngModel)]="accountType" name="optionsRadios"
+                    value="monitor">
+                  <i class="input-frame"></i>
+                  Provincial Monitor
+                </label>
+              </div>
+              
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label *ngIf="accountType == 'sgb' || accountType == 'monitor'" for="userNumber">ID Number</label>
+            <label *ngIf="accountType == 'employee'" for="userNumber">Persal Number</label>
+            <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="userNumber" (keyup)="fieldChange()" required class="form-control"
+              id="userNumber">
+            <div *ngIf="error && accountType == 'sgb' || error && accountType == 'monitor'" style="margin-bottom: 1.5rem;" class="error_text">
+              <p class="text-danger">Invalid ID number please try again</p>
+            </div>
+            <div *ngIf="error && accountType == 'employee'" style="margin-bottom: 1.5rem;" class="error_text">
+              <p class="text-danger">Invalid Persal number please try again</p>
+            </div>
+            <div class="mt-3" style="text-align: center;">
+              <input type="button" (click)="verifyIDnumber()" class="btn btn-primary mr-2 mb-2 mb-md-0"
+                value="Submit" />
+              <input type="button" class="btn btn-danger" routerLink="/auth/login" value="Cancel" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,264 @@
+<div class="my-overlay" *ngIf="showOverlay">
+    <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+</div>
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Menu Management</a></li>
+    </ol>
+</nav>
+
+<div class="row headingStyle1">
+    <div class="col-md-12 bg-primary text-white headingStyle2">
+        <h3>Menu Management</h3>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <button class="btn btn-primary float-right" [disabled]="isPageLoading" (click)="openXlModal(xlModal)">Create Day Menu</button>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive table-hover">
+            <table role="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover">
+                <thead>
+                    <tr style="border-bottom: 1px solid black;">
+                        <th  class="header-label" style="color:black; font-size:12px;">ID</th>
+                        <th class="header-label" style="color:black; font-size:12px;">Day</th>
+                        <th class="header-label" style="color:black; font-size:12px;">Menu</th>
+                        <th class="header-label" style="color:black; font-size:12px;">Product </th>
+                        <th class="header-label" style="color:black; font-size:12px;">School Type</th>
+                        <th class="header-label" style="color:black; font-size:12px;">Edit</th>
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    <tr class="text-danger" *ngFor="let menu of weeklyMenu">
+                        <td >{{menu.id}}</td>
+                        <td>{{menu.day}}</td>
+                        <td>
+                            {{menu.menu}}
+                        </td>
+                        <td>
+                            {{menu.product}}
+                        </td>
+                        <td>
+                            {{menu.schoolType}}
+                        </td> 
+                        <td>
+                            <a><i data-toggle="tooltip" data-placement="right" title="Update Product"
+                                class="mdi mdi-pencil" (click)="updateData(menu)"
+                                (click)="openXlModal(editxlModal)"></i>
+                            </a>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="isPageLoading" class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Create Handover  -->
+<ng-template #xlModal let-modal>
+    <div class="modal-header bg-primary text-white headingStyle2 clear-top-space">
+        
+        <h4 class="modal-title text-white" id="exampleModalLabel">Create Menue</h4>
+        <button type="button" class="close text-white" (click)="ClearMenuData()" 
+            (click)="modal.close('by: close icon')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <form (submit)="saveWeeklyMenu()" [formGroup]="validationForm">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="names" >Day </label>
+                        <ng-select  [items]="daysOfTheWeek" [multiple]=false [closeOnSelect]="true"
+                            [searchable]="true" bindLabel="day" placeholder="Select Venue" 
+                            [(ngModel)]="day"
+                            placeholder="Please Select Day"
+                            formControlName="day"
+                            [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.day.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="isCreateFormSubmitted && createForm.day.errors?.required" class="invalid-feedback">
+                            Field required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="names" >Menu </label>
+                        <ng-select  [items]="menuOfTheWeek" [multiple]=false [closeOnSelect]="true"
+                            [searchable]="true" bindLabel="menu" placeholder="Select Venue" 
+                            [(ngModel)]="menu"
+                            placeholder="Please Select Menu"
+                            formControlName="menu"
+                            [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.menu.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="isCreateFormSubmitted && createForm.menu.errors?.required" class="invalid-feedback">
+                             required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="names" >Products </label>
+                        <ng-select  [items]="productList" [multiple]=true [closeOnSelect]="true"
+                            [searchable]="true" bindLabel="fullProduct" placeholder="Select Venue" 
+                            [(ngModel)]="product"
+                            formControlName="product"
+                            placeholder="Please Select Products"
+                            [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.product.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="isCreateFormSubmitted && createForm.product.errors?.required" class="invalid-feedback">
+                             required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="names" >School Type </label>
+                        <ng-select  [items]="schoolTypeList" [multiple]=true [closeOnSelect]="true"
+                            [searchable]="true" bindLabel="schoolType" placeholder="Select Venue" 
+                            [(ngModel)]="schoolType"
+                            formControlName="schoolType"
+                            placeholder="Please Select School Type"
+                            [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.schoolType.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="isCreateFormSubmitted && createForm.schoolType.errors?.required" class="invalid-feedback">
+                             required</p>
+                    </div>
+                </div>
+            </div>
+
+ 
+
+            <div class="card-footer">
+                <button class="btn btn-primary mr-2">Submit</button>
+                <button type="button" (click)="modal.close('by: close icon');ClearMenuData()" class="btn btn-warning">Cancel</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<!-- Modal Create Handover  -->
+<ng-template #editxlModal let-modal>
+    <div class="modal-header bg-primary text-white headingStyle2 clear-top-space">
+        
+        <h4 class="modal-title text-white" id="exampleModalLabel">Create Meeting Invitation</h4>
+        <button type="button" class="close text-white" (click)="ClearMenuData()" 
+            (click)="modal.close('by: close icon')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <form (submit)="editMenu()" [formGroup]="editvalidationForm">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="names" >Day</label>
+                        <ng-select  [items]="daysOfTheWeek" [multiple]=false [closeOnSelect]="true"
+                            [searchable]="true" bindLabel="foodGroupDescription" placeholder="Select Venue" 
+                            [(ngModel)]="editday"
+                            placeholder="Please Select Food Group"
+                            formControlName="editday"
+                            [ngClass]="{'is-invalid': editisCreateFormSubmitted && editcreateForm.editday.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="editisCreateFormSubmitted && editcreateForm.editday.errors?.required" class="invalid-feedback">
+                            Field required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="names" >Menu </label>
+                        <ng-select  [items]="menuOfTheWeek" [multiple]=false [closeOnSelect]="true"
+                            [searchable]="true"  placeholder="Select Venue" 
+                            [(ngModel)]="editmenu"
+                            bindLabel="editmenu" 
+                            placeholder="Please Select Product Type"
+                            formControlName="editmenu"
+                            [ngClass]="{'is-invalid': editisCreateFormSubmitted && editcreateForm.editmenu.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="editisCreateFormSubmitted && editcreateForm.editmenu.errors?.required" class="invalid-feedback">
+                             required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="names" >Unit Type </label>
+                        <ng-select  [items]="productList" [multiple]=false [closeOnSelect]="true"
+                            [searchable]="true"  placeholder="Select Venue"
+                            bindLabel="editproduct" 
+                            [(ngModel)]="editproduct"
+                            formControlName="editproduct"
+                            placeholder="Please Select Unit Type"
+                            [ngClass]="{'is-invalid': editisCreateFormSubmitted && editcreateForm.editproduct.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="editisCreateFormSubmitted && editcreateForm.editproduct.errors?.required" class="invalid-feedback">
+                            Venue required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="names" >School Type </label>
+                        <ng-select  [items]="schoolTypeList" [multiple]=true [closeOnSelect]="true"
+                            [searchable]="true" bindLabel="schoolType" placeholder="Select Venue" 
+                            [(ngModel)]="editschoolType"
+                            formControlName="editschoolType"
+                            placeholder="Please Select Unit Type"
+                            [ngClass]="{'is-invalid': editisCreateFormSubmitted && editcreateForm.editschoolType.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="editisCreateFormSubmitted && editcreateForm.editschoolType.errors?.editschoolType" class="invalid-feedback">
+                            Venue required</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button class="btn btn-primary mr-2">Submit</button>
+                <button type="button" (click)="modal.close('by: close icon');ClearMenuData()" class="btn btn-warning">Cancel</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+

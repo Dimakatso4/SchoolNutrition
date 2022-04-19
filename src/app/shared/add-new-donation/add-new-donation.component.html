@@ -1,0 +1,1107 @@
+<!-- <form [formGroup]="requiredForm" novalidate (ngSubmit)="onSubmit()">
+    <h6 class="card-title text-white" style="margin-bottom: 0;"> Details</h6>
+
+<table class="table">
+    <thead>
+        <tr style="border-bottom: 1px solid black;">
+            <th class="header-label" style="color:black; font-size:12px;">Food Group</th>
+            <th class="header-label" style="color:black; font-size:12px;">Product Type</th>
+            <th class="header-label" style="color:black; font-size:12px;">Quantity</th>
+            <th class="header-label" style="color:black; font-size:12px;">Unit</th>
+        </tr>
+
+    </thead>
+
+
+    <tbody>
+        <tr *ngFor="let food of FoodGroup;let i = index">
+            <td>{{food.description}}</td>
+            <td>
+        <tr *ngFor=" let product of getDiscription(food.foodGroupID);let x=index"> <input type="checkbox"
+            style="padding: 30px;" (click)="toggleStrawberry()" id="bt">&nbsp;{{product.description}}
+        </tr>
+        </td>
+        <td>
+
+
+            <tr *ngFor="let product of getDiscription(food.foodGroupID);let x = index"><input type="number"
+                    *ngIf="strawberry" placeholder="Type quantity" class="form-control">
+            </tr>
+            <p *ngIf="isFormSubmitted && Form.Quarter.Strawberry?.required" class="invalid">Field
+                Required</p>
+        </td>
+        <td>
+
+            <tr *ngFor="let product of getDiscription(food.foodGroupID);let x = index"><input type="text"
+                    *ngIf="strawberry" class="form-control" value="KG" disabled></tr>
+
+            </tr>
+    </tbody>
+</table>
+</form> -->
+
+<div class="card-body">
+    <form [formGroup]="requiredForm" novalidate>
+        <div class="row" style="margin-top: 1.3rem">
+            <div class="col-md-12">
+                <h6 class="card-title" style="font-weight: 700"> Complete Delivery Schedule
+                </h6>
+            </div>
+        </div>
+        <!----->
+
+        <!--inputs-->
+        <div class="row">  
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+             <div class="form-group">
+                <label for="docsTitle">Quarter</label>
+                <select (change)="selectInput($event)">
+                    <option value="" hidden disabled selected>Please select quarter</option>
+                    <option value="Quarter 1">Quarter 1</option>
+                    <option value="Quarter 2">Quarter 2</option>
+                    <option value="Quarter 3">Quarter 3</option>
+                    <option value="Quarter 4">Quarter 4</option>
+                </select>
+                 </div>
+         </div>
+      </div>
+        <!---->
+        <!-- <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+            <div class="form-group">
+             
+            </div>
+
+        </div> -->
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label for="supplierName">Start Date </label>
+                    <input type="date"  class="form-control" placeholder="Type here">
+
+                </div>
+
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label for="supplierName">End Date </label>
+                    <input type="date"  class="form-control" placeholder="Type here">
+
+                </div>
+
+            </div>
+        </div>
+    
+      
+
+
+       
+          <!--row end-->
+        <h4> Perishable yyyyy Product</h4>
+        <table class="table" >
+            <thead>
+                <tr>
+                    <th class="header-label" style="color:black; font-size:12px;">Food Group</th>
+                    <th class="header-label" style="color:black; font-size:12px;">Product Type</th>
+                    <th class="header-label" style="color:black; font-size:12px;">Confirm Product Type</th>
+                    <th class="header-label" style="color:black; font-size:12px;">Quantity</th>
+                    <th class="header-label" style="color:black; font-size:12px;">Confirm Quantity</th>
+                    <th class="header-label" style="color:black; font-size:12px;">Rating</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                <tr>
+                    <td rowspan="3">Breakfast</td>
+                    <td>
+                  
+                        <div>&nbsp;Creamy Instant Maize Meal (Strawberry)</div>
+                    </td>
+                    <td >  
+                        <select (change)="selectStrawberry($event)" class="form-control"  style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="Expected">Expected</option>
+                            <option value="Unexpected">Unexpected</option>
+                            
+                        </select>
+                        <div *ngIf="IsStrawberry"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                        <div *ngIf="IsStrawberry" class="form-group">
+                            <label>Upload Evidence</label>
+                            <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                id="fileUploadInputExample">
+                            <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                <input type="text" class="form-control file-upload-info" disabled="" 
+                                    placeholder="No file" style="max-width: fit-content;">
+                               
+                                    &nbsp;<button class="file-upload-browse btn btn-primary" type="button" style="max-width: fit-content;">Upload</button>
+                                
+                            </div>
+                        </div>
+                    </td>
+                    
+                    <td>
+                        <div ><input type="text"   value="225 kg" disabled class="form-control" style="width:120px"></div>
+                       </td> 
+                       <td>  
+                        <select (change)="selectStrawberryQuantity($event)" class="form-control"   style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="Expected">Expected</option>
+                            <option value="Unexpected">Unexpected</option>
+                        </select>
+                        <div *ngIf="isStrawberryQuantity"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                        <div *ngIf="isStrawberryQuantity" class="form-group">
+                            <label>Upload Evidence</label>
+                            <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                id="fileUploadInputExample">
+                            <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                <input type="text" class="form-control file-upload-info" disabled="" 
+                                    placeholder="No file" style="max-width: fit-content;">
+                               
+                                    &nbsp;<button class="file-upload-browse btn btn-primary" type="button" style="max-width: fit-content;">Upload</button>
+                                
+                            </div>
+                        </div>
+                    </td>
+                        <td>   
+                            <select (change)="selectStrawberryRating($event)" class="form-control"   style="max-width: fit-content;">
+                                <option value="" hidden disabled selected>Please select one</option>
+                                <option value="Good">Good</option>
+                                <option value="Poor">Poor</option>
+                                
+                            </select>
+                            <div *ngIf="IsStrawberryRating"><br><textarea type="text"  placeholder="" class="form-control" style="max-width: fit-content;"></textarea></div>
+                            <div *ngIf="IsStrawberryRating" class="form-group">
+                                <label>Upload Evidence</label>
+                                <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                    id="fileUploadInputExample">
+                                <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                    <input type="text" class="form-control file-upload-info" disabled="" 
+                                        placeholder="No file" style="max-width: fit-content;">
+                                   
+                                        &nbsp; <button class="file-upload-browse btn btn-primary" type="button" style="max-width: fit-content;">Upload</button>
+                                    
+                                </div>
+                            </div>
+                        </td>        
+                        
+                </tr>
+                <tr>
+                    <td>
+                  
+                        <div>&nbsp;Creamy Instant Maize Meal (Vanilla)</div>
+                    </td>
+                    <td > 
+                        <select (change)="selectVanilla($event)" class="form-control"   style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="Expected">Expected</option>
+                            <option value="Unexpected">Unexpected</option>
+                            
+                        </select>
+                        <div *ngIf="IsVanilla"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                        <div *ngIf="IsVanilla" class="form-group">
+                            <label>Upload Evidence</label>
+                            <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                id="fileUploadInputExample">
+                            <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                <input type="text" class="form-control file-upload-info" disabled="" 
+                                    placeholder="No file" style="max-width: fit-content;">
+                               
+                                    &nbsp;<button class="file-upload-browse btn btn-primary" type="button" style="max-width: fit-content;">Upload</button>
+                                
+                            </div>
+                        </div>
+                    </td>
+                    
+                    <td>
+                        <div ><input type="text"   value="650 kg" disabled class="form-control" style="max-width: fit-content;"></div>
+                       </td> 
+                       <td>  
+                        <select (change)="selectVanillaQuantity($event)" class="form-control"  style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="Expected">Expected</option>
+                            <option value="Unexpected">Unexpected</option>
+                        </select>
+                        <div *ngIf="IsVanillaQuantity"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                        <div *ngIf="IsVanillaQuantity" class="form-group">
+                            <label>Upload Evidence</label>
+                            <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                id="fileUploadInputExample">
+                            <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                <input type="text" class="form-control file-upload-info" disabled="" 
+                                    placeholder="No file" style="max-width: fit-content;">
+                               
+                                    &nbsp;<button class="file-upload-browse btn btn-primary" type="button" style="max-width: fit-content;">Upload</button>
+                                
+                            </div>
+                        </div>
+                    </td>
+                        <td>   
+                            <select (change)="selectVanillaRating($event)" class="form-control"  style="max-width: fit-content;">
+                                <option value="" hidden disabled selected>Please select one</option>
+                                <option value="Good">Good</option>
+                                <option value="Poor">Poor</option>
+                                
+                            </select>
+                            <div *ngIf="IsVanillaRating"><br><textarea type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></textarea></div>
+                            <div *ngIf="IsVanillaRating" class="form-group">
+                                <label>Upload Evidence</label>
+                                <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                    id="fileUploadInputExample">
+                                <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                    <input type="text" class="form-control file-upload-info" disabled="" 
+                                        placeholder="No file" style="max-width: fit-content;">
+                                   
+                                        &nbsp; <button class="file-upload-browse btn btn-primary" type="button" style="max-width: fit-content;">Upload</button>
+                                    
+                                </div>
+                            </div>
+                        </td>        
+                        
+                </tr>
+
+                <tr>
+                    <td>
+                  
+                        <div>&nbsp;Instant Sorghum (Banana)</div>
+                    </td>
+                    <td >   
+                        <select (change)="selectBanana($event)" class="form-control"  style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="Expected">Expected</option>
+                            <option value="Unexpected">Unexpected</option>
+                            
+                        </select>
+                        <div *ngIf="IsBanana"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                        <div *ngIf="IsBanana" class="form-group">
+                            <label>Upload Evidence</label>
+                            <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                id="fileUploadInputExample">
+                            <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                <input type="text" class="form-control file-upload-info" disabled="" 
+                                    placeholder="No file">
+                               
+                                    &nbsp;<button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                
+                            </div>
+                        </div>
+                    </td>
+                    
+                    <td>
+                        <div ><input type="text"   value="225 kg" disabled class="form-control" style="max-width: fit-content;"></div>
+                       </td> 
+                       <td> 
+                        <select (change)="selectBananaQuantity($event)" class="form-control"   style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="Expected">Expected</option>
+                            <option value="Unexpected">Unexpected</option>
+                        </select>
+                        <div *ngIf="IsBananaQuantity"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                        <div *ngIf="IsBananaQuantity" class="form-group">
+                            <label>Upload Evidence</label>
+                            <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                id="fileUploadInputExample">
+                            <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                <input type="text" class="form-control file-upload-info" disabled="" 
+                                    placeholder="No file">
+                               
+                                    &nbsp;<button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                
+                            </div>
+                        </div>
+                    </td>
+                        <td>   
+                            <select (change)="selectBananaRating($event)" class="form-control"   style="max-width: fit-content;">
+                                <option value="" hidden disabled selected>Please select one</option>
+                                <option value="Good">Good</option>
+                                <option value="Poor">Poor</option>
+                                
+                            </select>
+                            <div *ngIf="IsBananaRating"><br><textarea type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></textarea></div>
+                            <div *ngIf="IsBananaRating" class="form-group">
+                                <label>Upload Evidence</label>
+                                <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                    id="fileUploadInputExample">
+                                <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                    <input type="text" class="form-control file-upload-info" disabled="" 
+                                        placeholder="No file">
+                                   
+                                        &nbsp; <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    
+                                </div>
+                            </div>
+                        </td>        
+                        
+                </tr>
+
+                <tr>
+                    <td rowspan="3">Starch</td>
+                    <td>
+                  
+                        <div> &nbsp;Meal (Fortified)</div>
+                    </td>
+                    <td>   
+                        <select (change)="selectMeal($event)" class="form-control"   style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="Expected">Expected</option>
+                            <option value="Unexpected">Unexpected</option>
+                        </select>
+                        <div *ngIf="IsMeal"><br><input type="text"   placeholder="Type quantity" class="form-control"style="max-width: fit-content;"></div>
+                        <div *ngIf="IsMeal" class="form-group">
+                            <label>Upload Evidence</label>
+                            <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                id="fileUploadInputExample">
+                            <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                <input type="text" class="form-control file-upload-info" disabled="" 
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                    placeholder="No file uploaded">
+                                <span class="input-group-append">
+                                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div><input type="text" value="225 Litre" disabled class="form-control" style="max-width: fit-content;"></div>
+                         </td> 
+                         <td>   
+                            <select (change)="selectMealQuantity($event)" class="form-control"   style="max-width: fit-content;">
+                                <option value="" hidden disabled selected>Please select one</option>
+                                <option value="Expected">Expected</option>
+                                <option value="Unexpected">Unexpected</option>
+                            </select>
+                            <div *ngIf="IsMealQuantity"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                            <div *ngIf="IsMealQuantity" class="form-group">
+                                <label>Upload Evidence</label>
+                                <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                    id="fileUploadInputExample">
+                                <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                    <input type="text" class="form-control file-upload-info" disabled="" 
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                        placeholder="No file uploaded">
+                                    <span class="input-group-append">
+                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    </span>
+                                </div>
+                                
+                            </div></td>
+                            <td>   
+                                <select (change)="selectMealRating($event)" class="form-control"   style="max-width: fit-content;">
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Poor">Poor</option>
+                                    
+                                </select>
+                                <div *ngIf="IsMealRating"><br><textarea type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></textarea></div>
+                                <div *ngIf="IsMealRating" class="form-group">
+                                    <label>Upload Evidence</label>
+                                    <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                        id="fileUploadInputExample">
+                                    <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                        <input type="text" class="form-control file-upload-info" disabled="" 
+                                            [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                            placeholder="No file uploaded">
+                                        <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                        </span>
+                                    </div>
+                                    <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                                    </p>
+                                </div></td>
+                </tr>
+                
+                <tr>
+                    
+                    <td>
+                  
+                        <div> &nbsp;Rice</div>
+                    </td>
+                    <td>   
+                        <select (change)="selectRice($event)" class="form-control"   style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="Expected">Expected</option>
+                            <option value="Unexpected">Unexpected</option>
+                        </select>
+                        <div *ngIf="IsRice"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                        <div *ngIf="IsRice" class="form-group">
+                            <label>Upload Evidence</label>
+                            <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                id="fileUploadInputExample">
+                            <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                <input type="text" class="form-control file-upload-info" disabled="" 
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                    placeholder="No file uploaded">
+                                <span class="input-group-append">
+                                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div><input type="text" value="405 kg" disabled class="form-control" style="max-width: fit-content;"></div>
+                         </td> 
+                         <td>   
+                            <select (change)="selectRiceQuantity($event)" class="form-control"  style="max-width: fit-content;">
+                                <option value="" hidden disabled selected>Please select one</option>
+                                <option value="Expected">Expected</option>
+                                <option value="Unexpected">Unexpected</option>
+                            </select>
+                            <div *ngIf="IsRiceQuantity"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                            <div *ngIf="IsRiceQuantity" class="form-group">
+                                <label>Upload Evidence</label>
+                                <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                    id="fileUploadInputExample">
+                                <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                    <input type="text" class="form-control file-upload-info" disabled="" 
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                        placeholder="No file uploaded">
+                                    <span class="input-group-append">
+                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    </span>
+                                </div>
+                                
+                            </div></td>
+                            <td>   
+                                <select (change)="selectRiceRating($event)" class="form-control"   style="max-width: fit-content;">
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Poor">Poor</option>
+                                    
+                                </select>
+                                <div *ngIf="IsRiceRating"><br><textarea type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></textarea></div>
+                                <div *ngIf="IsRiceRating" class="form-group">
+                                    <label>Upload Evidence</label>
+                                    <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                        id="fileUploadInputExample">
+                                    <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                        <input type="text" class="form-control file-upload-info" disabled="" 
+                                            [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                            placeholder="No file uploaded">
+                                        <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                        </span>
+                                    </div>
+                                    <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                                    </p>
+                                </div></td>
+                </tr>
+
+                <tr>
+                    
+                    <td>
+                  
+                        <div> &nbsp;Samp</div>
+                    </td>
+                    <td>   
+                        <select (change)="selectSamp($event)" class="form-control"   style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="Expected">Expected</option>
+                            <option value="Unexpected">Unexpected</option>
+                        </select>
+                        <div *ngIf="IsSamp"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                        <div *ngIf="IsSamp" class="form-group">
+                            <label>Upload Evidence</label>
+                            <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                id="fileUploadInputExample">
+                            <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                <input type="text" class="form-control file-upload-info" disabled="" 
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                    placeholder="No file uploaded">
+                                <span class="input-group-append">
+                                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div><input type="text" value="705 kg" disabled  class="form-control" style="max-width: fit-content;"></div>
+                         </td> 
+                         <td>   
+                            <select (change)="selectSampQuantity($event)" class="form-control"   style="max-width: fit-content;">
+                                <option value="" hidden disabled selected>Please select one</option>
+                                <option value="Expected">Expected</option>
+                                <option value="Unexpected">Unexpected</option>
+                            </select>
+                            <div *ngIf="IsSampQuantity"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                            <div *ngIf="IsSampQuantity" class="form-group">
+                                <label>Upload Evidence</label>
+                                <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                    id="fileUploadInputExample">
+                                <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                    <input type="text" class="form-control file-upload-info" disabled="" 
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                        placeholder="No file uploaded">
+                                    <span class="input-group-append">
+                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    </span>
+                                </div>
+                                
+                            </div></td>
+                            <td>   
+                                <select (change)="selectSampRating($event)" class="form-control"   style="max-width: fit-content;">
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Poor">Poor</option>
+                                    
+                                </select>
+                                <div *ngIf="IsSampRating"><br><textarea type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></textarea></div>
+                                <div *ngIf="IsSampRating" class="form-group">
+                                    <label>Upload Evidence</label>
+                                    <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                        id="fileUploadInputExample">
+                                    <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                        <input type="text" class="form-control file-upload-info" disabled="" 
+                                            [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                            placeholder="No file uploaded">
+                                        <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                        </span>
+                                    </div>
+                                    <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                                    </p>
+                                </div></td>
+                </tr>
+
+                
+                <tr>
+                    <td rowspan="4">Protein</td>
+                    <td>
+                  
+                        <div> &nbsp;Milk (UHT)</div>
+                    </td>
+                    <td>   
+                        <select (change)="selectMilk($event)" class="form-control"  style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="Expected">Expected</option>
+                            <option value="Unexpected">Unexpected</option>
+                        </select>
+                        <div *ngIf="IsMilk"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                           
+                        <div *ngIf="IsMilk" class="form-group">
+                            <label>Upload Evidence</label>
+                            <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                id="fileUploadInputExample">
+                            <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                <input type="text" class="form-control file-upload-info" disabled="" 
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                    placeholder="No file uploaded">
+                                <span class="input-group-append">
+                                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                </span>
+                            </div>
+                            <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                            </p>
+                        </div></td>
+                    <td>
+                        <div><input type="text" value="225 Litre" disabled class="form-control" style="max-width: fit-content;">
+                        </div>
+                         </td> 
+                         <td>   
+                            <select (change)="selectMilkQuantity($event)" class="form-control"   style="max-width: fit-content;">
+                                <option value="" hidden disabled selected>Please select one</option>
+                                <option value="Expected">Expected</option>
+                                <option value="Unexpected">Unexpected</option>
+                            </select>
+                            <div *ngIf="IsMilkQuantity"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                           
+                            <div *ngIf="IsMilkQuantity" class="form-group">
+                                <label>Upload Evidence</label>
+                                <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                    id="fileUploadInputExample">
+                                <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                    <input type="text" class="form-control file-upload-info" disabled="" 
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                        placeholder="No file uploaded">
+                                    <span class="input-group-append">
+                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    </span>
+                                </div>
+                                <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                                </p>
+                            </div></td>
+                            <td>   
+                                <select (change)="selectMilkRating($event)" class="form-control"   style="max-width: fit-content;">
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Poor">Poor</option>
+                                    
+                                </select>
+                                <div *ngIf="IsMilkRating"><br><textarea type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></textarea></div>
+                               
+                                <div *ngIf="IsMilkRating" class="form-group">
+                                    <label>Upload Evidence</label>
+                                    <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                        id="fileUploadInputExample">
+                                    <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                        <input type="text" class="form-control file-upload-info" disabled="" 
+                                            [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                            placeholder="No file uploaded">
+                                        <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                        </span>
+                                    </div>
+                                    <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                                    </p>
+                                </div></td>
+                </tr>
+               
+                <tr>
+                    
+                    <td>
+                  
+                        <div> &nbsp;Pilchards in Tomato </div>
+                    </td>
+                    <td>   
+                        <select (change)="selectTomato($event)" class="form-control"   style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="Expected">Expected</option>
+                            <option value="Unexpected">Unexpected</option>
+                        </select>
+                        <div *ngIf="IsTomato"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                           
+                        <div *ngIf="IsTomato" class="form-group">
+                            <label>Upload Evidence</label>
+                            <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                id="fileUploadInputExample">
+                            <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                <input type="text" class="form-control file-upload-info" disabled="" 
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                    placeholder="No file uploaded">
+                                <span class="input-group-append">
+                                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                </span>
+                            </div>
+                            <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                            </p>
+                        </div></td>
+                    <td>
+                        <div><input type="text"  value="540 Tins" disabled class="form-control" style="max-width: fit-content;">
+                        </div>
+                         </td> 
+                         <td>   
+                            <select (change)="selectTomatoQuantity($event)" class="form-control"   style="max-width: fit-content;">
+                                <option value="" hidden disabled selected>Please select one</option>
+                                <option value="Expected">Expected</option>
+                                <option value="Unexpected">Unexpected</option>
+                            </select>
+                            <div *ngIf="IsTomatoQuantity"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                           
+                            <div *ngIf="IsTomatoQuantity" class="form-group">
+                                <label>Upload Evidence</label>
+                                <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                    id="fileUploadInputExample">
+                                <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                    <input type="text" class="form-control file-upload-info" disabled="" 
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                        placeholder="No file uploaded">
+                                    <span class="input-group-append">
+                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    </span>
+                                </div>
+                                <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                                </p>
+                            </div></td>
+                            <td>   
+                                <select (change)="selectTomatoRating($event)" class="form-control"   style="max-width: fit-content;">
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Poor">Poor</option>
+                                    
+                                </select>
+                                <div *ngIf="IsTomatoRating"><br><textarea type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></textarea></div>
+                               
+                                <div *ngIf="IsTomatoRating" class="form-group">
+                                    <label>Upload Evidence</label>
+                                    <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                        id="fileUploadInputExample">
+                                    <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                        <input type="text" class="form-control file-upload-info" disabled="" 
+                                            [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                            placeholder="No file uploaded">
+                                        <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                        </span>
+                                    </div>
+                                    <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                                    </p>
+                                </div></td>
+                </tr>
+                <tr>
+                    
+                    <td>
+                  
+                        <div> &nbsp;Soya Mince</div>
+                    </td>
+                    <td>   
+                        <select (change)="selectMince($event)" class="form-control"   style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="Expected">Expected</option>
+                            <option value="Unexpected">Unexpected</option>
+                        </select>
+                        <div *ngIf="IsMince"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                           
+                        <div *ngIf="IsMince" class="form-group">
+                            <label>Upload Evidence</label>
+                            <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                id="fileUploadInputExample">
+                            <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                <input type="text" class="form-control file-upload-info" disabled=""
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                    placeholder="No file uploaded">
+                                <span class="input-group-append">
+                                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                </span>
+                            </div>
+                            <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                            </p>
+                        </div></td>
+                    <td>
+                        <div><input type="text"  value="800 kg" disabled class="form-control" style="max-width: fit-content;">
+                        </div>
+                         </td> 
+                         <td>   
+                            <select (change)="selectMinceQuantity($event)" class="form-control"   style="max-width: fit-content;">
+                                <option value="" hidden disabled selected>Please select one</option>
+                                <option value="Expected">Expected</option>
+                                <option value="Unexpected">Unexpected</option>
+                            </select>
+                            <div *ngIf="IsMinceQuantity"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                           
+                            <div *ngIf="IsMinceQuantity" class="form-group">
+                                <label>Upload Evidence</label>
+                                <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                    id="fileUploadInputExample">
+                                <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                    <input type="text" class="form-control file-upload-info" disabled="" 
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                        placeholder="No file uploaded">
+                                    <span class="input-group-append">
+                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    </span>
+                                </div>
+                                <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                                </p>
+                            </div></td>
+                            <td>   
+                                <select (change)="selectMinceRating($event)" class="form-control"   style="max-width: fit-content;">
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Poor">Poor</option>
+                                    
+                                </select>
+                                <div *ngIf="IsMinceRating"><br><textarea type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></textarea></div>
+                               
+                                <div *ngIf="IsMinceRating" class="form-group">
+                                    <label>Upload Evidence</label>
+                                    <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                        id="fileUploadInputExample">
+                                    <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                        <input type="text" class="form-control file-upload-info" disabled=""
+                                            [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                            placeholder="No file uploaded">
+                                        <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                        </span>
+                                    </div>
+                                    <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                                    </p>
+                                </div></td>
+                </tr>
+                <tr>
+                  
+                    <td>
+                  
+                        <div> &nbsp;Sugar Beans</div>
+                    </td>
+                    <td>   
+                        <select (change)="selectBeans($event)" class="form-control"   style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="Expected">Expected</option>
+                            <option value="Unexpected">Unexpected</option>
+                        </select>
+                        <div *ngIf="IsBeans"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                           
+                        <div *ngIf="IsBeans" class="form-group">
+                            <label>Upload Evidence</label>
+                            <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                id="fileUploadInputExample">
+                            <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                <input type="text" class="form-control file-upload-info" disabled=""
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                    placeholder="No file uploaded">
+                                <span class="input-group-append">
+                                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                </span>
+                            </div>
+                            <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                            </p>
+                        </div></td>
+                    <td>
+                        <div><input type="text"  value="123 kg" disabled class="form-control" style="max-width: fit-content;">
+                        </div>
+                         </td> 
+                         <td>   
+                            <select (change)="selectBeansQuantity($event)" class="form-control"   style="max-width: fit-content;">
+                                <option value="" hidden disabled selected>Please select one</option>
+                                <option value="Expected">Expected</option>
+                                <option value="Unexpected">Unexpected</option>
+                            </select>
+                            <div *ngIf="IsBeansQuantity"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                           
+                            <div *ngIf="IsBeansQuantity" class="form-group">
+                                <label>Upload Evidence</label>
+                                <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                    id="fileUploadInputExample">
+                                <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                    <input type="text" class="form-control file-upload-info" disabled="" 
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                        placeholder="No file uploaded">
+                                    <span class="input-group-append">
+                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    </span>
+                                </div>
+                                <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                                </p>
+                            </div></td>
+                            <td>   
+                                <select (change)="selectBeansRating($event)" class="form-control"   style="max-width: fit-content;">
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Poor">Poor</option>
+                                    
+                                </select>
+                                <div *ngIf="IsBeansRating"><br><textarea type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></textarea></div>
+                               
+                                <div *ngIf="IsBeansRating" class="form-group">
+                                    <label>Upload Evidence</label>
+                                    <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                        id="fileUploadInputExample">
+                                    <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                        <input type="text" class="form-control file-upload-info" disabled="" 
+                                            [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                            placeholder="No file uploaded">
+                                        <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                        </span>
+                                    </div>
+                                    <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                                    </p>
+                                </div></td>
+                </tr>
+             
+
+                <tr>
+                    <td rowspan="2">Seasoning</td>
+                    <td>
+                  
+                        <div> &nbsp;Cooking Oil</div>
+                    </td>
+                    <td>   
+                        <select (change)="selectOil($event)" class="form-control"  style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="Expected">Expected</option>
+                            <option value="Unexpected">Unexpected</option>
+                        </select>
+                        <div *ngIf="IsOil"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                           
+                        <div *ngIf="IsOil" class="form-group">
+                            <label>Upload Evidence</label>
+                            <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                id="fileUploadInputExample">
+                            <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                <input type="text" class="form-control file-upload-info" disabled="" 
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                    placeholder="No file uploaded">
+                                <span class="input-group-append">
+                                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                </span>
+                            </div>
+                            <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                            </p>
+                        </div></td>
+                    <td>
+                        <div><input type="text"  value="200 Litre" disabled class="form-control" style="max-width: fit-content;">
+                        </div>
+                         </td> 
+                         <td>   
+                            <select (change)="selectOilQuantity($event)" class="form-control"  style="max-width: fit-content;">
+                                <option value="" hidden disabled selected>Please select one</option>
+                                <option value="Expected">Expected</option>
+                                <option value="Unexpected">Unexpected</option>
+                            </select>
+                            <div *ngIf="IsOilQuantity"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                           
+                            <div *ngIf="IsOilQuantity" class="form-group">
+                                <label>Upload Evidence</label>
+                                <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                    id="fileUploadInputExample">
+                                <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                    <input type="text" class="form-control file-upload-info" disabled=""
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                        placeholder="No file uploaded">
+                                    <span class="input-group-append">
+                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    </span>
+                                </div>
+                                <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                                </p>
+                            </div></td>
+                            <td>   
+                                <select (change)="selectOilRating($event)" class="form-control"   style="max-width: fit-content;">
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Poor">Poor</option>
+                                    
+                                </select>
+                                <div *ngIf="IsOilRating"><br><textarea type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></textarea></div>
+                               
+                                <div *ngIf="IsOilRating" class="form-group">
+                                    <label>Upload Evidence</label>
+                                    <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                        id="fileUploadInputExample">
+                                    <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                        <input type="text" class="form-control file-upload-info" disabled="" 
+                                            [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                            placeholder="No file uploaded">
+                                        <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                        </span>
+                                    </div>
+                                    <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                                    </p>
+                                </div></td>
+                </tr>
+                <tr>
+                    
+                    <td>
+                  
+                        <div> &nbsp;Iodised Salt</div>
+                    </td>
+                    <td>   
+                        <select (change)="selectSalt($event)" class="form-control"   style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="Expected">Expected</option>
+                            <option value="Unexpected">Unexpected</option>
+                        </select>
+                        <div *ngIf="IsSalt"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                           
+                        <div *ngIf="IsSalt" class="form-group">
+                            <label>Upload Evidence</label>
+                            <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                id="fileUploadInputExample">
+                            <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                <input type="text" class="form-control file-upload-info" disabled="" 
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                    placeholder="No file uploaded">
+                                <span class="input-group-append">
+                                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                </span>
+                            </div>
+                            <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                            </p>
+                        </div></td>
+                    <td>
+                        <div><input type="text" value="400kg" disabled class="form-control" style="max-width: fit-content;">
+                        </div>
+                         </td> 
+                         <td>   
+                            <select (change)="selectSaltQuantity($event)" class="form-control"   style="max-width: fit-content;">
+                                <option value="" hidden disabled selected>Please select one</option>
+                                <option value="Expected">Expected</option>
+                                <option value="Unexpected">Unexpected</option>
+                            </select>
+                            <div *ngIf="IsSaltQuantity"><br><input type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></div>
+                           
+                            <div *ngIf="IsSaltQuantity" class="form-group">
+                                <label>Upload Evidence</label>
+                                <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                    [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                    id="fileUploadInputExample">
+                                <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                    <input type="text" class="form-control file-upload-info" disabled="" 
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                        placeholder="No file uploaded">
+                                    <span class="input-group-append">
+                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    </span>
+                                </div>
+                                <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                                </p>
+                            </div></td>
+                            <td>   
+                                <select (change)="selectSaltRating($event)" class="form-control"   style="max-width: fit-content;">
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Poor">Poor</option>
+                                    
+                                </select>
+                                <div *ngIf="IsSaltRating"><br><textarea type="text"   placeholder="Type quantity" class="form-control" style="max-width: fit-content;"></textarea></div>
+                               
+                                <div *ngIf="IsSaltRating" class="form-group">
+                                    <label>Upload Evidence</label>
+                                    <input (change)="handleFileInput($event)" type="file" name="fileUploadInputExample"
+                                        [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" class="file-upload-default"
+                                        id="fileUploadInputExample">
+                                    <div class="input-group col-xs-12" (click)="openFileBrowser($event)">
+                                        <input type="text" class="form-control file-upload-info" disabled="" 
+                                            [ngClass]="{'is-invalid': isFormSubmitted && FileName == ''}" name="FileName"
+                                            placeholder="No file uploaded">
+                                        <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                        </span>
+                                    </div>
+                                    <p *ngIf="isFormSubmitted && FileName == '' " class="invalid-feedback">Please upload document
+                                    </p>
+                                </div></td>
+                </tr>
+                
+
+               
+            </tbody>
+        </table> 
+
+        <!--end date-->
+
+
+
+        <!--button-->
+        <br>
+
+        <button type="submit" class="btn btn-primary mr-2">Submit</button>
+        <button class="btn btn-light" (click)="modal.close('by: close icon');">Cancel</button>
+    </form>
+</div><!-- row end -->

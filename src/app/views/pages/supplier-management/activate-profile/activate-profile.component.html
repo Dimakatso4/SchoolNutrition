@@ -1,0 +1,240 @@
+
+
+<div class="row w-100 mx-0 auth-page">
+ <nav class="navbar navbar-expand-lg navbar-light bg-light" style="left: 0; top: 0; width: 100%">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="../../../../assets/images/DepartmentEducationLogo.png" style="width: 160px; height: auto;">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav> 
+  <div class="col-md-12 mx-auto">
+    <div class="card">
+      <div class="row">
+        <div class="col-md-5 col-lg-6 pr-md-0">
+          <div class="auth-left-wrapper"
+            style="background-image: url(../../../../assets/images/img-homepage-1.jpg); background-position: -150px 50%; background-repeat: no-repeat;">
+          </div>
+        </div>
+        <div class="col-md-7 col-lg-6">
+          <div class="auth-form-wrapper px-4 py-5">
+            <button *ngIf="multipleRoles" (click)="goBack()" type="button" class="close text-danger" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <a href="#" class="noble-ui-logo d-block m-2">
+              <img src="../../../../assets/images/DepartmentEducationLogo.png" style="width: 225px; height: auto">
+            </a>
+            <h5 *ngIf="!multipleRoles" class="text-muted font-weight-normal mb-4 login-text">Please fill in your login
+              details below to activate your account.
+            </h5>
+           
+            <form (ngSubmit)="onSubmit()" [formGroup]="requiredForm" class="forms-sample">
+             
+              <div class="form-group">
+                <label for="VendorNo" > Username
+                  <span class="required-asterisk">*</span>
+                </label>
+                  <input type="text" class="form-control" [(ngModel)]="VendorNo" 
+                    formControlName="VendorNo" [ngClass]="{'is-invalid': isFormSubmitted && Form.VendorNo.errors}"
+                    placeholder="Use VendorNo as Username">
+                    <p *ngIf="isFormSubmitted && Form.VendorNo.errors?.required" class="invalid">Field Required</p>
+              </div>
+              
+              <div  class="form-group">
+                <label for="password" >New Password
+                  <span class="required-asterisk">*</span>
+                </label>
+           
+         
+                <input type="{{showPassword ? 'text' : 'password' }}"class="form-control" [(ngModel)]="password" 
+                formControlName="password" [ngClass]="{'is-invalid': isFormSubmitted && Form.password.errors}"
+                placeholder="Type Password here....."       />
+                 <input type="checkbox" (click)="togglePassword()"> Show Password
+              
+           
+             
+                <p *ngIf="isFormSubmitted && Form.password.errors?.pattern" class="invalid">include 8 Digit  At Least One charecter, UpperCase &Number</p>
+                <p *ngIf="isFormSubmitted && Form.password.errors?.required" class="invalid">Field Required</p>
+              </div>
+              
+              <div  class="form-group">
+                <label for="confirmpassword">Confirm Password
+                  <span class="required-asterisk">*</span>
+                </label>
+             
+                <input type="{{showConfirm ? 'text' : 'password' }}" class="form-control" [(ngModel)]="confirmpassword" 
+                formControlName="confirmpassword"  [ngClass]="{'is-invalid': isFormSubmitted && Form.confirmpassword.errors || isForm1Submitted && confirmpassword != password}"
+                placeholder="Confirm Password here.....">
+                <input type="checkbox" (click)="toggleConfirm()"> Show Password
+              </div>
+              <p *ngIf="isForm1Submitted && form1.confirmpassword.errors?.required"
+              class="invalid">
+              Required
+            </p>
+              <p *ngIf="isForm1Submitted && confirmpassword != password" class="invalid">
+                Password don't match
+              </p>
+
+            
+              <div class="mt-3">
+  
+                <button  type="submit" class="btn btn-primary mr-2 mb-2 mb-md-0"
+               >Submit</button>
+               
+              </div>
+             
+            </form>
+
+          </div>
+        </div>
+      </div><!-- row -->
+    </div><!-- Card -->
+  </div><!-- Col-8 -->
+</div>
+<!--OLD 
+
+<nav class="sidebar">
+    <div class="">
+      
+  
+      <a class="sidebar-brand">
+        <img class="sidebar-logo" src="../assets/images/DepartmentEducationLogo.png">
+      </a>
+  
+  
+    </div>
+  </nav>
+  
+  
+  <h4 class="card-title text-primary htitle">Activate Profile</h4>
+  
+  
+  <div class="row hform">
+  
+  
+  
+    <div class="col-md-6 grid-margin ">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">Complete the form to activate your profile</h6>
+  
+          <form (ngSubmit)="formSubmit()" [formGroup]="requiredForm">
+  
+            <div class="form-group row">
+              <label for="VendorNo" class="col-sm-4 col-form-label"> Username
+                <span class="required-asterisk">*</span>
+              </label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" [(ngModel)]="VendorNo" 
+                  formControlName="VendorNo" 
+                  placeholder="Use VendorNo as Username">
+  
+               
+              </div>
+  
+            </div>
+  
+            <div class="form-group row">
+              <label for="password" class="col-sm-4 col-form-label">New Password
+                <span class="required-asterisk">*</span>
+              </label>
+              <div class="col-sm-8">
+                <input type="text" [(ngModel)]="password" class="form-control" 
+                  formControlName="password" pattern="^(?=.*[0-9])(?=.*[!@#$%^&*~-])[a-zA-Z0-9!@#$%^&*~-]{8,20}$"
+                  [ngClass]="{'is-invalid': isFormSubmitted && Form.password.errors}" placeholder="Type here"
+                  >
+                <div *ngIf="{'is-invalid': isFormSubmitted && Form.password.errors}" >
+                 
+                </div>
+                <div *ngIf="isFormSubmitted && Form.password.errors?.pattern" >
+                  <ul>
+                    Password should be:
+                    <li>
+                      A minimum of 8 characters
+                    </li>
+                    <li>
+                      contains atleast 1 UPPERCASE letter
+                    </li>
+                    <li>
+                      contains atleast 1 lowercase letter
+                    </li>
+                    <li>
+                      contains atleast 1 numeric character
+                    </li>
+                    <li>
+                      contains atleast 1 special character
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+  
+ <div class="form-group row">
+              <label for="confirmpassword" class="col-sm-4 col-form-label">Confirm Password
+                <span class="required-asterisk">*</span>
+              </label>
+              <div class="col-sm-8">
+                <input type="password" class="form-control"  formControlName="confirmpassword"
+                  [(ngModel)]="confirmpassword">
+                 
+   
+              </div>
+            </div>
+ 
+  
+            <div class="d-flex justify-content-center mt-2">
+              <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+          </form>
+  
+  
+        </div>
+      </div>
+    </div>  
+  
+  </div> 
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+    
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <form class="form-horizontal" method="" action="">
+    
+              <div class="form-group">
+                <label class="col-md-4 control-label">Email</label>
+                <div class="col-md-6">
+                  <input type="email" class="form-control" name="email" value="">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-4 control-label">Password</label>
+                <div class="col-md-6">
+                  <input id="password-field" type="password" class="form-control" name="password" value="secret" class="mdi mdi-eye text-success">
+                  <span toggle="#password-field" class="mdi mdi-eye text-success"></span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div> row -->

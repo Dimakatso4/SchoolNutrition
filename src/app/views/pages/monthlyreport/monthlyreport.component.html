@@ -1,0 +1,504 @@
+
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink=".">NSNP Monthly Expenditure Report </a></li>
+    <!-- <li class="breadcrumb-item active" aria-current="page">Results</li> -->
+  </ol>
+</nav>
+
+<div class="row" style="padding-left: 0.75rem; padding-right: 0.75rem;">
+  <div class="col-md-12 bg-primary text-white" style="padding: 20px 12px 12px 12px; margin: 25px 0">
+    <h2 class="mb-2">NSNP Monthly Expenditure Report</h2>
+    <hr>
+  </div>
+</div>
+
+<div>
+  <div class="row" style="margin-top:10px;margin-bottom: 10px;">
+    <!-- comment -->
+  </div>
+
+  <div>
+    <div class="row" style="margin-top:10px;margin-bottom: 10px;">
+    </div>
+  </div>
+
+  <hr style="background-color:#ac965e;" />
+
+  <div class="row">
+    <div class="col-md-12">
+      <button class="btn btn-primary float-right" (click)="openEditModel(editModel)">Add New Record</button>
+    </div>
+  </div>
+
+  <br>
+
+  <!-- modal -->
+
+  <ng-template #editModel let-modal>
+
+
+    <div class="card-header bg-secondary">
+      <h6 class="card-title text-white" style="margin-bottom: 0;">Monthly Fund Register</h6>
+    </div>
+    <!-- Beginning of the code -->
+      <div class="card-body">
+        <form>
+
+         <button class="btn btn-primary mr-2" style="width:250px" (click)="openEditModel(editModels)" (click)="changeText()">{{btnVal}}</button>
+
+        <ng-template #editModels let-modal>
+          <div class="row" style="padding-left: 0.75rem; padding-right: 0.75rem;">
+            <div class="col-md-12 bg-primary text-white" style="padding: 20px 12px 12px 12px; margin: 25px 0">
+              <h2 class="mb-2">NSNP Monthly Fund </h2><hr>
+            </div>
+          </div>
+        
+          <div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><b>Month</b> <br>
+              <br> {{curdate| date:'dd-MMMM-yyyy'}}
+            </label>
+            &nbsp;&nbsp;&nbsp;<label style="margin-left:40%"><b>Amount Received</b> <br><br>
+              <b>R</b>&nbsp;
+              <input type="number"  [(ngModel)]="monthlyFund" style="width:240px;margin-top:-1%" 
+              min="0"  [disabled]="isDisabled"
+              placeholder="#####.##" name="monthlyFund">
+              <br> 
+            </label>
+            <br><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><b>Balance</b> <br>
+              <b>&nbsp; &nbsp;{{monthlyFund - num1 | currency: "R"}} </b> 
+              <br> 
+            </label>
+            <br><br>
+            <button type="submit" (click)="modal.close('by: close icon');" (click)="disable()" class="btn btn-primary mr-2"
+              style="width:250px; margin-left: 20%;" (click)="saveReview()">Submit</button>
+            <button class="btn btn-light" (click)="modal.close('by: close icon');" style="width:250px">Save as Draft/Close</button>
+            <br><br><br>
+        
+          </div>
+        </ng-template>
+
+        <div style="margin-left:80%">
+          <b>{{monthlyFund | currency: "R"}}</b>
+        </div>
+          <br> <br>
+          
+          
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-group"> 
+                <label for="datePurchased"><b>Date </b>  
+                  <input type="date" class="form-control" [ngModelOptions]="{standalone: true}"
+                  name="datePurchased" #datePurchased="ngModel" [(ngModel)]="monthlyreport.formData.datePurchased"></label>
+                  
+              </div>
+              <div *ngIf="isFormSubmitted && !datePurchased">
+                field is required.
+              </div>
+              
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" *ngIf="showMyMessage">
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-group" class="woza">
+                  
+                  
+                  <div *ngFor="let value of values; let i = index;" style="margin-left:5%"> 
+                                 
+                    <label for="purchasedDate" style="margin-left:-5%;"><b>Item &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;Price </b>
+                      </label>  <br>
+                    <!-- <p *ngIf="showAddMessage"><b>ADD Items</b>
+                      <br>
+                      <label for="purchasedDate" style="margin-left:-5%;"><b>Item &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;Price </b>
+                        </label>  <br>
+                         
+                        <input type="text" name="item1"   id="item1"  [(ngModel)]="item1" [ngModelOptions]="{standalone: true}"
+                        style="width:155px; margin-left:-5%" placeholder="Item"> &nbsp;<b>R</b>&nbsp;
+                        <input type="number" name="num1"  id="num1"  [(ngModel)]="num1" [ngModelOptions]="{standalone: true}"
+                        style="width:130px;"> <br><br>
+                        <input type="text" name="item2"  [(ngModel)]="item2" placeholder="Item" [ngModelOptions]="{standalone: true}"
+                        style="width:155px;  margin-left:-5%"> &nbsp;<b>R</b>&nbsp;
+                        <input type="number" name="num2" [(ngModel)]="num2" [ngModelOptions]="{standalone: true}"
+                        style="width:130px;"> <br><br>
+                        <input type="text" name="item3"  [(ngModel)]="item3" placeholder="Item" [ngModelOptions]="{standalone: true}"
+                        style="width:155px; margin-left:-5%"> &nbsp;<b>R</b>&nbsp;
+                        <input type="number" name="num3"  [(ngModel)]="num3" [ngModelOptions]="{standalone: true}"
+                        style="width:130px;"> <br><br>
+                        <input type="text" name="item4"  [(ngModel)]="item4" placeholder="Item" [ngModelOptions]="{standalone: true}"
+                        style="width:155px; margin-left:-5%"> &nbsp;<b>R</b>&nbsp;
+                        <input type="number" name="num4"  [(ngModel)]="num4" [ngModelOptions]="{standalone: true}"
+                        style="width:130px;">
+                      
+                    </p> -->
+                   
+                    
+  
+                    
+                  <input type="text" [(ngModel)]="value.value" #name="ngModel" style="margin-left:-5%; width: 150px;" name="value{{i}}" [ngModelOptions]="{standalone: true}">&nbsp;&nbsp; <b>R</b>&nbsp;
+  
+                    <!-- <input type="number" [(ngModel)]="value.value2" #name="ngModel" id="item1" name="itemPrice{{i}}"  [ngModelOptions]="{standalone: true}"
+                    style="width:130px;"> -->
+                    <input type="number"  [(ngModel)]="num1" style="width:130px;" name="num1">
+                    
+                  <button (click)="removevalue(i)" style="border-style: none;border-radius: 50%;background: white;margin-left:85%;margin-top:-10%"><i class="mdi mdi-delete-forever" style="color:red;"></i></button>
+                    
+                  </div>
+                 
+                </div>
+                
+                <!-- <div class="form-group"> 
+                  <div *ngFor="let value of values; let i = index;" style="margin-left:5%"> -->
+                  <!-- <label for="purchasedDate" style="margin-left:-5%;"><b>Item &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;Price </b>
+                    </label> -->
+  
+                  <!-- <div> -->
+                    <!-- <input type="text" [(ngModel)]="value.value" #name="ngModel" style="margin-left:-5%; width: 150px;" name="value{{i}}" [ngModelOptions]="{standalone: true}">&nbsp;&nbsp; <b>R</b>&nbsp;
+  
+                    <input type="number" [(ngModel)]="value2.value" #name="ngModel" name="value2{{i}}" [ngModelOptions]="{standalone: true}"
+                    style="width:130px;"> -->
+                    
+                    <!-- <input type="number" minlength="0" [(ngModel)]="price"    name="price" formControlName="price"
+                    [ngModelOptions]="{standalone: true}" style="width:130px;" > -->
+                    
+                     <!-- <input type="text" name="price" onkeyup="addV(this.value)"> -->
+                    
+  
+                    <!-- <button (click)="removevalue(i)" style="border-style: none;border-radius: 50%;background: white;"><i class="mdi mdi-delete-forever text-dark"></i></button> -->
+                  <!-- </div>  -->
+                 
+                  <!-- <br>
+                  </div> -->
+                  
+                  <br>
+                    <div style="display:flex;flex-direction: row;">
+                      <button class="btn btn-light" (click)="addvalue()" (click)="showAddFields()" (click)="MessageSoon()" style="width: 200px;color:blue; height:25px ;"><b>+</b></button> &nbsp; &nbsp;&nbsp; &nbsp;
+                      <button class="btn btn-light"  style="width: 200px; height:25px;" (click)="add()"  (click)="showMessageSoon()" (click)="count()" [disabled]="num1 === '' ">SAVE</button>
+                    </div>
+  
+              </div>
+
+            </div>
+            
+
+            
+            <button #btn type="button" class="btn btn-light"  style="width: 200px; height: 35px;" (click)="showMessageSoon()" (click)="actionMethod(); btn.disabled = true;">ADD Items(s)</button>
+            
+
+          </div>
+          <br>
+          <!-- second row -->
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-group"> 
+                <label for="supplier"><b>Service Provider/Supplier</b>
+                  <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" 
+                  name="supplier" #supplier="ngModel"  [(ngModel)]="monthlyreport.formData.supplier"></label>
+              </div>
+              <div *ngIf="isFormSubmitted && !supplier">
+                field is required.
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-group"> 
+                <label for="total"><b>Sub Total</b> <br> 
+                  <!-- <b>&nbsp;{{num5| currency: "R"}}</b> <br> -->
+                  {{num1 | currency: "R"}}
+
+                </label>
+                  <br>
+              </div>
+            </div>
+          </div>
+
+          <!-- thirds row -->
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-group"> 
+                <label for="uploadInvoice"><b>Upload Invoice</b>
+                  <input type="file" id="file" (change)="handleFileInput($event.target.files)"
+                  name="uploadInvoice" #uploadInvoice="ngModel"  [(ngModel)]="monthlyreport.formData.uploadInvoice" 
+                  >
+                </label>
+              </div>
+              <div *ngIf="isFormSubmitted && !uploadInvoice">
+                field is required.
+              </div>
+            </div>
+          </div>
+          <!-- thirds row -->
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-group"> 
+                <div *ngIf="showMyMessage">
+                  <b>Balance</b> <br>
+                  {{monthlyFund - num1 | currency:"R"}}
+                <br>
+               
+                </div>
+
+              </div>
+              
+            </div>
+          </div>
+            <!-- TEST row -->
+           
+          
+           
+          <button type="submit" (click)="onSubmit(form)" class="btn btn-primary mr-2" (click)="saveReview2()" (click)="modal.close('by: close icon');" style="width: 350px;">Submit</button>
+          <button class="btn btn-light" (click)="modal.close('by: close icon');" style="width: 350px;">Cancel</button>
+        </form>
+      </div>
+
+    
+       <br>
+  </ng-template>
+  <br>
+  <!--table-->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table datatable class="table table-hover">
+          <thead class="bg-secondary">
+            <tr>
+              <td class="text-white">Date</td>
+              <td class="text-white">Service Provider/Supplier</td>
+              <td class="text-white">Payments <b>R</b></td>
+              <td class="text-white">Action </td>
+            </tr>
+
+          </thead>
+          <tbody>
+            <tr *ngFor="let pd of monthlyreport.list, let i = index">
+             <td>{{pd.purchasedDate}}</td>
+             <td>{{pd.supplier}}</td>
+              <td>{{pd.total}}</td>
+              
+              <td style="margin: 30%;" ><a (click)="openEditModel(editModel2 )" (click)="populateForm(pd)"><i class='far fa-eye'></i></a></td>
+
+            </tr>
+
+            <!-- <tr >
+              <td>11/01/2022</td>
+              <td>Eskom</td>
+               <td>1000</td>
+
+               
+               <td style="margin-left: 10%;" >
+                
+                <a (click)="openEditModel(editModel2 )" (click)="populateForm(pd)" style="margin-left: 40%;"><i class="mdi mdi-eye text-dark" style="color: blue;"></i></a></td>
+ 
+             </tr> -->
+            
+
+            <!-- last field before calculations -->
+            <!-- <tr>
+              <td>TOTAL</td>
+              <td></td>
+              <td></td>
+              <td>Total Payment: <b>R</b></td>
+            </tr> -->
+
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+  <!--table-->
+
+  <br>
+</div>
+
+<!-- EDIT THE TABLE WITH A MODAL -->
+<ng-template #editModel2 let-modal>
+ 
+
+  <div class="card-header bg-secondary">
+    <h6 class="card-title text-white" style="margin-bottom: 0;">Monthly Fund Register</h6>
+  </div>
+  <!-- Beginning of the code -->
+    <div class="card-body">
+      <form>
+
+       <button class="btn btn-primary mr-2" style="width:250px" (click)="openEditModel(editModels)" (click)="changeText()">{{btnVal}}</button>
+
+      <ng-template #editModels let-modal>
+        <div class="row" style="padding-left: 0.75rem; padding-right: 0.75rem;">
+          <div class="col-md-12 bg-primary text-white" style="padding: 20px 12px 12px 12px; margin: 25px 0">
+            <h2 class="mb-2">NSNP Monthly Fund </h2><hr>
+          </div>
+        </div>
+      
+        <div>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><b>Month</b> <br>
+            <br> {{curdate| date:'dd-MMMM-yyyy'}}
+          </label>
+          &nbsp;&nbsp;&nbsp;<label style="margin-left:40%"><b>Amount Received</b> <br><br>
+            
+            <input type="text"  [(ngModel)]="monthlyFund" style="width:240px;margin-top:-1%" 
+            min="0" (blur)="transformAmount($event)" [disabled]="isDisabled"
+            placeholder="#####.##" name="monthlyFund">
+            <br> 
+
+          </label>
+          <br><br>
+          <button type="submit" (click)="modal.close('by: close icon');" (click)="disable()" class="btn btn-primary mr-2"
+            style="width:250px; margin-left: 20%;" (click)="saveReview()">Save</button>
+          <button class="btn btn-light" (click)="modal.close('by: close icon');" style="width:250px">Close</button>
+          <br><br><br>
+      
+        </div>
+      </ng-template>
+
+      <div style="margin-left:80%">
+        <b>{{monthlyFund}}</b>
+      </div>
+        <br> <br>
+        
+        
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="form-group"> 
+              <label for="datePurchased"><b>Date </b>  
+                <input type="date" class="form-control" [ngModelOptions]="{standalone: true}"
+                name="datePurchased" #datePurchased="ngModel" [(ngModel)]="monthlyreport.formData.datePurchased"></label>
+                
+            </div>
+            <div *ngIf="isFormSubmitted && !datePurchased">
+              field is required.
+            </div>
+            
+          </div>
+
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="form-group">
+              <div *ngFor="let value of values; let i = index;" style="margin-left:5%"> 
+                <label for="purchasedDate" style="margin-left:-5%;"><b>Item &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;Price </b>
+                </label>  <br>
+                 <!-- <input type="text" [(ngModel)]="value.value" #name="ngModel" style="margin-left:-5%; width: 150px;" name="value{{i}}" [ngModelOptions]="{standalone: true}">&nbsp;&nbsp; <b>R</b>&nbsp; -->
+
+                <!-- <input type="number" [(ngModel)]="value2.value" #name="ngModel" name="value2{{i}}" [ngModelOptions]="{standalone: true}"
+                style="width:130px;"> -->
+                <input type="text" name="item1"   id="item1"  [(ngModel)]="item1" [ngModelOptions]="{standalone: true}"
+                style="width:155px; margin-left:-5%"> &nbsp;<b>R</b>&nbsp;
+                <input type="number" name="num1"  id="num1"  [(ngModel)]="num1" [ngModelOptions]="{standalone: true}"
+                style="width:130px;"> <br><br>
+                <input type="text" name="item2"  [(ngModel)]="item2" [ngModelOptions]="{standalone: true}"
+                style="width:155px;  margin-left:-5%"> &nbsp;<b>R</b>&nbsp;
+                <input type="number" name="num2" [(ngModel)]="num2" [ngModelOptions]="{standalone: true}"
+                style="width:130px;"> <br><br>
+                <input type="text" name="item3"  [(ngModel)]="item3" [ngModelOptions]="{standalone: true}"
+                style="width:155px; margin-left:-5%"> &nbsp;<b>R</b>&nbsp;
+                <input type="number" name="num3"  [(ngModel)]="num3" [ngModelOptions]="{standalone: true}"
+                style="width:130px;">
+                
+
+                
+              <button (click)="removevalue(i)" style="border-style: none;border-radius: 50%;background: white;"><i class="mdi mdi-delete-forever text-dark"></i></button>
+              
+              </div>
+
+            </div>
+            
+            <!-- <div class="form-group"> 
+              <div *ngFor="let value of values; let i = index;" style="margin-left:5%"> -->
+              <!-- <label for="purchasedDate" style="margin-left:-5%;"><b>Item &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;Price </b>
+                </label> -->
+
+              <!-- <div> -->
+                <!-- <input type="text" [(ngModel)]="value.value" #name="ngModel" style="margin-left:-5%; width: 150px;" name="value{{i}}" [ngModelOptions]="{standalone: true}">&nbsp;&nbsp; <b>R</b>&nbsp;
+
+                <input type="number" [(ngModel)]="value2.value" #name="ngModel" name="value2{{i}}" [ngModelOptions]="{standalone: true}"
+                style="width:130px;"> -->
+                
+                <!-- <input type="number" minlength="0" [(ngModel)]="price"    name="price" formControlName="price"
+                [ngModelOptions]="{standalone: true}" style="width:130px;" > -->
+                
+                 <!-- <input type="text" name="price" onkeyup="addV(this.value)"> -->
+                
+
+                <!-- <button (click)="removevalue(i)" style="border-style: none;border-radius: 50%;background: white;"><i class="mdi mdi-delete-forever text-dark"></i></button> -->
+              <!-- </div>  -->
+             
+              <!-- <br>
+              </div> -->
+              
+              <br>
+                <div>
+                  <button class="btn btn-light" (click)="addvalue()" style="width: 150px;"><b>ADD ITEM(s)</b></button> &nbsp; &nbsp;&nbsp; &nbsp;
+                  <button class="btn btn-light" disabled style="width: 150px;" (click)="add()" (click)="showMessageSoon()" [disabled]="!num1">SAVE</button>
+                </div>
+          </div>
+        </div>
+        <br>
+        <!-- second row -->
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="form-group"> 
+              <label for="supplier"><b>Service Provider/Supplier</b>
+                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" 
+                name="supplier" #supplier="ngModel"  [(ngModel)]="monthlyreport.formData.supplier"></label>
+            </div>
+            <div *ngIf="isFormSubmitted && !supplier">
+              field is required.
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="form-group"> 
+              <label for="total"><b>Sub Total</b> <br>
+                <b (blur)="transformAmount2($event)">R</b>&nbsp;{{num4}}
+              </label>
+                <br>
+            </div>
+          </div>
+        </div>
+
+        <!-- thirds row -->
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="form-group"> 
+              <label for="uploadInvoice"><b>Upload Invoice</b>
+                <input type="file" id="file" (change)="handleFileInput($event.target.files)"
+                name="uploadInvoice" #uploadInvoice="ngModel"  [(ngModel)]="monthlyreport.formData.uploadInvoice" 
+                >
+              </label>
+            </div>
+            <div *ngIf="isFormSubmitted && !uploadInvoice">
+              field is required.
+            </div>
+          </div>
+        </div>
+        <!-- thirds row -->
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="form-group"> 
+              <p *ngIf="showMyMessage"><b>Balance</b>
+              <br>
+              <b>:</b> &nbsp; {{monthlyFund}} - R{{num4}}<br>
+              <b>:</b> &nbsp; {{monthlyFund - num4}}
+            </p>
+
+            </div>
+            
+          </div>
+        </div>
+        
+        
+        <button type="submit" (click)="onSubmit(form)" class="btn btn-primary mr-2" (click)="saveReview2()" (click)="modal.close('by: close icon');" style="width: 350px;">Submit</button>
+        <button class="btn btn-light" (click)="modal.close('by: close icon');" style="width: 350px;">Cancel</button>
+      </form>
+    </div>
+
+  
+     <br>
+</ng-template>

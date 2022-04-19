@@ -1,0 +1,142 @@
+
+
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="../#">Verification Form</a></li>
+    </ol>
+</nav>
+
+<div class="row" style="padding-left: 0.75rem; padding-right: 0.75rem;">
+    <div class="col-md-12 bg-primary text-white" style="padding: 20px 12px 12px 12px; margin: 25px 0">
+        <h2 class="mb-2">View Verification Form</h2>
+        <hr>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+      <div class="table-responsive">
+            <table  datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" id="datatable" class="table table-hover mb-0">
+                <thead  class="bg-secondary text-white">
+                    <tr>
+                        <!-- <td class="tableheadStyle text-white" hidden>No</td>                         -->
+                        <td class="tableheadStyle text-white">Emis Number</td>
+                        <td class="tableheadStyle text-white">School Name</td>
+                        <td class="tableheadStyle text-white">Date Received</td>                       
+                        <td class="tableheadStyle text-white">Action</td>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let obj of ListOfPlace let i=index">
+                    <tr>
+                        <!-- <td hidden>{{obj.verificationId}}</td>                         -->
+                        <td>{{obj.emisNumber}}</td>
+                        <td>{{obj.schoolName}}</td>
+                        <td>{{obj.dateReceived|date:'YYYY-MM-dd'}}</td>
+                        <td>
+                            <a style="margin-left: 30px;"><i class="mdi mdi-eye text-dark" (click)="openEditModal(editModal,obj,i)"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>    
+</div>
+    
+    <ng-template #smModal let-modal>
+        <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="exampleModalLabel">Number Of learners on NSNP Per Grade</h5>
+            <button type="button" class="close text-white" (click)="modal.close('by: close icon')" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="form-group">
+                    <label>Grade</label>
+                </div>
+                <input type="text" class="form-control">
+            </div>
+            
+            <div class="row">
+                <div class="form-group">
+                    <label>Number of learners</label>
+                </div>
+                <input type="text" class="form-control">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Close</button>
+            <button type="button" class="btn btn-primary" (click)="modal.close('by: save button')">Add</button>
+        </div>
+    </ng-template>
+
+    <ng-template #editModal let-modal>
+
+        <div class="modal-header bg-primary text-white">
+    
+            <h3 class="modal-title" id="exampleModalLabel">Verification Form</h3>
+    
+            <button type="button" class="close text-white" (click)="modal.close('by: close icon')" aria-label="Close">
+    
+                <span aria-hidden="true">&times;</span>
+    
+            </button>    
+        </div>    
+        <div class="modal-body">    
+            <div class="container">
+                <div  class="table-responsive table-wrap">
+                    <table  datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" id="datatable" class="table table-hover mb-0">
+                        <thead  class="bg-secondary text-white">
+                            <tr>
+                                <td class="tableheadStyle text-white">Grade</td>                        
+                                <td class="tableheadStyle text-white">Number of learners</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let x of parseList">
+                                <td>{{x.Grade}}</td>                        
+                                <td>{{x.NoOfLearners}}</td>                                                               
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>                
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">   
+                        <label>What quintile is your school?</label>                   
+                        <input type="text" class="form-control" [(ngModel)]="quintileEdit" readonly id="modalQuintile">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">    
+                        <label>Where do the majority of children live?</label>  
+                        <input type="text" class="form-control" [(ngModel)]="childrenLiveEdit" readonly id="modalChildrenLive">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">   
+                        <label>School roll</label>                   
+                        <input type="text" class="form-control" [(ngModel)]="schoolRollEdit" readonly id="modalSchoolRoll">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">    
+                        <label>What are facilities are in your school?</label>  
+                        <input type="text" class="form-control" [(ngModel)]="facilitiesEdit" readonly id="modalFacilities">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- <div class="modal-footer">    
+             <button type="button" class="btn btn-secondary">Close</button> 
+            <button type="button" class="btn btn-primary" (click)="SaveGrade()"> Save </button>
+    
+        </div> -->
+    
+    </ng-template>    
+   
+       

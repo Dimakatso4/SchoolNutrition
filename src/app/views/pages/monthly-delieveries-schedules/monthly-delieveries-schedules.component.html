@@ -1,0 +1,309 @@
+<div class="my-overlay" *ngIf="showOverlay">
+    <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+</div>
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Monthly Delieveries Schedule</a></li>
+    </ol>
+</nav>
+
+<div class="row headingStyle1">
+    <div class="col-md-12 bg-primary text-white headingStyle2">
+        <h3>Monthly Delieveries Schedule</h3>
+        <hr>
+    </div>
+</div>
+
+<!--<div class="row">
+    <div class="col-md-12">
+        <button class="btn btn-primary float-right"  (click)="openXlModal(xlModal)">Create Delievery Dates(Monthly)</button>
+    </div>
+</div>-->
+<div class="row">
+    <div class="col-md-12">
+        <button class="btn block btn-primary float-right"  (click)="goBack()">Go Back</button>
+    </div>
+</div>
+<br>
+<!--<ngb-accordion [closeOthers]="true">
+    <ngb-panel title="Set and View Monthly and Weekly Delievery Dates">
+      <ng-template class="bg-light" ngbPanelContent>-->
+
+        <div class="alert alert-success" role="alert"  *ngIf="userRole == 'Head Office Director'">
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <button mat-icon-button [matMenuTriggerFor]="appMenu">
+                        <mat-icon>calendar_today</mat-icon>
+                          </button>
+                          <mat-label>Perishable Products Delievery Dates</mat-label> 
+                          <mat-menu #appMenu="matMenu" class="drop-calendar" >
+                              <div (click)="$event.stopPropagation()" >
+                                  <mat-calendar 
+                                  #calendar
+                                  (selectedChange)="select($event,calendar)" 
+                                  [dateFilter]="myFilter" 
+                                  [startAt]="startAt"
+                                  [minDate]="minDate" 
+                                  [dateClass]="isSelected" >
+                                </mat-calendar>
+                              </div>
+                          </mat-menu>
+                    </div>
+
+                    <div class="col-md-3">
+                      
+                            <table role="table" class="table table-hover">
+                                <thead>
+                                    <tr >
+                                        <th class="text-dark">Perishable Delievery Dates</th>
+                                     
+                                       
+                                    </tr>
+                                </thead>
+                    
+                                <tbody>
+                                    <tr class="text-dark" *ngFor="let date of daysSelected">
+                                        <td >{{date}}</td>
+                                   
+                                    </tr>
+                                </tbody>
+                            </table>
+                        
+                    </div>
+
+                    <div class="col-md-3">
+                        <button mat-icon-button [matMenuTriggerFor]="appMenu1">
+                        <mat-icon>calendar_today</mat-icon>
+                            </button>
+                            <mat-label>Non-Perishable Products Delievery Dates</mat-label>
+                            <mat-menu #appMenu1="matMenu" class="drop-calendar" >
+                                <div (click)="$event.stopPropagation()" >
+                                    <mat-calendar 
+                                        #calendar 
+                                        (selectedChange)="onSelect($event,calendar)" 
+                                        [dateClass]="perishableisSelected"
+                                        [dateFilter]="myDateFilter"
+                                        [startAt]="startAt"
+                                        [minDate]="minDate"  
+                                        [dateClass]="isSelected" >
+                                    </mat-calendar>
+                                </div>
+                        </mat-menu>
+                        
+                    </div>
+
+                    <div class="col-md-3">
+                    
+                            <table role="table" class="table table-hover">
+                                <thead>
+                                    <tr >
+                                        
+                                        <th class="text-dark">Non-Perishable Delievery Dates</th>
+                                       
+                                    </tr>
+                                </thead>
+                    
+                                <tbody>
+                                    <tr class="text-dark" *ngFor="let date of perishabledaysSelected">
+                                        <td >{{date}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        
+                    </div>
+
+                </div>
+
+            <div class="card-footer">
+                <button class="btn btn-primary mr-2"(click)="createDate()">Submit</button>
+                <button type="button" class="btn btn-warning">Cancel</button>
+            </div>
+        </div> 
+        
+     <!-- </ng-template> 
+    </ngb-panel>   
+</ngb-accordion>-->
+
+<div class="row justify-content-center ">
+    <div class="col-sm-12 col-md-12 col-12 col-xl-12">
+      <div class="card overflow-hidden">
+        <div class="card-body">
+          <full-calendar 
+          [options]='calendarOptions'
+        ></full-calendar>
+          <br>
+          <div id="fullCalModal" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 id="modalTitle1" class="modal-title"></h4>
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
+                </div>
+                <div id="modalBody1" class="modal-body"></div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button class="btn btn-primary">Event Page</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div id="createEventModal" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 id="modalTitle2" class="modal-title">Add event</h4>
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
+                </div>
+                <div id="modalBody2" class="modal-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="formGroupExampleInput">Example label</label>
+                      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input">
+                    </div>
+                    <div class="form-group">
+                      <label for="formGroupExampleInput2">Another label</label>
+                      <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button class="btn btn-primary">Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+
+<br>
+<!--<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive table-hover">
+            <table role="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover">
+                <thead>
+                    <tr class="bg-secondary">
+                        <th class="text-white">ID</th>
+                        <th class="text-white">Food Group</th>
+                        <th class="text-white">Product Type</th>
+                        <th class="text-white">Gm/Ml/Each(Primary School)</th>
+                        <th class="text-white">Gm/Ml/Each(Secondary School)</th>
+                        <th class="text-white">Unit</th>
+                        <th class="text-white">Edit</th>
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    <tr class="text-dark" *ngFor="let product of delieveryDates">
+                        <td >{{product.productID}}</td>
+                        <td>{{product.foodGroupDescription}}</td>
+                        <td>
+                            {{product.typeDescription}}
+                        </td>
+                        <td>
+                            {{product.grammage}}
+                        </td>
+                        <td>
+                            {{product.grammageSecondary}}
+                        </td>
+                        <td>
+                            {{product.unitDescription}}
+                        </td> 
+                        <td>
+                            <a><i data-toggle="tooltip" data-placement="right" title="Update Product"
+                                class="mdi mdi-pencil" 
+                                ></i>
+                            </a>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="isPageLoading" class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+    </div>
+</div>-->
+
+
+
+<!-- Modal Create Handover  -->
+<!--<ng-template #xlModal let-modal>
+    <div class="modal-header bg-primary text-white headingStyle2 clear-top-space">
+        
+        <h4 class="modal-title text-white" id="exampleModalLabel">Create Delievery Dates(Monthly)</h4>
+        <button type="button" class="close text-white"
+            (click)="modal.close('by: close icon')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <form (submit)="saveWeeklyMothlySchedule()" [formGroup]="validationForm">
+            <div class="row">
+                <div class="col-md-3">
+                    <button mat-icon-button [matMenuTriggerFor]="appMenu">
+                        <mat-icon>calendar_today</mat-icon>
+                      </button>
+                      <mat-label>perishable Products Dates</mat-label>
+                      <mat-menu #appMenu="matMenu" class="drop-calendar" >
+                          <div (click)="$event.stopPropagation()" >
+                              <mat-calendar [dateFilter]="myFilter" #calendar (selectedChange)="select($event,calendar)" [dateClass]="isSelected"></mat-calendar>
+                          </div>
+                      </mat-menu>
+                      <pre>
+                      {{daysSelected|json}}
+                      </pre> 
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <mat-form-field>
+                        <mat-label>perishable Products Dates</mat-label>
+                        <input matInput 
+                        [(ngModel)]="weeklyDate"
+                        formControlName="weeklyDate"
+                         name="weeklyDate" 
+                        [matDatepickerFilter]="myFilter" [matDatepicker]="picker" placeholder="Choose a date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker ></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                    <mat-form-field>
+                        <mat-label>perishable Products Dates</mat-label>
+                        <input matInput  
+                        [matDatepicker]="picker2" 
+                        [(ngModel)]="monthlyDate"
+                        formControlName="monthlyDate"
+                        name="monthlyDate" 
+                        placeholder="Choose a date">
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2 ></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button class="btn btn-primary mr-2">Submit</button>
+                <button type="button" (click)="modal.close('by: close icon')" class="btn btn-warning">Cancel</button>
+            </div>
+        </form>
+    </div>
+</ng-template>-->

@@ -1,0 +1,312 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Delivery Schedule Queries</a></li>
+        <!-- <li class="breadcrumb-item active" aria-current="page">Results</li> -->
+    </ol>
+</nav>
+
+<div class="row" style="padding-left: 0.75rem; padding-right: 0.75rem;">
+    <div class="col-md-12 bg-primary text-white" style="padding: 20px 12px 12px 12px; margin: 25px 0">
+        <h3 class="mb-2">School Delivery Schedule Queries</h3>
+        <hr>
+    </div>
+</div>
+<div>
+    <br />
+</div>
+
+
+<div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+        <div cass="card-body">
+        
+        <div class="row">
+            <h4>Products Delievery Queries Cards</h4>
+        </div>    
+            <div  class="row alert alert-warning" role="alert" *ngFor="let product of queryList">
+                    <div class="col-md-12  mt-5">
+                    
+                            <h4 class="text-danger">Food Group</h4>
+                            
+                            <input type="text"   value="{{product.foodGroupDescription}}" class="form-control"  readonly />
+                            
+                        
+                    </div>   
+                
+
+                    <div  class="col-md-9 mt-5">
+                        <h4 class="text-danger">Product Type</h4>
+                        
+                        <input type="text"  value="{{product.typeDescription}}" class="form-control"  readonly />
+                
+                    </div>
+                    
+                    <div  class="col-md-3 mt-5">  
+                        <h4 class="text-danger">Is Product Wrong</h4> 
+                        
+                        <select [(ngModel)]='product.isProductWrong' readonly
+                            class="form-control"
+                            style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value= false>Yes</option>
+                            <option value= true >No</option>
+                    </select >
+                    
+                    </div >
+                    <div class="col-md-12  mt-4"  *ngIf="product.isProductWrong == 'true'">
+                        <h4 class="text-danger">Uploaded Evidence</h4> 
+                        <div class="row" > 
+                            <div  class="col-md-4" *ngFor=" let doc of convertDocsToJSON(product.documentPath1)">
+                                <div class="card" style="width: 18rem;">
+                                    <a href="{{doc}}" target="_blank">
+                                        <img src="{{doc}}"  width="300" height="200" alt="evidence">
+                                    </a>
+                                </div>
+                            </div>
+                           
+                        </div>
+
+                    <div class="col-md-12  mt-5" >
+                    
+                        <h4 class="text-danger" *ngIf="product.isProductWrong == 'true'">Capture Porduct Type Recieved</h4>
+                        
+                        <input type="text"   [(ngModel)]="product.wrongProductName"  class="form-control"  *ngIf="product.isProductWrong == 'true'" readonly/>
+                        
+                    
+                </div>   
+                    
+                    <div  class="col-md-3 mt-4">
+                        <h4 class="text-danger">Expected Product Quantity</h4> 
+                        
+                            <input type="number"  [(ngModel)]='product.quantity'
+                                [ngModelOptions]="{standalone: true}"
+                                placeholder="Type quantity"
+                                class="form-control" style="width: 120px;"  readonly />
+                            
+                    
+                    </div>
+                    
+                    <div  class="col-md-3  mt-4">
+                        <h4 class="text-danger">Is Quantity Wrong</h4> 
+                            
+                        <select  [(ngModel)]='product.isQuantityWrong' readonly
+                            class="form-control"
+                            style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value=false>Yes</option>
+                            <option value=true>No</option>
+                        </select>
+                        
+                    </div >
+
+                 
+
+                    <div  class="col-md-3 mt-4">
+                        <h4 class="text-danger">Recieved Quantity</h4> 
+                        
+                        <div><input type="number"  [(ngModel)]='product.quantityRecieved' readonly
+                                [ngModelOptions]="{standalone: true}"
+                                placeholder="Type quantity"
+                                class="form-control" style="width: 120px;" /></div>
+                    </div >
+                    <br>
+                    <div class="col-md-12  mt-4"  *ngIf="product.isQuantityWrong == 'true'">
+                        <h4 class="text-danger">Uploaded Evidence</h4> 
+                        <div class="row" > 
+                            <div  class="col-md-4" *ngFor=" let doc of convertDocsToJSON(product.documentPath2)">
+                                <div class="card" style="width: 18rem;">
+                                    <a href="{{doc}}" target="_blank">
+                                        <img src="{{doc}}"  width="300" height="200" alt="evidence">
+                                    </a>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    
+                    <div  class="col-md-3 mt-4">  
+                        <h4 class="text-danger">Is Quality Wrong</h4> 
+                        
+                        <select [(ngModel)]='product.isQualityWrong'  readonly
+                            class="form-control" style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="false">Goood</option>
+                            <option value="true">Poor</option>
+                            
+                        </select>
+                        
+                    </div >
+                    
+                    <div class="col-md-12  mt-4"  *ngIf="product.isQualityWrong == 'true'">
+                        <h4 class="text-danger">Uploaded Evidence</h4> 
+                        <div class="row" > 
+                            <div  class="col-md-4" *ngFor=" let doc of convertDocsToJSON(product.documentPath)">
+                                <div class="card" style="width: 18rem;">
+                                    <a href="{{doc}}" target="_blank">
+                                        <img src="{{doc}}"  width="300" height="200" alt="evidence">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                        
+                        <!--<dropzone   class=" row alert alert-warning dropzone-container" [config]="config" class="dropzone"
+                        [message]="'Click or drag to upload evidence'" (error)="onUploadError($event)"
+                        (success)="onUploadSuccess($event,i)">
+                        </dropzone>-->
+                        <hr>   
+                    </div> 
+                    <br>    
+                <hr>
+            </div>
+                    <br>
+                    <!--<div>
+                        <button class="btn btn-primary mt-2 " (click)="SubmitDeliveryResults()">Submit</button>
+                        &nbsp;&nbsp;
+                        <button class="btn btn-danger mt-2 " (click)="resetDropzoneUploads()">Cancel</button>
+                    </div>-->
+               
+            <!--</form>-->
+    
+            </div>
+
+        </div>
+
+    </div>
+
+    <br>
+    <br>
+
+    
+<div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+        <div cass="card-body">
+        
+        <div class="row">
+            <h4>Products Delievery Note Cards</h4>
+        </div>    
+            <div  class="row alert alert-warning" role="alert" *ngFor="let product of deliveryNoteList.perishablesList">
+                    <div class="col-md-12  mt-5">
+                    
+                            <h4 class="text-danger">Food Group</h4>
+                            
+                            <input type="text"   value="{{product.foodGroupDescription}}" class="form-control"  readonly />
+                            
+                        
+                    </div>   
+                
+
+                    <div  class="col-md-9 mt-5">
+                        <h4 class="text-danger">Product Type</h4>
+                        
+                        <input type="text"  value="{{product.typeDescription}}" class="form-control"  readonly />
+                
+                    </div>
+                    
+                    <div  class="col-md-3 mt-5">  
+                        <h4 class="text-danger">Is Product Wrong</h4> 
+                        
+                        <select [(ngModel)]='product.isProductWrong' readonly
+                            class="form-control"
+                            style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value= true>Yes</option>
+                            <option value= false>No</option>
+                    </select >
+                    
+                    </div >
+
+                    <div class="col-md-12  mt-5" >
+                    
+                        <h4 class="text-danger" *ngIf="product.isProductWrong == 'true'">Capture Porduct Type Recieved</h4>
+                        
+                        <input type="text"   [(ngModel)]="product.wrongProductName"  class="form-control"  *ngIf="product.isProductWrong == 'true'" readonly/>
+                        
+                    
+                </div>   
+                    
+                    <div  class="col-md-3 mt-4">
+                        <h4 class="text-danger">Expected Product Quantity</h4> 
+                        
+                            <input type="number"  [(ngModel)]='product.quantity'
+                                [ngModelOptions]="{standalone: true}"
+                                placeholder="Type quantity"
+                                class="form-control" style="width: 120px;"  readonly />
+                            
+                    
+                    </div>
+                    
+                    <div  class="col-md-3  mt-4">
+                        <h4 class="text-danger">Is Quantity Wrong</h4> 
+                            
+                        <select  [(ngModel)]='product.isQuantityWrong' readonly
+                            class="form-control"
+                            style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value=true>Yes</option>
+                            <option value=false>No</option>
+                        </select>
+                        
+                    </div >
+
+                    <div  class="col-md-3 mt-4">
+                        <h4 class="text-danger">Recieved Quantity</h4> 
+                        
+                        <div><input type="number"  [(ngModel)]='product.quantityRecieved' readonly
+                                [ngModelOptions]="{standalone: true}"
+                                placeholder="Type quantity"
+                                class="form-control" style="width: 120px;" /></div>
+                    </div >
+                    <br>
+                    
+                    <div  class="col-md-3 mt-4">  
+                        <h4 class="text-danger">Is Quality Wrong</h4> 
+                        
+                        <select [(ngModel)]='product.isQualityWrong'  readonly
+                            class="form-control" style="max-width: fit-content;">
+                            <option value="" hidden disabled selected>Please select one</option>
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
+                            
+                        </select>
+                        
+                    </div >
+                    
+                    <div class="col-md-12  mt-4"  *ngIf="product.isProductWrong == 'true' || product.isQualityWrong == 'true' || product.isQuantityWrong == 'true'">
+                        <h4 class="text-danger">Uploaded Evidence</h4> 
+                        <div class="row" > 
+                            <div  class="col-md-4" *ngFor=" let doc of convertDocsToJSON(product.documentPath)">
+                                <div class="card" style="width: 18rem;">
+                                    <a href="{{doc}}" target="_blank">
+                                        <img src="{{doc}}"  width="300" height="200" alt="evidence">
+                                    </a>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        
+                        
+                        <!--<dropzone   class=" row alert alert-warning dropzone-container" [config]="config" class="dropzone"
+                        [message]="'Click or drag to upload evidence'" (error)="onUploadError($event)"
+                        (success)="onUploadSuccess($event,i)">
+                        </dropzone>-->
+                        <hr>   
+                    </div> 
+                    <br>    
+                <hr>
+            </div>
+                    <br>
+                    <!--<div>
+                        <button class="btn btn-primary mt-2 " (click)="SubmitDeliveryResults()">Submit</button>
+                        &nbsp;&nbsp;
+                        <button class="btn btn-danger mt-2 " (click)="resetDropzoneUploads()">Cancel</button>
+                    </div>-->
+               
+            <!--</form>-->
+    
+            </div>
+
+        </div>
+
+    </div>

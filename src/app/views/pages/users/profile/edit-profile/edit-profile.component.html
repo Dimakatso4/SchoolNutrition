@@ -1,0 +1,314 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink=".">Edit Profile</a></li>
+
+    </ol>
+  </nav>
+  <div  class="row" *ngIf="roleName !== 'SUPPLIER'">
+    <div class="col-md-12 stretch-card">
+      <div class="card">
+        <div class="card">
+            <div class="card-header">
+                Edit User
+            </div>
+            <div class="card-body">
+                    <div class="row" style="margin-bottom: 1rem;">
+                        <div class="col-md-12">
+                            <h4><strong>Personal Information</strong></h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="supplierName">Name<span class="required-asterisk">*</span></label>
+                                <input type="text"  class="form-control"  [(ngModel)]="firstname" name="firstname" id="firstname" autocomplete="off" placeholder="Type here" #requried="ngModel" required>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Surname">Surname<span class="required-asterisk">*</span></label>
+                                <input type="text" class="form-control" [(ngModel)]="surname" name="surname" id="surname" autocomplete="off" placeholder="Type here"  #requried="ngModel" required>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="gender">Gender<span class="required-asterisk">*</span></label>
+                            <input type="text"  class="form-control"  [(ngModel)]="gender" name="gender" id="gender" 
+                                autocomplete="off" placeholder="Type here" #requried="ngModel" required>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="idNumber">ID Number<span class="required-asterisk">*</span></label>
+                            <input type="text"  class="form-control"  [(ngModel)]="idNumber" name="idNumber" id="idNumber"
+                                autocomplete="off" placeholder="Type here" #requried="ngModel" required>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label for="nationality">Nationality<span class="required-asterisk">*</span></label>
+                            <input type="text"  class="form-control"  [(ngModel)]="nationality" name="nationality" id="nationality"
+                                autocomplete="off" placeholder="Type here" #requried="ngModel" required>
+            
+                          </div>
+                        </div>
+                      </div><!--  Gender & ID & Nationality  -->
+                    <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;">
+                        <div class="col-md-12">
+                            <h4><strong>Address Information</strong></h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="houseNumber">House Number</label>
+                                <input type="houseNumber" class="form-control"  [(ngModel)]="houseNumber" id="houseNumber" autocomplete="off" placeholder="Type here" #requried="ngModel" required>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="streetName">Street Name</label>
+                                <input type="text" class="form-control"  [(ngModel)]="streetName" id="streetName" autocomplete="off" placeholder="Type here" #requried="ngModel" required>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="row">                      
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="suburb">Suburb<span class="required-asterisk">*</span></label>
+                                <input type="text"  class="form-control"  [(ngModel)]="suburb" id="suburb" autocomplete="off" placeholder="Type here">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="city">City<span class="required-asterisk">*</span></label>
+                                <input type="text" [value]="newUser.city" class="form-control"  [(ngModel)]="city" id="city" autocomplete="off" placeholder="Type here">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="postalCode">Postal Code<span class="required-asterisk">*</span></label>
+                                <input type="text" [value]="newUser.postalCode" class="form-control"  [(ngModel)]="postalCode" id="postalCode" autocomplete="off" placeholder="Type here">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;">
+                        <div class="col-md-12">
+                            <h4><strong>Contact Information</strong></h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="cellNumber">Contact Number<span class="required-asterisk">*</span></label>
+                                <input type="text" class="form-control" [(ngModel)]="cellNumber" id="cellNumber" autocomplete="off" placeholder="Type here" >
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="emailAddress">Email Address<span class="required-asterisk">*</span></label>
+                                <input type="email" class="form-control"  [(ngModel)]="emailAddress"  id="emailAddress" autocomplete="off" placeholder="Type here" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;">
+                        <div class="col-md-12">
+                            <h4><strong>Account Information</strong></h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" *ngIf="level == 'Head Office' || level == 'District' || level == 'School'">
+                            <div class="form-group">
+                                <label for="level">Office Level<span class="required-asterisk">*</span></label>
+                                <input type="text" class="form-control" [(ngModel)]="level" id="level" autocomplete="off" placeholder="Type here" readonly >
+                            </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="level == 'District' || level == 'School'">
+                            <div class="form-group">
+                                <label for="region">Region<span class="required-asterisk">*</span></label>
+                                <input type="text" class="form-control"  [(ngModel)]="region"  id="region" autocomplete="off" placeholder="Type here" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;" *ngIf="level == 'District' || level == 'School'">
+                        <div class="col-md-12">
+                            <h4><strong>School Information</strong></h4>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="level == 'District' || level == 'School'">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="distName">District<span class="required-asterisk">*</span></label>
+                                <input type="text" class="form-control" [(ngModel)]="distName" id="distName" autocomplete="off" placeholder="Type here" readonly >
+                            </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="level == 'School'">
+                            <div class="form-group">
+                                <label for="school">School Name<span class="required-asterisk">*</span></label>
+                                <input type="text" class="form-control"  [(ngModel)]="school"  id="school" autocomplete="off" placeholder="Type here" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="position">Position<span class="required-asterisk">*</span></label>
+                                <input type="text" class="form-control" [(ngModel)]="position" id="position" autocomplete="off" placeholder="Type here" readonly >
+                            </div>
+                        </div>
+                    </div>                
+
+        
+                    <button type="submit" class="btn btn-primary mr-2" (click)="saveUpdates()">Submit</button>
+                    <button class="btn btn-light"  (click)="cancel()" >Cancel</button>
+              
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--supplier profile-->
+  <div class="row" *ngIf="roleName == 'SUPPLIER'">
+    <div class="col-md-8 stretch-card">
+      <div class="card">
+        <div class="card">
+            <div class="card-header">
+                Edit Profile
+            </div>
+            <div class="card-body">
+                    <div class="row" style="margin-bottom: 1rem;">
+                        <div class="col-md-12">
+                            <h4>Personal Information</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="supplierName">Name</label>
+                                <input type="text"  class="form-control"  [(ngModel)]="supplierName" name="supplierName" id="supplierName" autocomplete="off" placeholder="Type here" #requried="ngModel" required>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Surname">Surname</label>
+                                <input type="text" class="form-control" [(ngModel)]="surname" name="surname" id="surname" autocomplete="off" placeholder="Type here"  #requried="ngModel" required>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;">
+                        <div class="col-md-12">
+                            <h4>Address Informations</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Address1">Address Line1</label>
+                                <input type="type" class="form-control"  [(ngModel)]="Address1" id="Address1" autocomplete="off" placeholder="Type here" #requried="ngModel" required>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Address2">Address Line2</label>
+                                <input type="text" class="form-control"  [(ngModel)]="Address2" id="Address2" autocomplete="off" placeholder="Type here"  #requried="ngModel" required>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="town">Town</label>
+                                <input type="text" class="form-control"  [(ngModel)]="town" id="town" autocomplete="off" placeholder="Type here" #requried="ngModel" required>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="City">City</label>
+                                <input type="text" class="form-control"  [(ngModel)]="City" id="City" autocomplete="off" placeholder="Type here">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Province">Province</label>
+                                <input type="text" class="form-control"  [(ngModel)]="Province" id="Province" autocomplete="off" placeholder="Type here" #requried="ngModel" required>
+                                <!-- <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p> -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="PostalCode">Postal Code</label>
+                                <input type="text" class="form-control"  [(ngModel)]="PostalCode" id="PostalCode" autocomplete="off" placeholder="Type here">
+                            </div>
+                        </div>
+                    </div>
+   
+                    <div class="row" style="margin-bottom: 1rem; margin-top: 1rem;">
+                        <div class="col-md-12">
+                            <h4>Contact Information</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="contactNo">Contact Number</label>
+                                <input type="text" class="form-control" [(ngModel)]="contactNo" id="contactNo" autocomplete="off" placeholder="Type here" >
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" class="form-control"  [(ngModel)]="email"  id="email" autocomplete="off" placeholder="Type here" >
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="row" style="margin-bottom: 1rem; margin-top: 1rem;">
+                        <div class="col-md-12">
+                            <h4>School Information</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="districtCode">District</label>
+                                    <select [(ngModel)]="districtCode" (change)="getSchools(districtCode)">
+                                        <option selected hidden disabled>Select District</option>
+                                        <option *ngFor="let dist of districts" value={{dist.code}}>{{dist.districtName}}</option>
+                                     </select>
+                              </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="emisNumber">School Name</label>
+                                <select [(ngModel)]="emisNumber" >
+                                    <option selected hidden disabled>Select District</option>
+                                    <option *ngFor="let school of schools" value={{school.emisCode}}>{{school.institutionName}}</option>
+                                 </select>
+                            </div>
+                        </div>
+                    </div>-->
+                   
+
+        
+                    <button type="submit" class="btn btn-primary mr-2" (click)="updateSupplier()">Submit</button>
+                    <button class="btn btn-light"  (click)="cancel()" >Cancel</button>
+              
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>

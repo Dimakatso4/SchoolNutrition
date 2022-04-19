@@ -1,0 +1,359 @@
+
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="../#">NSNP Registration Form</a></li>
+    </ol>
+</nav>
+
+<div class="row" style="padding-left: 0.75rem; padding-right: 0.75rem;">
+    <div class="col-md-12 bg-primary text-white" style="padding: 20px 12px 12px 12px; margin: 25px 0">
+        <h2 class="mb-2">NSNP Registration Form</h2>
+        <hr>
+    </div>
+</div>
+
+<!--add btn-->
+<div class="row">
+    <div class="col-md-12">
+      <button class="btn btn-primary float-right" (click)="openLgModal(lgModel)"
+      [ngClass]="{'greyBtn': nsnpLength >  0 }">Add New Record</button>
+    </div>
+  </div>
+<!--end add btn-->
+
+
+ <!--table-->
+ <div class="row mt-4">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table  datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" id="datatable" class="table table-hover mb-0">
+          <thead class="bg-secondary">
+            <tr>
+              <!-- <td class="text-white" hidden>No</td> -->
+              <td class="text-white">Emis Number</td>
+              <td class="text-white">School Name</td>
+              <td class="text-white">Date Received</td>
+              <td class="text-white">Action </td>
+            </tr>
+
+          </thead>
+          <tbody>
+            <tr *ngFor="let pd of nsnpList, let i = index">
+                <td hidden>{{pd.NSNPId}}</td> 
+                <td>{{pd.emisNumber}}</td>
+                <td>{{pd.schoolName}}</td>
+                <td>{{pd.dateReceived|date:'YYYY-MM-dd'}}</td>
+                <td>
+                    <a style="margin-left: 30px;"><i class="mdi mdi-eye text-dark" (click)="openViewModal(lgViewModel,pd.NSNPId,i)"></i></a>
+                </td>
+            </tr>         
+
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+  <!--table-->
+
+  <ng-template #lgModel let-modal>
+    <div class="modal-header bg-primary text-white">    
+        <h3 class="modal-title" id="exampleModalLabel">NSNP Registration Form</h3>
+        <button type="button" class="close text-white" (click)="modal.close('by: close icon')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>    
+    </div> 
+    <div class="container">
+        <form [formGroup]="validationForm">
+            <div class="row">
+                <div class="container">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="container">
+                                <h5 class="" id="exampleModalLabel">Number Of Learners On NSNP Per Grade</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="Grade">Grade</label>
+                                    <select (change)="selectInput($event);filterGrade(Grade)" [(ngModel)]="Grade" formControlName="Grade"
+                                        [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.Grade.errors || gradeFilter > 0}" required>
+                                        <option [hidden]="Grade" value="-1" disabled>Please select grade</option>
+                                        <option *ngFor="let list of gradeList" value={{list.description}}>
+                                            {{list.description}}
+                                        </option>
+                                    
+
+                                    </select>
+                                    <p *ngIf="isCreateFormSubmitted && createForm.Grade.errors?.required || gradeFilter > 0" class="invalid-feedback">Grade required</p>
+                                    <div id="other" *ngIf="isNameSelected"><br>
+                                        <label>Other Grade</label>
+                                        <input type="text" class="form-control" placeholder="Type here..."  [(ngModel)]="otherGrade" formControlName="otherGrade" [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.otherGrade.errors}" required>
+                                        <p *ngIf="isCreateFormSubmitted && createForm.otherGrade.errors?.required" class="invalid-feedback">Other Grade required</p>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Number of learners</label>
+                                    <input type="number" class="form-control" [(ngModel)]="NoOfLearners"  formControlName="NoOfLearners" 
+                                    [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.NoOfLearners.errors}" required placeholder="Type here..." >
+                                    <p *ngIf="isCreateFormSubmitted && createForm.NoOfLearners.errors?.required" class="invalid-feedback">NoOfLearners required</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <button class="btn btn-primary float-left" (click)="AddNSNPgrade()" style="margin-right: 20px;">Add Grade</button>
+                            <!-- <button class="btn btn-primary float-left" (click)="openSmModals()">Save</button> -->
+                        </div><br><br>
+                    </div>
+                    <div class="col-md-12">
+                        <div  class="table-responsive">
+                            <table role="table" class="table table-hover">
+                                <thead  class="bg-secondary text-white">
+                                    <tr>
+                                        <td class="tableheadStyle text-white">Grade</td>
+                                        <td class="tableheadStyle text-white">Number Of Learners</td>
+                                        <td class="tableheadStyle text-white">Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let obj of lastInfo let i=index">
+                                    <tr>
+                                        <td>{{obj.Grade}}</td>
+                                        <td>{{obj.NoOfLearners}}</td>
+                                        <td>
+                                            <a style="margin-left: 30px;"><i class="mdi mdi-pencil text-dark" (click)="openEditModal(editModal,obj,i)"></i></a>
+                                            <a style="margin-left: 30px;"><i class="mdi mdi-delete-forever text-dark" (click)="DeleteGrade(i)"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            </div>
+            </div>
+        
+            <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group"><br>
+                    <label>What quintile is your school?<span class="required-asterisk">*</span></label>
+                    <select [(ngModel)]="quintile" formControlName="quintile" 
+                        [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.quintile.errors}" required>
+                        <option value="" hidden>Select Quintile</option>
+                        <option value="Q1-Q3">Q1-Q3</option>
+                        <option value="Q4-Q5, No Fee">Q4-Q5, No Fee</option>
+                        <option value="Q4-Q5 Fee Paying">Q4-Q5 Fee Paying</option>
+                    </select>             
+                    <p *ngIf="isCreateFormSubmitted && createForm.quintile.errors?.required" class="invalid-feedback">Quintile required</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group"><br>
+                    <label>Where do the majority of your children live?<span class="required-asterisk">*</span></label>
+                    <select [(ngModel)]="majorityLive" formControlName="majorityLive"  [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.majorityLive.errors}" required>
+                        <option value="" hidden>Select the appropriate option</option>
+                        <option *ngFor="let list of ListOfPlace" value={{list.description}}>
+                            {{list.description}}
+                        </option>
+                    </select>
+                    <p *ngIf="isCreateFormSubmitted && createForm.majorityLive.errors?.required" class="invalid-feedback">Majority of children live required</p>
+                </div>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group"><br>
+                        <label>School roll<span class="required-asterisk">*</span></label>
+                        <input type="number" class="form-control"  readonly
+                        [(ngModel)]="leanerNumber" formControlName="schoolRoll" 
+                        [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.schoolRoll.errors}" required>
+                        <p *ngIf="isCreateFormSubmitted && createForm.schoolRoll.errors?.required" class="invalid-feedback">School roll required</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group"><br>
+                        <label>What facilities are available at your school?<span class="required-asterisk">*</span></label>                  
+                    <ng-select [multiple]="true" [clearable]="true"
+                            [searchable]="true" bindLabel="facility" placeholder="Please select"
+                            [(ngModel)]="facility" formControlName="facility" required
+                            [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.facility.errors}" >
+                            <ng-option *ngFor="let list of facilityList" value={{list.description}} >
+                                {{list.description}}
+                            </ng-option>
+                    </ng-select> 
+                    <p *ngIf="isCreateFormSubmitted && createForm.facility.errors?.required" class="invalid-feedback">Facilities required</p>
+                    </div>
+                    </div>
+                    
+            </div>
+        
+        
+            
+            <div class="row">
+                <div class="container">
+                    <button type="button" class="btn btn-primary mr-2" (click)="submitNSNP()">Submit</button>
+                    <button class="btn btn-light" (click)="Cancel()">Cancel</button>
+                </div>
+            </div>
+        <br>
+        </form>
+        </div>
+</ng-template>
+
+<ng-template #lgViewModel let-modal>
+    <div class="modal-header bg-primary text-white">    
+        <h3 class="modal-title" id="exampleModalLabel">View NSNP Registration Form</h3>
+        <button type="button" class="close text-white" (click)="modal.close('by: close icon')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>    
+    </div> 
+    <div class="container">
+        <div class="modal-body">    
+            <div class="container">
+                <div  class="table-responsive table-wrap">
+                    <table  datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" id="datatable" class="table table-hover mb-0">
+                        <thead  class="bg-secondary text-white">
+                            <tr>
+                                <td class="tableheadStyle text-white">Grade</td>                        
+                                <td class="tableheadStyle text-white">Number of learners</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let x of parseList">
+                                <td>{{x.Grade}}</td>                        
+                                <td>{{x.NoOfLearners}}</td>                                                               
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>                
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">   
+                        <label>What quintile is your school?</label>                   
+                        <input type="text" class="form-control" [(ngModel)]="quintileEdit" readonly 
+                        id="modalQuintile">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">    
+                        <label>Where do the majority of children live?</label>  
+                        <input type="text" class="form-control" [(ngModel)]="childrenLiveEdit" readonly id="modalChildrenLive">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">   
+                        <label>School roll</label>                   
+                        <input type="text" class="form-control" [(ngModel)]="schoolRollEdit" readonly id="modalSchoolRoll">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">    
+                        <label>What are facilities are in your school?</label>  
+                        <input type="text" class="form-control" [(ngModel)]="facilitiesEdit" readonly id="modalFacilities">
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+  </ng-template>
+    
+    <ng-template #smModal let-modal>
+        <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="exampleModalLabel">Number Of learners on NSNP Per Grade</h5>
+            <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="form-group">
+                    <label>Grade</label>
+                </div>
+                <input type="text" class="form-control">
+            </div>
+            
+            <div class="row">
+                <div class="form-group">
+                    <label>Number of learners</label>
+                </div>
+                <input type="text" class="form-control">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Close</button>
+            <button type="button" class="btn btn-primary" (click)="modal.close('by: save button')">Add</button>
+        </div>
+    </ng-template>
+
+    <ng-template #editModal let-modal>
+
+        <div class="modal-header bg-primary text-white">
+    
+            <h5 class="modal-title" id="exampleModalLabel">Number Of Learners On NSNP Per Grade</h5>
+    
+            <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
+    
+                <span aria-hidden="true">&times;</span>
+    
+            </button>    
+        </div>    
+        <div class="modal-body">    
+            <div class="row">    
+                <div class="form-group">    
+                    <label>Grade</label> 
+                </div>    
+                <input type="text" class="form-control" [(ngModel)]="gradeEdit" readonly id="modalGrade">
+            </div>    
+            <div class="row">    
+                <div class="form-group">    
+                    <label>Number Of Learners</label>    
+                </div>    
+                <input type="number" class="form-control" [(ngModel)]="NoLearnersEdit" id="modalNoLearners">
+    
+                <p *ngIf="isFormCreatedSubmitted && !NoLearnersEdit" class="invalid-feedback">Suggestion required</p>
+    
+            </div>
+    
+        </div>
+    
+        <div class="modal-footer">    
+            <!-- <button type="button" class="btn btn-secondary">Close</button>  -->
+            <button type="button" class="btn btn-primary" (click)="SaveGrade()"> Save </button>
+    
+        </div>
+    
+    </ng-template>
+    
+    <!-- <ng-template #editModal let-modal>
+        <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="exampleModalLabel">Number Of Learners On NSNP Per Grade</h5>
+            <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="form-group">
+                    <label>Grade</label>
+                </div>
+                <input type="text" class="form-control">
+            </div>
+            
+            <div class="row">
+                <div class="form-group">
+                    <label>Number Of Learners</label>
+                </div>
+                <input type="text" class="form-control">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Close</button>
+            <button type="button" class="btn btn-primary" (click)="modal.close('by: save button')">Edit</button>
+        </div>
+    </ng-template> -->

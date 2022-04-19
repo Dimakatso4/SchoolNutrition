@@ -1,0 +1,934 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Supplier Summary Report</a></li>
+    </ol>
+</nav>
+
+<div class="row" style="padding-left: 0.75rem; padding-right: 0.75rem;">
+    <div class="col-md-12 bg-primary text-white" style="padding: 20px; margin: 20px 0">
+        <h2 class="mb-2">Supplier Summary Report</h2>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <button class="btn btn-primary float-right" (click)="openModal(createModal)">Add Summary Report</button>
+    </div>
+</div>
+
+<div class="card-body">
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="table-responsive table-wrap">
+                <table datatable [dtTrigger]="dtTrigger" [dtOptions]="dtOptions" id="datatable" class="table table-hover mb-0">
+                    <thead class="bg-secondary">
+                        <tr>
+                            <th hidden class="tableheadStyle text-white">NO</th>
+                            <td class="tableheadStyle text-white">School Name</td>
+                            <td class="tableheadStyle text-white">Emis Number</td>
+                            <td  class="tableheadStyle text-white">District Name</td>
+                            <td class="tableheadStyle text-white">Action</td>
+                            <!--<td class="tableheadStyle text-white">Action</td>-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let view of list; let i = index">
+                            <td hidden>{{view.supplierSummaryId}}</td> 
+                            <td> {{view.schoolName}} </td>
+                            <td> {{view.emisNo}} </td>
+                            <td> {{view.districtName}} </td>
+                            <td class="text-danger">
+                                <a (click)="openModal(viewAudit);reportData(view)">
+                                    <i class="mdi mdi-file-pdf-box"></i>
+                                    Perishable/Non perishable Products Quantities & Allocations
+                                </a>
+                                <br>
+                                <a (click)="getdelieveryDates(view.supplierSummaryId)">
+                                    <i class="mdi mdi-calendar-check"></i>
+                                    Delievery Dates
+                                </a>
+                                <br>
+                                <a  (click)="openModal(viewNote); getdelieveryNote(view.supplierSummaryId)">
+                                    <i class="mdi mdi-truck-delivery"></i>
+                                    Delievery Schedule
+                                </a>
+                                <br>
+                                <a (click)="openModal(viewQuery); getdelieveryQuery(view)">
+                                    <i class="mdi mdi-comment-question-outline"></i>
+                                    Delievery Schedule Queries
+                                </a>
+                            </td>
+                            <!--<td>
+                                <a (click)="passSupplierSummaryID(view.supplierSummaryId)"><i
+                                    class="mdi mdi-eye text-dark"></i></a>
+                                &nbsp;&nbsp;
+                                <a (click)="openModal(viewAudit);reportData(view)"><i
+                                    class="mdi mdi-file-pdf-box"></i></a>
+                                &nbsp;&nbsp;
+                                <a (click)="openEditModal(editModel,view.supplierSummaryId,i)"><i
+                                        class="mdi mdi-pencil text-dark"></i></a>
+                            </td>-->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #createModal let-modal>
+   
+        <div class="modal-header bg-primary text-white headingStyle2 clear-top-space">
+            <h2 class="modal-title text-white" id="exampleModalLabel">Supplier Summary Report (Products and Quantities)</h2>
+            <button type="button" class="close text-white" (click)="Cancel()" (click)="modal.close('by: close icon');" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        
+        <div class="card-body"> 
+            <form [formGroup]="validationForm"   (submit)="onSubmit(products)">
+           
+        
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="quarter">Quarter<span class="required-asterisk">*</span></label>
+                        <select (change)="selectCode4(quarter)"  
+                        [(ngModel)] = "quarter"
+                        formControlName = "quarter"
+                        name="quarter"
+                        [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.quarter.errors}" >
+                        <option value="" hidden  selected>Please select one</option>
+                        <option *ngFor="let dist of lis1" value={{dist.quarter}}>
+                            {{dist.quarter}}
+                        </option><p *ngIf="isCreateFormSubmitted && createForm.quarter.errors?.required" class="invalid" style="color:red">Field Required
+                        </p>
+                    </select>
+                    
+                        
+                    </div>
+                </div> 
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="month">Month<span class="required-asterisk">*</span></label>
+                                <select  
+                                formControlName="month"
+                                [(ngModel)]="month"
+                                name="month"
+                                [disabled]="quarter === null"
+                                [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.month.errors, disabled: quarter == null }" >
+                                    <option value="" hidden  selected>Please select one</option>
+                                    <option *ngFor="let mon of listMonth" value={{mon.month}}>
+                                        {{mon.month}}
+                                    </option>
+                                </select>
+                                <p *ngIf="isCreateFormSubmitted && createForm.month.errors?.required" class="invalid" style="color:red">Field Required
+                                    </p>
+                            </div>
+    
+                        </div>
+
+            </div>
+          
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+                    <div class="form-group">
+                        <label for="districtNames">District
+                        <span class="required-asterisk">*</span></label>
+                      
+                        <ng-select [items]="list1" [multiple]=false [closeOnSelect]="true" [searchable]="true"
+                            bindLabel="district_Name" placeholder="Select District" 
+                            [(ngModel)]="districtNames"
+                            formControlName="districtNames"
+                            (change)="selectCode(districtNames)" 
+                            [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.districtNames.errors}" required>
+                        </ng-select>
+                        <p *ngIf="isCreateFormSubmitted && createForm.districtNames.errors?.required" class="invalid" style="color:red">Field Required
+                            </p>
+                    </div>
+                        <div class="form-group">
+                        <label for="circuitNos">Circuit No</label>
+                        <input type="text" class="form-control" 
+                        [(ngModel)]="circuitNos" 
+                        formControlName="circuitNos" 
+                        readonly>
+                        
+                    </div>
+
+                        <div class="form-group">
+                        <label for="emisNo">EMIS Number</label>
+                        <input type="text" class="form-control" 
+                            [(ngModel)]="emisNo"
+                            formControlName="emisNo"
+                            readonly>
+                            
+                    </div> 
+
+
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+                    <div class="form-group">
+                        <label for="schoolNames">School Name
+                        <span class="required-asterisk">*</span> </label>
+                        <ng-select [items]="list3" [multiple]=false [closeOnSelect]="true" [searchable]="true"
+                            bindLabel="institutionName" placeholder="Select School" 
+                            [(ngModel)]="schoolNames"
+                            formControlName="schoolNames"
+                            (change)="selectCode2(schoolNames)"
+                            [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.schoolNames.errors}" required>
+                            </ng-select>
+                        
+                        
+                        <p *ngIf="isCreateFormSubmitted && createForm.schoolNames.errors?.required" class="invalid" style="color:red">Field Required
+                            </p>
+                        
+
+
+                    </div>
+                        <div class="form-group">
+                        <label for="clusterNo">Cluster No</label>
+                        <input type="text" class="form-control" 
+                        [(ngModel)]="clusterNo"  
+                        formControlName="clusterNo"  
+                        readonly>
+                    </div> 
+                    <div class="form-group">
+                        <label for="NSNPAllocation">NSNP Allocation</label>
+                        <input type="text" class="form-control"  
+                        [(ngModel)]="NSNPAllocation"
+                        formControlName="NSNPAllocation" 
+                        name ="NSNPAllocation" 
+                        readonly>  
+                    </div> 
+                </div> 
+            </div>
+
+            <div class="row" >
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group" >
+                        <label >Supplier Name</label>
+                        <input type="text"  class="form-control" 
+                        [(ngModel)]="supplierName" 
+                        formControlName="supplierName"   
+                        name ="supplierName" 
+                        readonly>
+                    
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="schoolroll">Number Of Learners</label>
+                        <input type="number" class="form-control" class="form-control" 
+                        [(ngModel)]="schoolroll"  
+                        formControlName="schoolroll"
+                        formControlName="schoolroll" 
+                        name ="schoolroll"
+                        (keyup)="changeLearnersNumber(schoolroll)"
+                        >
+                        
+                    </div>
+
+                </div> 
+            </div>  
+                
+            <h3  *ngIf="products.length > 0" style="color:black; font-size:20px;"> Perishable Product</h3> 
+                <table  class="table" *ngIf="products.length > 0">
+                <thead>
+                    <tr style="border-bottom: 1px solid black;">
+                        <th class="header-label" style="color:black; font-size:12px;">Food Group</th>
+                        <th class="header-label" style="color:black; font-size:12px;">Product Type</th>
+                        <th class="header-label" style="color:black; font-size:12px;">Grams/Milliliters </th>
+                        <th class="header-label" style="color:black; font-size:12px;">Quantity</th>
+                        <th class="header-label" style="color:black; font-size:12px;">Unit</th>
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    <tr class="text-danger" *ngFor="let product of products">
+                        <td>{{product.foodGroupDescription}}</td>
+                        <td>
+                            {{product.typeDescription}}
+                        </td>
+                        <td>
+                            {{product.grammage}}
+                        </td>
+                        <td >
+                            {{product.quantity| number : '0.00' }}
+                        </td> 
+                        <td>
+                            {{product.unitDescription}}
+                        </td> 
+                    </tr>
+        
+                    </tbody>
+                </table> 
+        
+
+            <!--button-->
+            <br>
+
+            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+            <button type="button" class="btn btn-warning" (click)="modal.close('by: close icon');">Cancel</button>
+          
+        </form>
+       
+    </div><!-- row end -->
+</ng-template>
+
+<ng-template #editModel let-modal>
+    <div class="modal-header bg-primary text-white headingStyle2 clear-top-space">
+        <h2 class="modal-title text-white" id="exampleModalLabel">Supplier Summary Report (Perishable Product)</h2>
+        <button type="button" class="close text-white" (click)="Cancel()" (click)="modal.close('by: close icon');" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+      <div class="card-body"> 
+        <form [formGroup]="editvalidationForm"   (submit)="onSubmit(products)">
+           
+            
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="quarter">Quarter<span class="required-asterisk">*</span></label>
+                        <select (change)="selectCode4(quarter)"  
+                        [(ngModel)] = "editquarter"
+                        formControlName = "editquarter"
+                        name="editquarter"
+                        [ngClass]="{'is-invalid': editisCreateFormSubmitted && editcreateForm.editquarter.errors}" >
+                        <option value="" hidden  selected>Please select one</option>
+                        <option *ngFor="let dist of lis1" value={{dist.quarter}}>
+                            {{dist.quarter}}
+                        </option><p *ngIf="editisCreateFormSubmitted && editcreateForm.editquarter.errors?.required" class="invalid" style="color:red">Field Required
+                        </p>
+                    </select>
+                    
+                        
+                    </div>
+                </div> 
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="month">Month<span class="required-asterisk">*</span></label>
+                                <select  
+                                formControlName="editmonth"
+                                [(ngModel)]="editmonth"
+                                name="editmonth"
+                                [ngClass]="{'is-invalid': editisCreateFormSubmitted && editcreateForm.editmonth.errors}" >
+                                    <option value="" hidden  selected>Please select one</option>
+                                    <option *ngFor="let mon of listMonth" value={{mon.month}}>
+                                        {{mon.month}}
+                                    </option>
+                                </select>
+                                <p *ngIf="editisCreateFormSubmitted && editcreateForm.editmonth.errors?.required" class="invalid" style="color:red">Field Required
+                                    </p>
+                            </div>
+    
+                        </div>
+
+            </div>
+        
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+                    <div class="form-group">
+                        <label for="districtNames">District
+                        <span class="required-asterisk">*</span></label>
+                        <ng-select [items]="list1" [multiple]=false [closeOnSelect]="true" [searchable]="true"
+                        bindLabel="district_Name" placeholder="Select District" 
+                        [(ngModel)]="editdistrictNames"
+                        formControlName="editdistrictNames"
+                        (change)="selectCode(editdistrictNames)" 
+                        [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.editdistrictNames.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="editisCreateFormSubmitted && editcreateForm.editdistrictNames.errors?.required" class="invalid" style="color:red">Field Required
+                        </p>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+                    <div class="form-group">
+                        <label for="schoolNames">School Name
+                        <span class="required-asterisk">*</span> </label>
+                        <ng-select [items]="list3" [multiple]=false [closeOnSelect]="true" [searchable]="true"
+                        bindLabel="institutionName" placeholder="Select School" 
+                        [(ngModel)]="editschoolNames"
+                        formControlName="editschoolNames"
+                        (change)="editselectCode2(editschoolNames)"
+                        [ngClass]="{'is-invalid': isCreateFormSubmitted && createForm.editschoolNames.errors}" required>
+                        </ng-select>
+                        
+                        <p *ngIf="editisCreateFormSubmitted && editcreateForm.editschoolNames.errors?.required" class="invalid" style="color:red">Field Required
+                        </p>
+                    </div>
+                   
+                  
+
+
+                </div> 
+            </div>
+            
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label >Cluster No</label>
+                        <input type="text" class="form-control" 
+                        [(ngModel)]="editclusterNo"
+                        formControlName="editclusterNo"   
+                        readonly>
+                    </div> 
+                </div> 
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="NSNPAllocation">NSNP Allocation</label>
+                        <input type="text" class="form-control"  
+                        [(ngModel)]="editNsnpAllocation" 
+                        formControlName="editNsnpAllocation" 
+                        readonly>
+                            
+                    </div>
+                </div> 
+            </div>
+
+            <div class="row" >
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group" >
+                        <label >Supplier Name</label>
+                        <input type="text"  class="form-control" 
+                        [(ngModel)]="editsupplierName" 
+                        formControlName="editsupplierName"
+                        readonly>
+                    
+                    </div>
+                </div>
+
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="schoolroll">Number Of Learners</label>
+                        <input type="number" class="form-control" 
+                        [(ngModel)]="editschoolroll"
+                        formControlName="editschoolroll"
+                         readonly>
+                        
+                    </div>
+
+
+                </div> 
+            </div>  
+                
+            <h3 style="color:black; font-size:20px;"> Perishable Product</h3> 
+                <table class="table" >
+                <thead>
+                    <tr style="border-bottom: 1px solid black;">
+                        <th class="header-label" style="color:black; font-size:12px;">Food Group</th>
+                        <th class="header-label" style="color:black; font-size:12px;">Product Type</th>
+                       <!-- <th class="header-label" style="color:black; font-size:12px;">Grams/Milliliters</th>-->
+                        <th class="header-label" style="color:black; font-size:12px;">Quantity</th>
+                        <th class="header-label" style="color:black; font-size:12px;">Unit</th>
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    <tr *ngFor="let product of editproducts.perishablesList">
+                        <td>{{product.foodGroupDescription}}</td>
+                        <td>
+                            {{product.TypeDescription}}
+                        </td>
+                        <!--<td>
+                            {{product.grammage}}
+                        </td>-->
+                        <td >
+                            {{product.quantity}}
+                        </td> 
+                        <td>
+                            {{product.unit}}
+                        </td> 
+                    </tr>
+        
+                    </tbody>
+                </table> 
+        
+
+            <!--button-->
+            <br>
+
+            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+            <button class="btn btn-light" (click)="modal.close('by: close icon');">Cancel</button>
+          
+        </form>
+       
+    </div><!-- row end -->
+</ng-template>
+
+<ng-template #viewAudit let-modal>
+   
+    <div class="modal-header bg-primary text-white headingStyle2 clear-top-space">
+        <h2 class="modal-title text-white" id="exampleModalLabel">Supplier Summary Report (Perishable Product)</h2>
+        <button type="button" class="close text-white" (click)="Cancel()" (click)="modal.close('by: close icon');" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <div class="card-body"> 
+       
+       
+    
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label for="quarter">Quarter<span class="required-asterisk">*</span></label>
+                    <input type="text" class="form-control" 
+                    value = "{{this.report.quarter}}"
+                    readonly>
+                
+                    
+                </div>
+            </div> 
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label for="month">Month<span class="required-asterisk">*</span></label>
+                           <input type="text" class="form-control" 
+                           value = "{{this.report.month}}"
+                            readonly>
+                        </div>
+
+                    </div>
+
+        </div>
+      
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+                <div class="form-group">
+                    <label for="districtNames">District
+                    <span class="required-asterisk">*</span></label>
+                  
+                    <input type="text" class="form-control" 
+                    value = "{{this.report.districtName}}"
+                    readonly>
+                </div>
+                    <div class="form-group">
+                    <label for="circuitNos">Circuit No</label>
+                    <input type="text" class="form-control" 
+                    value = "{{this.report.circuitNo}}"
+                    readonly>
+                    
+                </div>
+
+                    <div class="form-group">
+                    <label for="emisNo">EMIS Number</label>
+                    <input type="text" class="form-control" 
+                    value = "{{this.report.emisNo}}"
+                    readonly>
+                        
+                </div> 
+
+
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+                <div class="form-group">
+                    <label for="schoolNames">School Name
+                    <span class="required-asterisk">*</span> </label>
+                    <input type="text" class="form-control" 
+                    value = "{{this.report.schoolName}}"
+                    readonly>   
+                </div>
+                    <div class="form-group">
+                    <label for="clusterNo">Cluster No</label>
+                    <input type="text" class="form-control" 
+                    value = "{{this.report.clusterNo}}"
+                    readonly>
+                </div> 
+                <div class="form-group">
+                    <label for="NSNPAllocation">NSNP Allocation</label>
+                    <input type="text" class="form-control"  
+                    value = "{{this.report.nsnpAllocation}}"
+         
+                    readonly>  
+                </div> 
+            </div> 
+        </div>
+
+        <div class="row" >
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-group" >
+                    <label >Supplier Name</label>
+                    <input type="text"  class="form-control"  
+                     value = "{{this.report.supplierName}}"
+                    readonly>
+                
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label for="schoolroll">Number Of Learners</label>
+                    <input type="number" class="form-control" class="form-control"   
+                    value = "{{this.report.numberOfLearners}}"
+                    readonly>
+                    
+                </div>
+
+            </div> 
+        </div>  
+        <hr>
+        <br>    
+        <h3  *ngIf=" report.perishablesList.length > 0" style="color:black; font-size:20px;"> Perishable/Non perishable Products Quantities & Allocations</h3> 
+            <table  class="table" *ngIf=" report.perishablesList.length > 0">
+            <thead>
+                <tr class="bg-secondary">
+                    <th class="tableheadStyle text-white">Food Group</th>
+                    <th class="tableheadStyle text-white">Product Type</th>
+                    <th class="tableheadStyle text-white">Grams/Milliliters </th>
+                    <th class="tableheadStyle text-white">Quantity</th>
+                    <th class="tableheadStyle text-white">Unit</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="text-danger" *ngFor="let product of report.perishablesList">
+                    <td>{{product.foodGroupDescription}}</td>
+                    <td>
+                        {{product.typeDescription}}
+                    </td>
+                    <td>
+                        {{product.grammage}}
+                    </td>
+                    <td >
+                        {{product.quantity| number : '0.00' }}
+                    </td> 
+                    <td>
+                        {{product.unit}}
+                    </td> 
+                </tr>
+    
+                </tbody>
+            </table> 
+    
+
+   
+</div><!-- row end -->
+</ng-template>
+
+
+<ng-template #viewNote let-modal>
+   
+    <div class="modal-header bg-primary text-white headingStyle2 clear-top-space">
+        <h2 class="modal-title text-white" id="exampleModalLabel">Supplier Summary Report (DelieveryNote)</h2>
+        <button type="button" class="close text-white" (click)="Cancel()" (click)="modal.close('by: close icon');" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <div class="card-body"> 
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div cass="card-body">
+                
+                <div class="row">
+                    <h4>Products Delievery Note Cards</h4>
+                </div>    
+                    <div  class="row alert alert-warning" role="alert" *ngFor="let product of deliveryNoteList.perishablesList">
+                            <div class="col-md-12  mt-5">
+                            
+                                    <h4 class="text-danger">Food Group</h4>
+                                    
+                                    <input type="text"   value="{{product.foodGroupDescription}}" class="form-control"  readonly />
+                                    
+                                
+                            </div>   
+                        
+        
+                            <div  class="col-md-9 mt-5">
+                                <h4 class="text-danger">Product Type</h4>
+                                
+                                <input type="text"  value="{{product.typeDescription}}" class="form-control"  readonly />
+                        
+                            </div>
+                            
+                            <div  class="col-md-3 mt-5">  
+                                <h4 class="text-danger">Is Product Wrong</h4> 
+                                
+                                <select [(ngModel)]='product.isProductWrong' readonly
+                                    class="form-control"
+                                    style="max-width: fit-content;">
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value= true>Yes</option>
+                                    <option value= false>No</option>
+                            </select >
+                            
+                            </div >
+        
+                            <div class="col-md-12  mt-5" >
+                            
+                                <h4 class="text-danger" *ngIf="product.isProductWrong == 'true'">Capture Porduct Type Recieved</h4>
+                                
+                                <input type="text"   [(ngModel)]="product.wrongProductName"  class="form-control"  *ngIf="product.isProductWrong == 'true'" readonly/>
+                                
+                            
+                        </div>   
+                            
+                            <div  class="col-md-3 mt-4">
+                                <h4 class="text-danger">Expected Product Quantity</h4> 
+                                
+                                    <input type="number"  [(ngModel)]='product.quantity'
+                                        [ngModelOptions]="{standalone: true}"
+                                        placeholder="Type quantity"
+                                        class="form-control" style="width: 120px;"  readonly />
+                                    
+                            
+                            </div>
+                            
+                            <div  class="col-md-3  mt-4">
+                                <h4 class="text-danger">Is Quantity Wrong</h4> 
+                                    
+                                <select  [(ngModel)]='product.isQuantityWrong' readonly
+                                    class="form-control"
+                                    style="max-width: fit-content;">
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value=true>Yes</option>
+                                    <option value=false>No</option>
+                                </select>
+                                
+                            </div >
+        
+                            <div  class="col-md-3 mt-4">
+                                <h4 class="text-danger">Recieved Quantity</h4> 
+                                
+                                <div><input type="number"  [(ngModel)]='product.quantityRecieved' readonly
+                                        [ngModelOptions]="{standalone: true}"
+                                        placeholder="Type quantity"
+                                        class="form-control" style="width: 120px;" /></div>
+                            </div >
+                            <br>
+                            
+                            <div  class="col-md-3 mt-4">  
+                                <h4 class="text-danger">Is Quality Wrong</h4> 
+                                
+                                <select [(ngModel)]='product.isQualityWrong'  readonly
+                                    class="form-control" style="max-width: fit-content;">
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value="false">No</option>
+                                    <option value="true">Yes</option>
+                                    
+                                </select>
+                                
+                            </div >
+                            
+                            <div class="col-md-12  mt-4"  *ngIf="product.isProductWrong == 'true' || product.isQualityWrong == 'true' || product.isQuantityWrong == 'true'">
+                                <h4 class="text-danger">Uploaded Evidence</h4> 
+                                <div class="row" > 
+                                    <div  class="col-md-4" *ngFor=" let doc of convertDocsToJSON(product.documentPath)">
+                                        <div class="card" style="width: 18rem;">
+                                            <a href="{{doc}}" target="_blank">
+                                                <img src="{{doc}}"  width="300" height="200" alt="evidence">
+                                            </a>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                                
+                                
+                                <!--<dropzone   class=" row alert alert-warning dropzone-container" [config]="config" class="dropzone"
+                                [message]="'Click or drag to upload evidence'" (error)="onUploadError($event)"
+                                (success)="onUploadSuccess($event,i)">
+                                </dropzone>-->
+                                <hr>   
+                            </div> 
+                            <br>    
+                        <hr>
+                    </div>
+                            <br>
+                            <!--<div>
+                                <button class="btn btn-primary mt-2 " (click)="SubmitDeliveryResults()">Submit</button>
+                                &nbsp;&nbsp;
+                                <button class="btn btn-danger mt-2 " (click)="resetDropzoneUploads()">Cancel</button>
+                            </div>-->
+                       
+                    <!--</form>-->
+            
+                    </div>
+        
+                </div>
+        
+            </div>
+       
+  
+    
+
+   
+    </div><!-- row end -->
+</ng-template>
+
+<ng-template #viewQuery let-modal>
+   
+    <div class="modal-header bg-primary text-white headingStyle2 clear-top-space">
+        <h2 class="modal-title text-white" id="exampleModalLabel">Supplier Summary Report (DelieveryNote)</h2>
+        <button type="button" class="close text-white" (click)="Cancel()" (click)="modal.close('by: close icon');" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    
+    <div class="card-body"> 
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div cass="card-body">
+                
+                <div class="row">
+                    <h4>Products Delievery Queries Cards</h4>
+                </div>    
+                    <div  class="row alert alert-warning" role="alert" *ngFor="let product of queryList">
+                            <div class="col-md-12  mt-5">
+                            
+                                    <h4 class="text-danger">Food Group</h4>
+                                    
+                                    <input type="text"   value="{{product.foodGroupDescription}}" class="form-control"  readonly />
+                                    
+                                
+                            </div>   
+                        
+        
+                            <div  class="col-md-9 mt-5">
+                                <h4 class="text-danger">Product Type</h4>
+                                
+                                <input type="text"  value="{{product.typeDescription}}" class="form-control"  readonly />
+                        
+                            </div>
+                            
+                            <div  class="col-md-3 mt-5">  
+                                <h4 class="text-danger">Is Product Wrong</h4> 
+                                
+                                <select [(ngModel)]='product.isProductWrong' readonly
+                                    class="form-control"
+                                    style="max-width: fit-content;">
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value= true>Yes</option>
+                                    <option value= false>No</option>
+                            </select >
+                            
+                            </div >
+        
+                            <div class="col-md-12  mt-5" >
+                            
+                                <h4 class="text-danger" *ngIf="product.isProductWrong == 'true'">Capture Porduct Type Recieved</h4>
+                                
+                                <input type="text"   [(ngModel)]="product.wrongProductName"  class="form-control"  *ngIf="product.isProductWrong == 'true'" readonly/>
+                                
+                            
+                        </div>   
+                            
+                            <div  class="col-md-3 mt-4">
+                                <h4 class="text-danger">Expected Product Quantity</h4> 
+                                
+                                    <input type="number"  [(ngModel)]='product.quantity'
+                                        [ngModelOptions]="{standalone: true}"
+                                        placeholder="Type quantity"
+                                        class="form-control" style="width: 120px;"  readonly />
+                                    
+                            
+                            </div>
+                            
+                            <div  class="col-md-3  mt-4">
+                                <h4 class="text-danger">Is Quantity Wrong</h4> 
+                                    
+                                <select  [(ngModel)]='product.isQuantityWrong' readonly
+                                    class="form-control"
+                                    style="max-width: fit-content;">
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value=true>Yes</option>
+                                    <option value=false>No</option>
+                                </select>
+                                
+                            </div >
+        
+                            <div  class="col-md-3 mt-4">
+                                <h4 class="text-danger">Recieved Quantity</h4> 
+                                
+                                <div><input type="number"  [(ngModel)]='product.quantityRecieved' readonly
+                                        [ngModelOptions]="{standalone: true}"
+                                        placeholder="Type quantity"
+                                        class="form-control" style="width: 120px;" /></div>
+                            </div >
+                            <br>
+                            
+                            <div  class="col-md-3 mt-4">  
+                                <h4 class="text-danger">Is Quality Wrong</h4> 
+                                
+                                <select [(ngModel)]='product.isQualityWrong'  readonly
+                                    class="form-control" style="max-width: fit-content;">
+                                    <option value="" hidden disabled selected>Please select one</option>
+                                    <option value="false">No</option>
+                                    <option value="true">Yes</option>
+                                    
+                                </select>
+                                
+                            </div >
+                            
+                            <div class="col-md-12  mt-4"  *ngIf="product.isProductWrong == 'true' || product.isQualityWrong == 'true' || product.isQuantityWrong == 'true'">
+                                <h4 class="text-danger">Uploaded Evidence</h4> 
+                                <div class="row" > 
+                                    <div  class="col-md-4" *ngFor=" let doc of convertDocsToJSON(product.documentPath)">
+                                        <div class="card" style="width: 18rem;">
+                                            <a href="{{doc}}" target="_blank">
+                                                <img src="{{doc}}"  width="300" height="200" alt="evidence">
+                                            </a>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                                
+                                
+                                <!--<dropzone   class=" row alert alert-warning dropzone-container" [config]="config" class="dropzone"
+                                [message]="'Click or drag to upload evidence'" (error)="onUploadError($event)"
+                                (success)="onUploadSuccess($event,i)">
+                                </dropzone>-->
+                                <hr>   
+                            </div> 
+                            <br>    
+                        <hr>
+                    </div>
+                            <br>
+                            <!--<div>
+                                <button class="btn btn-primary mt-2 " (click)="SubmitDeliveryResults()">Submit</button>
+                                &nbsp;&nbsp;
+                                <button class="btn btn-danger mt-2 " (click)="resetDropzoneUploads()">Cancel</button>
+                            </div>-->
+                       
+                    <!--</form>-->
+            
+                    </div>
+        
+                </div>
+        
+            </div>
+    
+    </div><!-- row end -->
+</ng-template>
+
+
+  
+
+ 
+
+
+    
+    
+
+    
+    
+    
+
+  
+        
+       
+      
+         
+          
+    
+    
